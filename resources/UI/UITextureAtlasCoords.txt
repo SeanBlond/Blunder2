@@ -1,0 +1,63 @@
+NAME Lighting_Symbol
+ORIGIN 0 0
+SIZE 0.2 0.2
+
+NAME Color_Symbol
+ORIGIN 0.2 0
+SIZE 0.2 0.2
+
+NAME Texture_Symbol
+ORIGIN 0.4 0
+SIZE 0.2 0.2
+
+NAME Vignette_Symbol
+ORIGIN 0.6 0
+SIZE 0.2 0.2
+
+NAME Noise_Symbol
+ORIGIN 0.8 0
+SIZE 0.2 0.2
+
+NAME Drag_Symbol
+ORIGIN 0 0.2
+SIZE 0.2 0.2
+
+NAME Dropdown_True_Symbol
+ORIGIN 0.2 0.2
+SIZE 0.2 0.2
+
+NAME Dropdown_False_Symbol
+ORIGIN 0.4 0.2
+SIZE 0.2 0.2
+
+NAME Render_True_Symbol
+ORIGIN 0.6 0.2
+SIZE 0.2 0.2
+
+NAME Render_False_Symbol
+ORIGIN 0.8 0.2
+SIZE 0.2 0.2
+
+NAME Folder_Symbol
+ORIGIN 0 0.4
+SIZE 0.2 0.2
+
+NAME Show_True_Symbol
+ORIGIN 0.2 0.4
+SIZE 0.2 0.2
+
+NAME Show_False_Symbol
+ORIGIN 0.4 0.4
+SIZE 0.2 0.2
+
+NAME Trash_Symbol
+ORIGIN 0.6 0.4
+SIZE 0.2 0.2
+
+NAME Add_Symbol
+ORIGIN 0.8 0.4
+SIZE 0.2 0.2
+
+NAME Close_Symbol
+ORIGIN 0.0 0.6
+SIZE 0.2 0.2
