@@ -31,7 +31,7 @@ void UIWindow::removeElementAt(int index)
     mpElements[index] = nullptr; 
     mpElements.erase(mpElements.begin() + index);
 }
-void UIWindow::removeAllElemenets()
+void UIWindow::removeAllElements()
 { 
     for (int i = 0; i < mpElements.size(); i++) 
     { 

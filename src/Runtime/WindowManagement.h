@@ -44,7 +44,7 @@ private:
 	TestWindow* mpViewport = nullptr;
 	TestWindow* mpHierarchy = nullptr;
 	TestWindow* mpExplorerer = nullptr;
-	TestWindow* mpComponents = nullptr;
+	ComponentWindow* mpComponents = nullptr;
 };
 
 #endif // !WINDOW_MANAGEMENT

@@ -13,17 +13,17 @@ public:
         : mPosition(width, height, xoffset, yoffset), mWindowName(name) {}
     UIWindow(WindowPosition position, std::string name)
         : mPosition(position), mWindowName(name) {}
-    virtual ~UIWindow() { removeAllElemenets(); }
+    virtual ~UIWindow() { removeAllElements(); }
 
     // Getters
-    UIElement* getElement(int index) { return mpElements[index]; }
-    UIElement* getElementAtPos(smath::ivec2 position);
     std::string getWindowName() { return mWindowName; }
+    UIElement* getElement(int index) { return mpElements[index]; }
+    virtual UIElement* getElementAtPos(smath::ivec2 position);
 
     // Setters / Modifiers
     void addElement(UIElement* element);
     void removeElementAt(int index);
-    void removeAllElemenets();
+    void removeAllElements();
 
     // Pure Virtual Functions
     virtual void OpenWindow() = 0;

@@ -2,16 +2,20 @@
 #pragma once
 
 #include <vector>
-#include "Components/Component.h"
+#include <smath/smath.h>
 
 class GameObject
 {
 public:
     // Constructor & Deconstructor
-    GameObject()
+    GameObject() {}
+
+    // Getters
+    smath::transform* getTransform() { return &mTransform; }
 
 private:
-    std::vector<Component*> mpComponents;
+    // Transform is required, all GameObjects will have one
+    smath::transform mTransform;
 };
 
 

@@ -37,6 +37,7 @@ add_executable(${PROJECT_NAME}
 
     # UI - Windows
     "src/UI/Windows/TestWindow.h" "src/UI/Windows/TestWindow.cpp"
+    "src/UI/Windows/ComponentWindow.h" "src/UI/Windows/ComponentWindow.cpp"
     
     # UI - Elements
     "src/UI/Elements/FloatSlider.h" "src/UI/Elements/FloatSlider.cpp"
@@ -65,9 +66,11 @@ add_executable(${PROJECT_NAME}
     "src/Input/Input.h" "src/Input/Input.cpp"
     "src/Input/KeyMap.h" "src/Input/KeyMap.cpp"
 
+    # GameObjects
+    "src/GameObject/GameObject.h" "src/GameObject/GameObject.cpp" 
+
     # Blunder (Software Class)
     "src/Runtime/Blunder.h" "src/Runtime/Blunder.cpp"
- "src/GameObject/gameObject.h" "src/GameObject/GameObject.cpp" "src/GameObject/Components/Component.h"
 )
 
 # Custom library for math functions and whatnot
@@ -85,6 +88,9 @@ add_library(
 
     # Math - Matrices
     "smath/src/mat4.h" "smath/src/mat4.cpp"
+
+    # Math - Tansforms
+    "smath/src/transform.h"
 )
 target_include_directories(SMATH PUBLIC smath/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE SMATH)

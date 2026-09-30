@@ -15,7 +15,7 @@ bool WindowManager::init(const unsigned int& width, const unsigned int& height)
 	mpViewport = new TestWindow();
 	mpHierarchy = new TestWindow();
 	mpExplorerer = new TestWindow();
-	mpComponents = new TestWindow();
+	mpComponents = new ComponentWindow(Blunder::getInstance()->getProjectManager()->getActiveObject());
 
 	// Creating locked windows from the default windows
 	mpRootWindow = new LockedWindow(mpViewport, nullptr, mScreenDimensions, LockedWindow::POS_NONE, GraphicsDevice::getInstance()->getRenderer()->getUIScale() * 3.0f);

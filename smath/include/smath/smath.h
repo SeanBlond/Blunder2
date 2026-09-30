@@ -8,6 +8,7 @@
 #include "../../src/ivectors.h"
 #include "../../src/trig.h"
 #include "../../src/mat4.h"
+#include "../../src/transform.h"
 
 #endif // !SMATH
 

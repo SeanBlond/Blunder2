@@ -135,10 +135,10 @@ void GraphicsRenderer::addRectangle(const smath::vec2& position, const smath::ve
         // Creating the vertices
         .vertices =
         {
-            { smath::vec3(position.x - (0.5f * size.x), position.y - (0.5f * size.y), mCurrentLayerValue + layerOffset), color },
-            { smath::vec3(position.x - (0.5f * size.x), position.y + (0.5f * size.y), mCurrentLayerValue + layerOffset), color },
-            { smath::vec3(position.x + (0.5f * size.x), position.y + (0.5f * size.y), mCurrentLayerValue + layerOffset), color },
-            { smath::vec3(position.x + (0.5f * size.x), position.y - (0.5f * size.y), mCurrentLayerValue + layerOffset), color },
+            { smath::vec3(position.x,          position.y,          mCurrentLayerValue + layerOffset), color },
+            { smath::vec3(position.x,          position.y + size.y, mCurrentLayerValue + layerOffset), color },
+            { smath::vec3(position.x + size.x, position.y + size.y, mCurrentLayerValue + layerOffset), color },
+            { smath::vec3(position.x + size.x, position.y,          mCurrentLayerValue + layerOffset), color },
         },
 
         // Creating the indices
