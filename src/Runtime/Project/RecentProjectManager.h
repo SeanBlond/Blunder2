@@ -6,9 +6,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <smath/smath.h>
 
 #include "../../Events/EventSystem.h"
-#include "../../smath/smath.h"
 #include "../../graphics/GraphicsDevice.h"
 
 const int MAX_RECENT_AMOUNT = 10;

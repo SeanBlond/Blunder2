@@ -4,7 +4,6 @@
 #include "../UI/UI.h"
 #include "../Input/Input.h"
 #include "../Input/KeyMap.h"
-#include "../Logo/Logo.h"
 #include "../Runtime/Project/ProjectManager.h"
 #include "../Runtime/Project/RecentProjectManager.h"
 #include "../Runtime/Time.h"

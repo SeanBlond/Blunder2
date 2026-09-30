@@ -2,7 +2,7 @@
 #pragma once
 
 #include <iostream>
-#include "../smath/smath.h"
+#include <smath/smath.h>
 
 class Color
 {

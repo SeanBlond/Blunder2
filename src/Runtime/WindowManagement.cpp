@@ -12,13 +12,18 @@ bool WindowManager::init(const unsigned int& width, const unsigned int& height)
 	mScreenDimensions = smath::vec2((int)width, (int)height);
 
 	// Creating the default windows
-	mpTestWindow = new TestWindow();
+	mpViewport = new TestWindow();
+	mpHierarchy = new TestWindow();
+	mpExplorerer = new TestWindow();
+	mpComponents = new TestWindow();
 
 	// Creating locked windows from the default windows
-	mpRootWindow = new LockedWindow(mpTestWindow, nullptr, mScreenDimensions, LockedWindow::POS_NONE, GraphicsDevice::getInstance()->getRenderer()->getUIScale() * 3.0f);
+	mpRootWindow = new LockedWindow(mpViewport, nullptr, mScreenDimensions, LockedWindow::POS_NONE, GraphicsDevice::getInstance()->getRenderer()->getUIScale() * 3.0f);
 	mCurrentRootWindow = WINDOW_PROJECT_LOADER;
 	mpRootWindow->getWindow()->OpenWindow();
-	mpRootWindow->UpdateDimensions();
+	mpRootWindow->setLeftWindow(mpHierarchy, 0.25f);
+	mpRootWindow->setBottomWindow(mpExplorerer, 0.333f);
+	mpRootWindow->setRightWindow(mpComponents, 0.25f);
 
 	// Add Event Listseners
 	EventSystem::getInstance()->addListener(EVENT_MOUSE_MOVE, this);

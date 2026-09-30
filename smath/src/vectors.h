@@ -1,7 +1,6 @@
 #ifndef VECTORS
 #pragma once
 
-#include <SDL3/SDL.h>
 #include <iostream>
 #include <cmath>
 
@@ -60,7 +59,6 @@ namespace smath
 
 		// Conversion operators
 		explicit operator ivec2() const;
-		operator SDL_FPoint() const { return { x, y }; }
 
 		// Length Calculation
 		float length() const;

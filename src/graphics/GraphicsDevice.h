@@ -7,9 +7,9 @@
 #include <mutex>
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_gpu.h>
+#include <smath/smath.h>
 
 #include "GraphicsRenderer.h"
-#include "../smath/smath.h"
 
 // Singleton Class that manages all stuff SDL_GPUDevice related
 class GraphicsDevice

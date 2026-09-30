@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../smath/smath.h"
+#include <smath/smath.h>
 #include <SDL3/SDL.h>
 
 // Enum for the different types of events that will be used

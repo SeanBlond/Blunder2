@@ -2,7 +2,7 @@
 
 #include <SDL3/SDL.h>
 #include <unordered_map>
-#include "../smath/smath.h"
+#include <smath/smath.h>
 #include "../color/color.h"
 #include "../graphics/GraphicsDevice.h"
 

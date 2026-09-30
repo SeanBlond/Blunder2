@@ -25,19 +25,6 @@ add_executable(${PROJECT_NAME}
     "src/graphics/Buffers/PosColorBuffer.h" "src/graphics/Buffers/PosColorBuffer.cpp"
     "src/graphics/Buffers/UITextureBuffer.h" "src/graphics/Buffers/UITextureBuffer.cpp"
     "src/graphics/Buffers/TextBuffer.h" "src/graphics/Buffers/TextBuffer.cpp" 
-
-    # Math - Functions
-    "src/smath/smath.h"
-    "src/smath/clamping.h"
-    "src/smath/conversions.h"
-    "src/smath/trig.h"
-
-    # Math - Vectors
-    "src/smath/vectors.h" "src/smath/vectors.cpp"
-    "src/smath/ivectors.h" "src/smath/ivectors.cpp"
-
-    # Math - Matrices
-    "src/smath/mat4.h" "src/smath/mat4.cpp"
     
     # UI
     "src/UI/UI.h"
@@ -80,8 +67,29 @@ add_executable(${PROJECT_NAME}
 
     # Blunder (Software Class)
     "src/Runtime/Blunder.h" "src/Runtime/Blunder.cpp"
+ "src/GameObject/gameObject.h" "src/GameObject/GameObject.cpp" "src/GameObject/Components/Component.h"
 )
 
+# Custom library for math functions and whatnot
+add_library(
+    SMATH STATIC
+
+    # Math - Functions
+    "smath/src/clamping.h"
+    "smath/src/conversions.h"
+    "smath/src/trig.h"
+
+    # Math - Vectors
+    "smath/src/vectors.h" "smath/src/vectors.cpp"
+    "smath/src/ivectors.h" "smath/src/ivectors.cpp"
+
+    # Math - Matrices
+    "smath/src/mat4.h" "smath/src/mat4.cpp"
+)
+target_include_directories(SMATH PUBLIC smath/include)
+target_link_libraries(${PROJECT_NAME} PRIVATE SMATH)
+
+# SDL related libraries installed via vcpkg
 find_package(SDL3 CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)
 

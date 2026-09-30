@@ -41,7 +41,10 @@ private:
 	UIElement* mPersistentElement = nullptr;
 
 	// Useful UI Windows 
-	TestWindow* mpTestWindow = nullptr;
+	TestWindow* mpViewport = nullptr;
+	TestWindow* mpHierarchy = nullptr;
+	TestWindow* mpExplorerer = nullptr;
+	TestWindow* mpComponents = nullptr;
 };
 
 #endif // !WINDOW_MANAGEMENT

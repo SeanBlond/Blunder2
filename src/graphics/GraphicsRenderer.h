@@ -6,10 +6,10 @@
 #include <vector>
 #include <unordered_map>
 #include <SDL3/SDL_gpu.h>
+#include <smath/smath.h>
 #include "Buffers/PosColorBuffer.h"
 #include "Buffers/UITextureBuffer.h"
 #include "Buffers/TextBuffer.h"
-#include "../smath/smath.h"
 #include "../Color/Color.h"
 
 enum TextSize { TEXT_SMALL, TEXT_NORMAL, TEXT_LARGE };

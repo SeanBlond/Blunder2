@@ -1,7 +1,7 @@
 #ifndef VERTICES
 #pragma once
 
-#include "../../smath/smath.h"
+#include <smath/smath.h>
 #include "../../Color/Color.h"
 
 // * ------------------ *
