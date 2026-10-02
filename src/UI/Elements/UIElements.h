@@ -7,3 +7,4 @@
 #include "Dropdown.h"
 #include "Text.h"
 #include "ViewportScroller.h"
+#include "FloatEntry.h"

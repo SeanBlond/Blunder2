@@ -40,9 +40,12 @@ void ComponentWindow::generateComponentGroups()
 	ComponentUIGroup* transformGroup = new ComponentUIGroup("Transform");
 	yPos += transformGroup->mQuad.h + uiScale * 5;
 
-	// Adding test button & increasing yPos
-	transformGroup->mpElements.push_back(new TextButton(UIQuad(), 
-		"Test", nullptr, renderer->getTextSize(TEXT_NORMAL)));
+	// Adding float entries for each position axis
+	float* xAxis = &(mpGameObject->getTransform()->position.x);
+	float* yAxis = &(mpGameObject->getTransform()->position.y);
+	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), xAxis));
+	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
+	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), yAxis));
 	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
 
 	// Adding the component group to the vector

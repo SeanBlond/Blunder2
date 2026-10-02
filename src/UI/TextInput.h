@@ -35,8 +35,9 @@ public:
 
     // Typing functions
     void startTyping();
+    void startTyping(const std::string& text);
     void inputText(const std::string& text);
-    void endTyping();
+    void endTyping(bool saveText);
 
     // Virtual function
     virtual void handleInput() = 0;

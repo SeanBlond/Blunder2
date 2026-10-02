@@ -137,13 +137,26 @@ void TextInput::startTyping()
     mTyping = true;
     mStoredText = mInputText;
 }
+void TextInput::startTyping(const std::string& text)
+{
+    // Setting typing to true, and storing text
+    mTyping = true;
+    mStoredText = mInputText = text;
+}
 void TextInput::inputText(const std::string& text)
 {
-    // Checking if the key input is text
-    
+    // Inserting the text
+    insert(text[0]);
 }
-void TextInput::endTyping()
+void TextInput::endTyping(bool saveText)
 {
-    // Stoppiny typing
+    // Stopping typing
     mTyping = false;
+
+    // Changing input text depending on if it should be saved
+    if (!saveText)
+        mInputText = mStoredText;
+
+    // Handling input
+    handleInput();
 }

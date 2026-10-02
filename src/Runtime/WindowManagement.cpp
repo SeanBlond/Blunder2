@@ -30,6 +30,7 @@ bool WindowManager::init(const unsigned int& width, const unsigned int& height)
 	EventSystem::getInstance()->addListener(EVENT_MOUSE_DOWN, this);
 	EventSystem::getInstance()->addListener(EVENT_MOUSE_UP, this);
 	EventSystem::getInstance()->addListener(EVENT_TEXT_INPUT, this);
+	EventSystem::getInstance()->addListener(EVENT_KEY_DOWN, this);
 	EventSystem::getInstance()->addListener(EVENT_SOFTWARE_RESET_INTERACTION_ELEMENTS, this);
 
 	return true;
@@ -167,7 +168,7 @@ void WindowManager::handleEvent(const Event& event)
 			// If there is an open text entry, close it
 			if (mActiveTextInput)
 			{
-				mActiveTextInput->endTyping();
+				mActiveTextInput->endTyping(false);
 				mActiveTextInput = nullptr;
 			}
 
@@ -196,7 +197,7 @@ void WindowManager::handleEvent(const Event& event)
 			{
 				// Closing out old text input (if necessary)
 				if (mActiveTextInput)
-					mActiveTextInput->endTyping();
+					mActiveTextInput->endTyping(false);
 
 				// Setting new text input
 				mActiveTextInput = textInput;
@@ -218,12 +219,49 @@ void WindowManager::handleEvent(const Event& event)
 			// If the text input is no longer typing, close it
 			if (!(mActiveTextInput->getTyping()))
 			{
-				mActiveTextInput->endTyping();
+				mActiveTextInput->endTyping(false);
 				mActiveTextInput = nullptr;
 			}
 
 			// Otherwise, pass in the keyboard input
 			mActiveTextInput->inputText(castEvent.getText());
+		}
+	}
+	else if (event.getType() == EVENT_KEY_DOWN)
+	{
+		// Casting the event
+		KeyDownEvent castEvent = static_cast<const KeyDownEvent&>(event);
+
+		// Checking if there is an active text input
+		if (mActiveTextInput)
+		{
+			// Modifying text input depending on the keycode
+			switch (castEvent.getKeyData().mKeycode)
+			{
+			case 40: // enter key
+				mActiveTextInput->endTyping(true);
+				break;
+
+			case 41: // escape key
+				mActiveTextInput->endTyping(false);
+				break;
+
+			case 42: // backspace key
+				mActiveTextInput->remove();
+				break;
+
+			case 76: // delete key
+				mActiveTextInput->remove();
+				break;
+
+			case 79: // right arrow key
+				mActiveTextInput->shiftCursor(1);
+				break;
+
+			case 80: // left arrow key
+				mActiveTextInput->shiftCursor(-1);
+				break;
+			}
 		}
 	}
 }
