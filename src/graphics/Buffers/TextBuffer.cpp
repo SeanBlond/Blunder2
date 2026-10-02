@@ -341,6 +341,87 @@ void TextMeshBuffer::addText(
 		x += ch.Advance * scale;
 	}
 }
+smath::vec2 TextMeshBuffer::getPositionInText(
+	const std::string& text, int index, const smath::vec2& pos, const float& size,
+	HorizontalTextAlign horizontalAlignment, VerticalTextAlign verticalAlignment)
+{
+	// Setting x and y values
+	float x = pos.x;
+	float y = pos.y;
+
+	// Clamping index
+	index = smath::clamp(index, 0, (int)text.size());
+
+	// Calculating font scale
+	float scale = size / (float)mFontSize;
+
+	// Calculating Alignment
+	float xAlignmentOffset = 0;
+	if (horizontalAlignment == TEXT_H_RIGHT)
+	{
+		float textWidth = 0;
+		for (int i = 0; i < text.size(); i++)
+		{
+			textWidth += (i == (text.size() - 1) ? 0 : getCharacter(text[i]).Bearing.x) + getCharacter(text[i]).Advance;
+		}
+		xAlignmentOffset = textWidth * scale;
+	}
+	else if (horizontalAlignment == TEXT_H_CENTER)
+	{
+		float textWidth = 0;
+		for (int i = 0; i < text.size(); i++)
+		{
+			textWidth += (i == (text.size() - 1) ? 0 : getCharacter(text[i]).Bearing.x) + getCharacter(text[i]).Advance;
+		}
+		xAlignmentOffset = textWidth * scale * 0.5f;
+	}
+
+	// Offsetting X
+	x -= (xAlignmentOffset);
+
+	// Storing initial X
+	float initialX = x;
+
+	// Loop through all characters
+	for (int i = 0; i < index; i++)
+	{
+		Character ch = getCharacter(text[i]);
+
+		// Checking for New Line
+		if (text[i] == '\n')
+		{
+			y += mLineHeight * 1.3 * scale;
+			x = initialX;
+			continue;
+		}
+		else if (text[i] == ' ')
+		{
+			x += ch.Advance * scale;
+			continue;
+		}
+
+		// Determing the Y Alignment Offset
+		float yAlignmentOffset = 0.0f;
+		if (verticalAlignment == TEXT_V_MIDDLE)
+			yAlignmentOffset = mLineHeight * scale * 0.5f;
+		else if (verticalAlignment == TEXT_V_BOTTOM)
+			yAlignmentOffset = mLineHeight * scale;
+
+		float xpos = x + (ch.Bearing.x * scale);
+		float ypos = y + (ch.Bearing.y * scale) - yAlignmentOffset;
+		float w = ch.Size.x * scale;
+		float h = ch.Size.y * scale;
+
+		// Setting the index offset for adding the mesh
+		int indexOffset = mTextMesh.vertices.size();
+
+		// now advance cursors for next glyph
+		x += ch.Advance * scale;
+	}
+
+	// Outputting position
+	return smath::vec2(x, y);
+}
 void TextMeshBuffer::clearMesh()
 {
 	// Clearing the vertices and indices

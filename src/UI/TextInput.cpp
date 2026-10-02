@@ -1,6 +1,6 @@
 #include "TextInput.h"
 
-// Inserting text functions
+// Inserting text function definitions
 void TextInput::insert(char character)
 {
     // Removing selected text if there is any
@@ -81,7 +81,7 @@ void TextInput::shiftCursor(const int& amount)
     setCursor(mCursorPos + amount);
 }
 
-// Selection functions
+// Selection function definitions
 void TextInput::setSelection(const int& position) 
 { 
     this->mSelectPos = smath::clamp(position, 0, (int)mInputText.length()); 
@@ -130,18 +130,20 @@ std::string TextInput::cutSelected()
     return substring;
 }
 
-// Typing functions
+// Typing function definitions
 void TextInput::startTyping()
 {
     // Setting typing to true, and storing text
     mTyping = true;
     mStoredText = mInputText;
+    resetSelection();
 }
 void TextInput::startTyping(const std::string& text)
 {
     // Setting typing to true, and storing text
     mTyping = true;
     mStoredText = mInputText = text;
+    resetSelection();
 }
 void TextInput::inputText(const std::string& text)
 {
@@ -156,7 +158,36 @@ void TextInput::endTyping(bool saveText)
     // Changing input text depending on if it should be saved
     if (!saveText)
         mInputText = mStoredText;
+    else
+        mStoredText = mInputText;
 
     // Handling input
     handleInput();
+}
+
+// Drawing function definition
+void TextInput::drawTextInput(GraphicsRenderer* renderer, smath::vec2 pos, float layerOffset, Color color,
+    HorizontalTextAlign horizontalAlignment, VerticalTextAlign verticalAlignment)
+{
+    // Rendering Cursor & Selection
+    if (mTyping)
+    {
+        // Cursor
+        smath::vec2 cursorPos = renderer->getPositionInText(mInputText, getCursorPos(), pos, renderer->getTextSize(TEXT_NORMAL), horizontalAlignment, verticalAlignment);
+        cursorPos -= smath::vec2(0.0f, renderer->getTextSize(TEXT_NORMAL) * (verticalAlignment == TEXT_V_BOTTOM ? 0.0f : (verticalAlignment == TEXT_V_MIDDLE ? 0.5f : 1.0f)));
+        renderer->addRectangle(cursorPos, smath::vec2(3 * renderer->getUIScale(), renderer->getTextSize(TEXT_NORMAL)), layerOffset + 0.01f, Color(0.8f));
+
+        // Selection
+        if (mSelecting)
+        {
+            smath::vec2 selectPos = renderer->getPositionInText(mInputText, mSelectPos, pos, renderer->getTextSize(TEXT_NORMAL), horizontalAlignment, verticalAlignment);
+            selectPos -= smath::vec2(0.0f, renderer->getTextSize(TEXT_NORMAL) * (verticalAlignment == TEXT_V_BOTTOM ? 0.0f : (verticalAlignment == TEXT_V_MIDDLE ? 0.5f : 1.0f)));
+            float selectSize = abs(cursorPos.x - selectPos.x);
+            smath::vec2 selectStartPos = smath::vec2(smath::min(selectPos.x, cursorPos.x), selectPos.y);
+            renderer->addRectangle(selectStartPos, smath::vec2(selectSize, renderer->getTextSize(TEXT_NORMAL)), layerOffset, Color(0.6f, 0.6f, 1.0f));
+        }
+    }
+
+    // Rendering Text
+    renderer->addText(mInputText, pos, layerOffset + 0.02f, renderer->getTextSize(TEXT_NORMAL), Color(1), horizontalAlignment, verticalAlignment);
 }

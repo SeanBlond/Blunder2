@@ -73,7 +73,10 @@ public:
 		const std::string& text, const smath::vec2& pos, const float& layerOffset, const float& size, Color color = Color(1),
 		HorizontalTextAlign horizontalAlignment = TEXT_H_LEFT, VerticalTextAlign verticalAlignment = TEXT_V_BOTTOM)
 		{ mpTextBuffer->addText(text, pos, mCurrentLayerValue + layerOffset, size, color, horizontalAlignment, verticalAlignment); }
-
+	smath::vec2 getPositionInText(
+		const std::string& text, int index, const smath::vec2& pos, const float& size,
+		HorizontalTextAlign horizontalAlignment, VerticalTextAlign verticalAlignment)
+		{ return mpTextBuffer->getPositionInText(text, index, pos, size, horizontalAlignment, verticalAlignment); }
 
 	// Viewport functions
 	void setNewViewport(int x, int y, int w, int h);

@@ -57,15 +57,16 @@ void FloatEntry::drawElement(GraphicsRenderer* renderer, float layerOffset)
     // Determing what text to draw
     std::string drawText = "";
     if (getTyping())
-        drawText = getInputText();
+    {
+        drawTextInput(renderer, mQuad.Center() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.01f, Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);
+    }
     else
-        drawText = std::to_string(*mpValue);
-
-    // Drawing the text
-    renderer->addText(
-        drawText, 
-        mQuad.Center() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.01f, 
-        renderer->getTextSize(TEXT_NORMAL), Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);
+    {
+        renderer->addText(
+            std::to_string(*mpValue),
+            mQuad.Center() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.01f,
+            renderer->getTextSize(TEXT_NORMAL), Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);
+    }
 }
 void FloatEntry::handleInput()
 {

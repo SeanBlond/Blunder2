@@ -232,6 +232,8 @@ void WindowManager::handleEvent(const Event& event)
 		// Casting the event
 		KeyDownEvent castEvent = static_cast<const KeyDownEvent&>(event);
 
+		//std::cout << "Key: " << castEvent.getKeyData().mKeycode << std::endl;
+
 		// Checking if there is an active text input
 		if (mActiveTextInput)
 		{
@@ -255,10 +257,22 @@ void WindowManager::handleEvent(const Event& event)
 				break;
 
 			case 79: // right arrow key
+				mActiveTextInput->resetSelection();
 				mActiveTextInput->shiftCursor(1);
 				break;
 
 			case 80: // left arrow key
+				mActiveTextInput->resetSelection();
+				mActiveTextInput->shiftCursor(-1);
+				break;
+
+			case 335: // shift + right arrow key
+				mActiveTextInput->updateSelection();
+				mActiveTextInput->shiftCursor(1);
+				break;
+
+			case 336: // shift + left arrow key
+				mActiveTextInput->updateSelection();
 				mActiveTextInput->shiftCursor(-1);
 				break;
 			}

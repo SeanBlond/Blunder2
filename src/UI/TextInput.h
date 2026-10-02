@@ -5,6 +5,7 @@
 #include <SDL3/SDL.h>
 #include <smath/smath.h>
 #include "../Events/Event.h"
+#include "../graphics/GraphicsDevice.h"
 
 class TextInput
 {
@@ -15,6 +16,8 @@ public:
     // Getters
     std::string getInputText() const { return mInputText; }
     bool getTyping() const { return mTyping; }
+    int getCursorPos() const { return smath::clamp((int)mInputText.size() + mCursorPos, 0, (int)mInputText.size()); }
+    int getSelectPos() const { return smath::clamp((int)mInputText.size() + mSelectPos, 0, (int)mInputText.size()); }
 
     // Inserting text functions
     void insert(char character);
@@ -38,6 +41,10 @@ public:
     void startTyping(const std::string& text);
     void inputText(const std::string& text);
     void endTyping(bool saveText);
+
+    // Drawing function
+    void drawTextInput(GraphicsRenderer* renderer, smath::vec2 pos, float layerOffset, Color color = Color(1),
+        HorizontalTextAlign horizontalAlignment = TEXT_H_LEFT, VerticalTextAlign verticalAlignment = TEXT_V_BOTTOM);
 
     // Virtual function
     virtual void handleInput() = 0;
