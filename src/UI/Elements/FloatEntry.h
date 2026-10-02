@@ -15,9 +15,9 @@ class FloatEntry : public UIElement, public TextInput
 {
 public:
     FloatEntry(UIQuad quad, const std::string& label, float* value, float speed = 0.1f, Event* clickEvent = nullptr)
-        : mLabel(label), mpValue(value), mSpeed(speed), mpClickEvent(clickEvent), mpClamps(nullptr), UIElement(quad, UI_FLOAT_ENTRY), TextInput(std::to_string(*value)) {}
+        : mLabel(label), mpValue(value), mSpeed(speed), mpClickEvent(clickEvent), mpClamps(nullptr), UIElement(quad, UI_FLOAT_ENTRY), TextInput(std::to_string(*value)) { setValue(*mpValue); }
     FloatEntry(UIQuad quad, const std::string& label, float* value, float min, float max, float speed = 0.1f, Event* clickEvent = nullptr)
-        : mLabel(label), mpValue(value), mSpeed(speed), mpClickEvent(clickEvent), mpClamps(new FloatClamps(min, max)), UIElement(quad, UI_FLOAT_ENTRY), TextInput(std::to_string(*value)) {}
+        : mLabel(label), mpValue(value), mSpeed(speed), mpClickEvent(clickEvent), mpClamps(new FloatClamps(min, max)), UIElement(quad, UI_FLOAT_ENTRY), TextInput(std::to_string(*value)) { setValue(*mpValue); }
     ~FloatEntry() { delete mpClamps; mpClamps = nullptr; }
 
     // Element Functions

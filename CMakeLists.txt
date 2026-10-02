@@ -34,14 +34,15 @@ add_executable(${PROJECT_NAME}
     "src/UI/UIPositioning.h"
     "src/UI/UIRenderer.h"
     "src/UI/UIWindows.h" "src/UI/UIWindows.cpp"
+     "src/UI/TextInput.h" "src/UI/TextInput.cpp"
 
     # UI - Windows
     "src/UI/Windows/TestWindow.h" "src/UI/Windows/TestWindow.cpp"
     "src/UI/Windows/ComponentWindow.h" "src/UI/Windows/ComponentWindow.cpp"
     
     # UI - Elements
-     
-      
+    "src/UI/Elements/FloatEntry.h" "src/UI/Elements/FloatEntry.cpp"
+    "src/UI/Elements/IntEntry.h" "src/UI/Elements/IntEntry.cpp"
     "src/UI/Elements/ImageButton.h" "src/UI/Elements/ImageButton.cpp"
     "src/UI/Elements/ImageToggle.h" "src/UI/Elements/ImageToggle.cpp"
     "src/UI/Elements/TextButton.h" "src/UI/Elements/TextButton.cpp"
@@ -71,7 +72,7 @@ add_executable(${PROJECT_NAME}
 
     # Blunder (Software Class)
     "src/Runtime/Blunder.h" "src/Runtime/Blunder.cpp"
- "src/UI/TextInput.h" "src/UI/TextInput.cpp" "src/UI/Elements/FloatEntry.h" "src/UI/Elements/FloatEntry.cpp")
+)
 
 # Custom library for math functions and whatnot
 add_library(

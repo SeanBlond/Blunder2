@@ -6,3 +6,4 @@
 #include "Dropdown.h"
 #include "ViewportScroller.h"
 #include "FloatEntry.h"
+#include "IntEntry.h"
