@@ -29,6 +29,7 @@ bool WindowManager::init(const unsigned int& width, const unsigned int& height)
 	EventSystem::getInstance()->addListener(EVENT_MOUSE_MOVE, this);
 	EventSystem::getInstance()->addListener(EVENT_MOUSE_DOWN, this);
 	EventSystem::getInstance()->addListener(EVENT_MOUSE_UP, this);
+	EventSystem::getInstance()->addListener(EVENT_TEXT_INPUT, this);
 	EventSystem::getInstance()->addListener(EVENT_SOFTWARE_RESET_INTERACTION_ELEMENTS, this);
 
 	return true;
@@ -47,17 +48,6 @@ void WindowManager::updateWindows(smath::vec2 screenDimensions)
 
 	// Updating the window sizes
 	mpRootWindow->setDimensions(screenDimensions);
-}
-bool WindowManager::isPersistentElement(UIElement* element)
-{
-	switch (element->getType())
-	{
-	case UI_TEXT_ENTRY:
-		return true;
-
-	default:
-		return false;
-	}
 }
 void WindowManager::drawWindows(GraphicsRenderer* renderer)
 {
@@ -119,9 +109,10 @@ void WindowManager::handleEvent(const Event& event)
 	if (event.getType() == EVENT_SOFTWARE_RESET_INTERACTION_ELEMENTS)
 	{
 		// If this event is received, the highlighted/clicked/persistent element has been deleted and must be reset here
-		mHighlightedElement = mClickedElement = mPersistentElement = nullptr;
+		mHighlightedElement = mClickedElement = nullptr;
+		mActiveTextInput = nullptr;
 	}
-	if (event.getType() == EVENT_MOUSE_MOVE)
+	else if (event.getType() == EVENT_MOUSE_MOVE)
 	{
 		// Casting the event
 		MouseMoveEvent castEvent = static_cast<const MouseMoveEvent&>(event);
@@ -173,23 +164,17 @@ void WindowManager::handleEvent(const Event& event)
 		UIElement* selectedElement = checkForElementCollision(castEvent.getPosition());
 		if (selectedElement)
 		{
+			// If there is an open text entry, close it
+			if (mActiveTextInput)
+			{
+				mActiveTextInput->endTyping();
+				mActiveTextInput = nullptr;
+			}
+
 			// Collision detected!
 			mClickedElement = selectedElement;
 			selectedElement->setClicked(true);
 			selectedElement->onClick(castEvent.getClickData());
-		}
-
-		// Closing persistent element (if applicable)
-		if (mPersistentElement && mPersistentElement != mClickedElement)
-		{
-			mPersistentElement->closeElement();
-			mPersistentElement = nullptr;
-		}
-
-		// Setting persistent element (if applicable)
-		if (mClickedElement && isPersistentElement(mClickedElement))
-		{
-			mPersistentElement = mClickedElement;
 		}
 	}
 
@@ -201,9 +186,44 @@ void WindowManager::handleEvent(const Event& event)
 		// Checking if there is an element to release
 		if (mClickedElement)
 		{
+			// Unclicking the element
 			mClickedElement->setClicked(false);
 			mClickedElement->onRelease(castEvent.getClickData());
+
+			// Checking if the element has now started a text entry
+			TextInput* textInput = mClickedElement->getTextInput();
+			if (textInput && textInput->getTyping())
+			{
+				// Closing out old text input (if necessary)
+				if (mActiveTextInput)
+					mActiveTextInput->endTyping();
+
+				// Setting new text input
+				mActiveTextInput = textInput;
+			}
+
+			// Setting clicked element to null
 			mClickedElement = nullptr;
+		}
+	}
+
+	else if (event.getType() == EVENT_TEXT_INPUT)
+	{
+		// Casting the event
+		TextInputEvent castEvent = static_cast<const TextInputEvent&>(event);
+
+		// Checking if there is an active text input
+		if (mActiveTextInput)
+		{
+			// If the text input is no longer typing, close it
+			if (!(mActiveTextInput->getTyping()))
+			{
+				mActiveTextInput->endTyping();
+				mActiveTextInput = nullptr;
+			}
+
+			// Otherwise, pass in the keyboard input
+			mActiveTextInput->inputText(castEvent.getText());
 		}
 	}
 }

@@ -42,6 +42,7 @@ bool Blunder::init(const unsigned int& width, const unsigned int& height)
         UI_TEXTURE_ATLAS_COORDS, UI_TEXTURE_ATLAS_IMAGE, TEXT_TEXTURE_ATLAS_COORDS, TEXT_TEXTURE_ATLAS_IMAGE);
     successfulInit &= ShaderCross::createInstance()->init();
     successfulInit &= Time::init();
+    successfulInit &= mInputSystem.init();
     successfulInit &= mProjectManager.init();
     successfulInit &= mRecentProjectManager.init(RECENT_PROJECTS_FILE);
     successfulInit &= mUniversalKeyMap.init(UNIVERSAL_KEYMAP_FILE);

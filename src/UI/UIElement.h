@@ -3,6 +3,7 @@
 
 #include "UIPositioning.h"
 #include "UIRenderer.h"
+#include "TextInput.h"
 #include "../color/color.h"
 #include "../Events/EventSystem.h"
 
@@ -47,12 +48,12 @@ public:
 	void setQuad(UIQuad quad) { mQuad = quad; generateInteractable(); }
 
 	// Virtual Functions
-	virtual void generateInteractable()      {}  // Does nothing by default
-	virtual void closeElement()              {}  // Does nothing by default
+	virtual void generateInteractable()              {}  // Does nothing by default
 	virtual void onClick(MouseClickData clickData)   {}  // Does nothing by default
 	virtual void onHold(MouseClickData clickData)    {}  // Does nothing by default
 	virtual void onRelease(MouseClickData clickData) {}  // Does nothing by default
 	virtual void drawElement(GraphicsRenderer* renderer, float layerOffset) = 0;
+	virtual TextInput* getTextInput() { return nullptr; }
 
 protected:
 	Interactable* mpInteractable = nullptr;

@@ -9,4 +9,5 @@
 #include "Windows/ComponentWindow.h"
 
 // UI - Elements
+#include "TextInput.h"
 #include "Elements/UIElements.h"

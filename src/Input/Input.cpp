@@ -1,6 +1,25 @@
 #include "Input.h"
 
 // Input Management Function Dewfinitions
+bool InputSystem::init()
+{
+    // Attemping to start text input
+    bool success = SDL_StartTextInput(GraphicsDevice::getInstance()->getWindow());
+    if (!success)
+    {
+        std::cout << "Failed to start text input with error: " << SDL_GetError() << std::endl;
+    }
+    return success;
+}
+void InputSystem::cleanup()
+{
+    // Stopping text input
+    bool success = SDL_StopTextInput(GraphicsDevice::getInstance()->getWindow());
+    if (!success)
+    {
+        std::cout << "Failed to stop text input with error: " << SDL_GetError() << std::endl;
+    }
+}
 void InputSystem::updateInput()
 {
     // Looping through potential events
@@ -34,6 +53,10 @@ void InputSystem::updateInput()
 
         case SDL_EVENT_DROP_FILE:
             handleSDLDropEvent(mEvent);
+            break;
+
+        case SDL_EVENT_TEXT_INPUT:
+            handleSDLTextInputEvent(mEvent);
             break;
 
         default:
@@ -89,4 +112,9 @@ void InputSystem::handleSDLDropEvent(SDL_Event event)
     EventSystem::getInstance()->fire(
         DropFileEvent(smath::vec2(event.drop.x, event.drop.y), event.drop.data)
     );
+}
+void InputSystem::handleSDLTextInputEvent(SDL_Event event)
+{
+    // Firing off event
+    EventSystem::getInstance()->fire(TextInputEvent(event.text.text));
 }

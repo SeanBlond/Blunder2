@@ -4,6 +4,7 @@
 #include <iostream>
 #include <SDL3/SDL.h>
 #include "../Events/EventSystem.h"
+#include "../graphics/GraphicsDevice.h"
 
 // Enums for input classification (idk if I even need this, but I'll keep them around for now)
 enum KeyCode
@@ -52,10 +53,12 @@ class InputSystem
 {
 public:
     // Constructor & Deconstructor
-    InputSystem()  {}
-    ~InputSystem() {}
+    InputSystem() {}
+    ~InputSystem() { cleanup(); }
 
     // Managment Functions
+    bool init();
+    void cleanup();
     void updateInput();
 
     // Functions for handling SDL Events (converting them to related softwate events)
@@ -63,6 +66,7 @@ public:
     void handleSDLMouseInputEvent(SDL_Event event);
     void handleSDLMouseMotionEvent(SDL_Event event);
     void handleSDLDropEvent(SDL_Event event);
+    void handleSDLTextInputEvent(SDL_Event event);
 
 private:
     SDL_Event mEvent;

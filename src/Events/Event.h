@@ -12,6 +12,7 @@ enum EventType
     // Events for User Interaction
     EVENT_KEY_DOWN,
     EVENT_KEY_UP,
+    EVENT_TEXT_INPUT,
     EVENT_MOUSE_DOWN,
     EVENT_MOUSE_UP,
     EVENT_MOUSE_MOVE,
@@ -97,6 +98,17 @@ public:
 
 private:
     KeystrokeData mKeyData;
+};
+class TextInputEvent : public Event
+{
+public:
+    TextInputEvent(std::string text) : mText(text), Event(EVENT_TEXT_INPUT) {}
+
+    // Getters
+    std::string getText() const { return mText; }
+
+private:
+    std::string mText;
 };
 
 struct MouseClickData

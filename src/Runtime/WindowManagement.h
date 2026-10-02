@@ -25,7 +25,6 @@ public:
 
 	// Runtime Functions
 	void updateWindows(smath::vec2 screenDimensions);
-	bool isPersistentElement(UIElement* element);
 	void drawWindows(GraphicsRenderer* renderer);
 	UIElement* checkForElementCollision(smath::vec2 pos);
 	void changeRootWindow(RootWindowOptions option);
@@ -38,7 +37,7 @@ private:
 	// UI Element Interaction Members
 	UIElement* mClickedElement = nullptr;
 	UIElement* mHighlightedElement = nullptr;
-	UIElement* mPersistentElement = nullptr;
+	TextInput* mActiveTextInput = nullptr;
 
 	// Useful UI Windows 
 	TestWindow* mpViewport = nullptr;

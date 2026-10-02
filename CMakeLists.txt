@@ -71,7 +71,7 @@ add_executable(${PROJECT_NAME}
 
     # Blunder (Software Class)
     "src/Runtime/Blunder.h" "src/Runtime/Blunder.cpp"
-)
+ "src/UI/TextInput.h" "src/UI/TextInput.cpp")
 
 # Custom library for math functions and whatnot
 add_library(
