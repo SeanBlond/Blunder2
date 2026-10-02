@@ -40,8 +40,8 @@ add_executable(${PROJECT_NAME}
     "src/UI/Windows/ComponentWindow.h" "src/UI/Windows/ComponentWindow.cpp"
     
     # UI - Elements
-    "src/UI/Elements/FloatSlider.h" "src/UI/Elements/FloatSlider.cpp"
-    "src/UI/Elements/Text.h" "src/UI/Elements/Text.cpp" 
+     
+      
     "src/UI/Elements/ImageButton.h" "src/UI/Elements/ImageButton.cpp"
     "src/UI/Elements/ImageToggle.h" "src/UI/Elements/ImageToggle.cpp"
     "src/UI/Elements/TextButton.h" "src/UI/Elements/TextButton.cpp"

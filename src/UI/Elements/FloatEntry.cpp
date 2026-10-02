@@ -1,13 +1,41 @@
 #include "FloatEntry.h"
 
+// Element function definitions
+void FloatEntry::setValue(float value)
+{ 
+    // If clamp doesn't exist, do normal set value
+    if (!mpClamps)
+        *(this->mpValue) = value; 
+    else
+        *(this->mpValue) = smath::clamp(value, mpClamps->mMinValue, mpClamps->mMaxValue); 
+}
+float FloatEntry::calculateSliderWidth(float originalWidth)
+{
+    // If clamp doesn't exist, return 0
+    if (!mpClamps)
+        return 0.0f;
+
+    float relativeValue = ((*mpValue) - mpClamps->mMinValue) / (mpClamps->mMaxValue - mpClamps->mMinValue);
+    float width = originalWidth * smath::clamp01(relativeValue);
+    return width;
+}
+
 // Override function definitions
 void FloatEntry::generateInteractable()
 {
     // Deleting old interactable
     delete mpInteractable;
 
+    // Defining interactaqble quad
+    mInteractableQuad = UIQuad(
+        mQuad.getCenterX(),
+        mQuad.y,
+        mQuad.w * 0.5f,
+        mQuad.h
+    );
+
     // Creating new interactable
-    mpInteractable = new QuadInteractable(mQuad.getSDL_FRect());
+    mpInteractable = new QuadInteractable(mInteractableQuad.getSDL_FRect());
 }
 void FloatEntry::onClick(MouseClickData clickData)
 {
@@ -42,29 +70,41 @@ void FloatEntry::onRelease(MouseClickData clickData)
 void FloatEntry::drawElement(GraphicsRenderer* renderer, float layerOffset)
 {
     // Getting the color effetc
-    Color effect = 1.0f;
-    if (getTyping())
-        effect = 0.25f;
-    else if (mClicked)
-        effect = 0.5f;
+    float effect = 1.0f;
+    if (getTyping() || mClicked)
+        effect = 0.4;
     else if (mHighlighted)
-        effect = 0.75f;
+        effect = 0.6f;
 
-    // Drawing a rect and rect outline
-    renderer->addRectangle(mQuad.getSDL_FRect(), layerOffset, Color(0.25f) * effect);
-    renderer->addRectangleOutline(mQuad.getSDL_FRect(), layerOffset + 0.01f, Color(0.2f) * effect, 3.0f);
+    // Drawing the label
+    renderer->addText(
+        mLabel,
+        smath::vec2(mInteractableQuad.x - renderer->getUIScale() * 10, mQuad.getCenterY()), layerOffset + 0.01f, renderer->getTextSize(TEXT_NORMAL),
+        Color(1), TEXT_H_RIGHT, TEXT_V_MIDDLE);
+
+    // Drawing a rect around the text entry
+    renderer->addRectangle(mInteractableQuad.getSDL_FRect(), layerOffset, Color(0.25f) * effect);
+
+    // If there are clamp values, draw a slider
+    if (mpClamps)
+    {
+        renderer->addRectangle(
+            mInteractableQuad.getPosition(),
+            smath::vec2(calculateSliderWidth(mInteractableQuad.w), mInteractableQuad.h),
+            layerOffset + 0.01f, Color(0, 0.75f, 0) * effect);
+    }
 
     // Determing what text to draw
     std::string drawText = "";
     if (getTyping())
     {
-        drawTextInput(renderer, mQuad.Center() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.01f, Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);
+        drawTextInput(renderer, mInteractableQuad.Center() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.02f, Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);
     }
     else
     {
         renderer->addText(
             std::to_string(*mpValue),
-            mQuad.Center() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.01f,
+            mInteractableQuad.Center() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.02f,
             renderer->getTextSize(TEXT_NORMAL), Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);
     }
 }
@@ -82,5 +122,5 @@ void FloatEntry::handleInput()
     }
 
     // Setting value
-    (*mpValue) = tempValue;
+    setValue(tempValue);
 }

@@ -103,7 +103,7 @@ struct UIQuad
     smath::vec2 MiddleLeft() const   { return smath::vec2( x,           y + (h / 2) ); } 
     smath::vec2 Center() const       { return smath::vec2( x + (w / 2), y + (h / 2) ); } 
 
-    float getCenterX() const { return (x + (h / 2)); }
+    float getCenterX() const { return (x + (w / 2)); }
     float getCenterY() const { return (y + (h / 2)); }
 
     // Other Value Getters
