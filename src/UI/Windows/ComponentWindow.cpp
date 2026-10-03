@@ -13,6 +13,9 @@ void ComponentWindow::removeAllComponentGroups()
 }
 void ComponentWindow::addComponentGroup(ComponentUIGroup* componentGroup)
 {
+	// Adding a dropdown button to the grou[
+	componentGroup->mpElements.push_back(new ImageToggle(UIQuad(), &(componentGroup->mDroppedDown), "Dropdown_True_Symbol", "Dropdown_False_Symbol"));
+
 	mpComponentGroups.push_back(componentGroup);
 }
 void ComponentWindow::generateComponentGroups()
@@ -37,24 +40,37 @@ void ComponentWindow::generateComponentGroups()
 	// * --------------------------- *
 	
 	// Generating component group for the transform and increasing yPos
-	ComponentUIGroup* transformGroup = new ComponentUIGroup("Transform");
+	ComponentUIGroup* transformGroup = new ComponentUIGroup("Transform2D");
 	yPos += transformGroup->mQuad.h + uiScale * 5;
 
 	// Adding float entry for x-axis
 	float* xAxis = &(mpGameObject->getTransform()->position.x);
-	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "X",  xAxis));
+	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Position X",  xAxis));
 	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
 
 	// Adding float entry for y-axis
 	float* yAxis = &(mpGameObject->getTransform()->position.y);
-	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Y", yAxis, -10.0f, 10.0f));
+	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Position Y", yAxis));
 	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
 
-	// Adding test int
-	transformGroup->mpElements.push_back(new IntEntry(UIQuad(), "Test Int", &mTestInt));
+	// Adding float entry for x-scale
+	float* xScale = &(mpGameObject->getTransform()->scale.x);
+	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Scale X",  xScale));
 	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
-	// Adding test int
-	transformGroup->mpElements.push_back(new IntEntry(UIQuad(), "Test Clamp Int", &mTestClampInt, 2, 20));
+
+	// Adding float entry for y-scale
+	float* yScale = &(mpGameObject->getTransform()->scale.y);
+	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Scale Y", yScale));
+	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
+
+	// Adding float entry for rotation
+	float* rotation = &(mpGameObject->getTransform()->rotation);
+	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Rotation", rotation));
+	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
+
+	// Adding int entry for layer
+	int* layer = &(mpGameObject->getTransform()->layer);
+	transformGroup->mpElements.push_back(new IntEntry(UIQuad(), "Layer", layer, 0, 255));
 	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
 
 	// Adding the component group to the vector
@@ -84,8 +100,11 @@ void ComponentWindow::updateComponentGroupPositions()
 		// If the group is dropped down, update the position of all its elements
 		if (compGroup->mDroppedDown)
 		{
-			for (UIElement* element : compGroup->mpElements)
+			for (int i = 0; i < compGroup->mpElements.size() - 1; i++)
 			{
+				// Defining the element
+				UIElement* element = compGroup->mpElements[i];
+
 				// Setting position
 				element->setQuad(UIQuad(
 						smath::vec2(mPosition.getXOffset() + 10 * uiScale, yPos),
@@ -99,6 +118,13 @@ void ComponentWindow::updateComponentGroupPositions()
 				yPos += element->getQuad().h + uiScale * 5;
 			}
 		}
+
+		// Updating the position of the dropdown
+		UIElement* dropdown = compGroup->mpElements.back();
+		dropdown->setQuad(UIQuad(
+			compGroup->mQuad.TopLeft() + compGroup->mQuad.h * 0.125f,
+			smath::vec2(compGroup->mQuad.h * 0.75f)
+		));
 	}
 }
 UIElement* ComponentWindow::getElementAtPos(smath::ivec2 position)
@@ -106,9 +132,13 @@ UIElement* ComponentWindow::getElementAtPos(smath::ivec2 position)
 	// Looping through each element in each component group to check for collisions
 	for (ComponentUIGroup* compGroup : mpComponentGroups)
 	{
-		// If the component group isn't dropped down, continue
+		// If the component group isn't dropped down, check dropdwon button then continue
 		if (!(compGroup->mDroppedDown))
-			continue;
+		{
+			// Checking dropdown element
+			UIElement* dropdown = compGroup->mpElements.back();
+			return (dropdown->checkCollision(position) ? dropdown : nullptr);
+		}
 
 		for (UIElement* element : compGroup->mpElements)
 		{
@@ -184,7 +214,7 @@ void ComponentWindow::DrawWindow(GraphicsRenderer* renderer)
 		if (compGroup->mDroppedDown)
 		{
 			// Drawing a rectangle around all the elements
-			float borderHeight = compGroup->mpElements.size() * (45 * uiScale) + (5 * uiScale);
+			float borderHeight = (compGroup->mpElements.size() - 1) * (45 * uiScale) + (5 * uiScale);
 			renderer->addRectangle(
 				compGroup->mQuad.BottomLeft(),
 				smath::vec2(compGroup->mQuad.w, borderHeight),
@@ -195,6 +225,11 @@ void ComponentWindow::DrawWindow(GraphicsRenderer* renderer)
 			{
 				element->drawElement(renderer, 0.04f);
 			}
+		}
+		else
+		{
+			// Only draw last element
+			compGroup->mpElements.back()->drawElement(renderer, 0.04f);
 		}
 	}
 }

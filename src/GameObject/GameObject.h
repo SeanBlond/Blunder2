@@ -11,11 +11,11 @@ public:
     GameObject() {}
 
     // Getters
-    smath::transform* getTransform() { return &mTransform; }
+    smath::transform2D* getTransform() { return &mTransform; }
 
 private:
     // Transform is required, all GameObjects will have one
-    smath::transform mTransform;
+    smath::transform2D mTransform;
 };
 
 

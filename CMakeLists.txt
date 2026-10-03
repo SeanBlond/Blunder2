@@ -92,7 +92,7 @@ add_library(
 
     # Math - Tansforms
     "smath/src/transform.h"
-)
+ "smath/src/transform2D.h")
 target_include_directories(SMATH PUBLIC smath/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE SMATH)
 

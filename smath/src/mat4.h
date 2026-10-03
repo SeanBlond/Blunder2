@@ -34,6 +34,10 @@ namespace smath
     // mat4 transformation generation functions
     smath::mat4 translate(smath::vec3 position);
     smath::mat4 scale(smath::vec3 scalar);
+    smath::mat4 rotateX(const float& angle);
+    smath::mat4 rotateY(const float& angle);
+    smath::mat4 rotateZ(const float& angle);
+    smath::mat4 rotate(smath::vec3 angles);
 
 }
 

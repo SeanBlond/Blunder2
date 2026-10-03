@@ -91,6 +91,46 @@ namespace smath
             0.0f,     0.0f,     0.0f,     1.0f,
         };
     }
+    smath::mat4 rotateX(const float& angle)
+    {
+        return 
+        {
+            1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, cos(angle), sin(angle), 0.0f,
+            0.0f, -sin(angle), cos(angle), 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f
+        };
+    }
+    smath::mat4 rotateY(const float& angle)
+    {
+        return 
+        {
+            cos(angle), 0.0f, -sin(angle), 0.0f,
+            0.0f, 1.0f, 0.0f, 0.0f,
+            sin(angle), 0.0f, cos(angle), 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f
+        };
+    }
+    smath::mat4 rotateZ(const float& angle)
+    {
+        return 
+        {
+            cos(angle), sin(angle), 0.0f, 0.0f,
+            -sin(angle), cos(angle), 0.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f
+        };
+    }
+    smath::mat4 rotate(smath::vec3 angles)
+    {
+        smath::mat4 xRotation, yRotation, zRotation;
+        xRotation = rotateX(angles.x);
+        yRotation = rotateY(angles.y);
+        zRotation = rotateZ(angles.z);
+
+        smath::mat4 rotationMatrix = (xRotation * zRotation * yRotation);
+        return rotationMatrix;
+    }
 
     // Ostream operator
     std::ostream& operator<<(std::ostream& os, const mat4& mat)
