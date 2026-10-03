@@ -25,7 +25,7 @@ struct ComponentUIGroup
     bool mDroppedDown;
 };
 
-class ComponentWindow : public UIWindow
+class ComponentWindow : public UIWindow, public EventListener
 {
 public:
     // Constructor(s)
@@ -47,6 +47,13 @@ public:
     void CloseWindow() override;
     void ResizeWindow() override;
     void DrawWindow(GraphicsRenderer* renderer) override;
+
+    // Override functions (EventListener)
+    void handleEvent(const Event& event) override;
+
+    // Component Generation functions
+    ComponentUIGroup* generateTransformGroup(GameObject* gameObject, float uiScale, float& yPos);
+    ComponentUIGroup* generateMaterialGroup(GameObject* gameObject, float uiScale, float& yPos);
 
 private:
     GameObject* mpGameObject = nullptr; // DOES NOT OWN, DO NOT DEALLOCATE

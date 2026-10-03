@@ -14,8 +14,12 @@ void ComponentWindow::removeAllComponentGroups()
 void ComponentWindow::addComponentGroup(ComponentUIGroup* componentGroup)
 {
 	// Adding a dropdown button to the grou[
-	componentGroup->mpElements.push_back(new ImageToggle(UIQuad(), &(componentGroup->mDroppedDown), "Dropdown_True_Symbol", "Dropdown_False_Symbol"));
+	componentGroup->mpElements.push_back(new ImageToggle(
+		UIQuad(), &(componentGroup->mDroppedDown), 
+		"Dropdown_True_Symbol", "Dropdown_False_Symbol", 
+		new SoftwareRuntimeEvent(EVENT_SOFTWARE_COMPONENT_DROPDOWN)));
 
+	// Creating the transform group
 	mpComponentGroups.push_back(componentGroup);
 }
 void ComponentWindow::generateComponentGroups()
@@ -34,47 +38,14 @@ void ComponentWindow::generateComponentGroups()
 	// Determining the starting y position of the component groups
 	float yPos = 40 * uiScale + mPosition.getYOffset();
 
+	// Creating the transform group
+	ComponentUIGroup* transformGroup = generateTransformGroup(mpGameObject, uiScale, yPos);
+	if (transformGroup)
+		addComponentGroup(transformGroup);
 
-	// * --------------------------- *
-	// |  Transform Component Group  |
-	// * --------------------------- *
-	
-	// Generating component group for the transform and increasing yPos
-	ComponentUIGroup* transformGroup = new ComponentUIGroup("Transform2D");
-	yPos += transformGroup->mQuad.h + uiScale * 5;
-
-	// Adding float entry for x-axis
-	float* xAxis = &(mpGameObject->getTransform()->position.x);
-	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Position X",  xAxis));
-	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
-
-	// Adding float entry for y-axis
-	float* yAxis = &(mpGameObject->getTransform()->position.y);
-	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Position Y", yAxis));
-	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
-
-	// Adding float entry for x-scale
-	float* xScale = &(mpGameObject->getTransform()->scale.x);
-	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Scale X",  xScale));
-	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
-
-	// Adding float entry for y-scale
-	float* yScale = &(mpGameObject->getTransform()->scale.y);
-	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Scale Y", yScale));
-	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
-
-	// Adding float entry for rotation
-	float* rotation = &(mpGameObject->getTransform()->rotation);
-	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Rotation", rotation));
-	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
-
-	// Adding int entry for layer
-	int* layer = &(mpGameObject->getTransform()->layer);
-	transformGroup->mpElements.push_back(new IntEntry(UIQuad(), "Layer", layer, 0, 255));
-	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
-
-	// Adding the component group to the vector
-	addComponentGroup(transformGroup);
+	ComponentUIGroup* transformGroup2 = generateTransformGroup(mpGameObject, uiScale, yPos);
+	if (transformGroup2)
+		addComponentGroup(transformGroup2);
 }
 void ComponentWindow::updateComponentGroupPositions()
 {
@@ -137,7 +108,8 @@ UIElement* ComponentWindow::getElementAtPos(smath::ivec2 position)
 		{
 			// Checking dropdown element
 			UIElement* dropdown = compGroup->mpElements.back();
-			return (dropdown->checkCollision(position) ? dropdown : nullptr);
+			if (dropdown->checkCollision(position))
+				return dropdown;
 		}
 
 		for (UIElement* element : compGroup->mpElements)
@@ -165,6 +137,9 @@ UIElement* ComponentWindow::getElementAtPos(smath::ivec2 position)
 // Override functions (UIWindow)
 void ComponentWindow::OpenWindow()
 {
+	// Adding event listener
+	EventSystem::getInstance()->addListener(EVENT_SOFTWARE_COMPONENT_DROPDOWN, this);
+
 	// Generating component groups
 	generateComponentGroups();
 
@@ -232,4 +207,65 @@ void ComponentWindow::DrawWindow(GraphicsRenderer* renderer)
 			compGroup->mpElements.back()->drawElement(renderer, 0.04f);
 		}
 	}
+}
+
+// Override functions (EventListener)
+void ComponentWindow::handleEvent(const Event& event)
+{
+	// Ensuring the propper event was received
+	if (event.getType() == EVENT_SOFTWARE_COMPONENT_DROPDOWN)
+	{
+		// Updating component group positions
+		updateComponentGroupPositions();
+	}
+}
+
+// Component Generation function definitions
+ComponentUIGroup* ComponentWindow::generateTransformGroup(GameObject* gameObject, float uiScale, float& yPos)
+{
+	// If the game object is null, return null
+	if (!gameObject)
+		return nullptr;
+
+	// Generating component group for the transform and increasing yPos
+	ComponentUIGroup* transformGroup = new ComponentUIGroup("Transform2D");
+	yPos += transformGroup->mQuad.h + uiScale * 5;
+
+	// Adding float entry for x-axis
+	float* xAxis = &(gameObject->getTransform()->position.x);
+	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Position X", xAxis));
+	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
+
+	// Adding float entry for y-axis
+	float* yAxis = &(gameObject->getTransform()->position.y);
+	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Position Y", yAxis));
+	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
+
+	// Adding float entry for x-scale
+	float* xScale = &(gameObject->getTransform()->scale.x);
+	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Scale X", xScale));
+	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
+
+	// Adding float entry for y-scale
+	float* yScale = &(gameObject->getTransform()->scale.y);
+	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Scale Y", yScale));
+	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
+
+	// Adding float entry for rotation
+	float* rotation = &(gameObject->getTransform()->rotation);
+	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Rotation", rotation));
+	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
+
+	// Adding int entry for layer
+	int* layer = &(gameObject->getTransform()->layer);
+	transformGroup->mpElements.push_back(new IntEntry(UIQuad(), "Layer", layer, 0, 255));
+	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
+
+	// Returning the new componenet group
+	return transformGroup;
+}
+ComponentUIGroup* ComponentWindow::generateMaterialGroup(GameObject* gameObject, float uiScale, float& yPos)
+{
+	// Does nothing for now
+	return nullptr;
 }
