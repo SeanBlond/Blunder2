@@ -131,6 +131,59 @@ namespace smath
         smath::mat4 rotationMatrix = (xRotation * zRotation * yRotation);
         return rotationMatrix;
     }
+    smath::mat4 orthographic(float l, float r, float b, float t)
+    {
+        // Creating the Matrix
+        smath::mat4 orthMatrix;
+        orthMatrix(0, 0) = 2 / (r - l);
+        orthMatrix(0, 1) = 0;
+        orthMatrix(0, 2) = 0;
+        orthMatrix(0, 3) = 0;
+
+        orthMatrix(1, 0) = 0;
+        orthMatrix(1, 1) = 2 / (t - b);
+        orthMatrix(1, 2) = 0;
+        orthMatrix(1, 3) = 0;
+
+        orthMatrix(2, 0) = 0;
+        orthMatrix(2, 1) = 0;
+        orthMatrix(2, 2) = -1;
+        orthMatrix(2, 3) = 0;
+
+        orthMatrix(3, 0) = -((r + l) / (r - l));
+        orthMatrix(3, 1) = -((t + b) / (t - b));
+        orthMatrix(3, 2) = 0;
+        orthMatrix(3, 3) = 1;
+
+        return orthMatrix;
+    }
+
+    smath::mat4 orthographic(float l, float r, float b, float t, float n, float f)
+    {
+        // Creating the Matrix
+        smath::mat4 orthMatrix;
+        orthMatrix(0, 0) = 2 / (r - l);
+        orthMatrix(0, 1) = 0;
+        orthMatrix(0, 2) = 0;
+        orthMatrix(0, 3) = 0;
+
+        orthMatrix(1, 0) = 0;
+        orthMatrix(1, 1) = 2 / (t - b);
+        orthMatrix(1, 2) = 0;
+        orthMatrix(1, 3) = 0;
+
+        orthMatrix(2, 0) = 0;
+        orthMatrix(2, 1) = 0;
+        orthMatrix(2, 2) = -2 / (f - n);
+        orthMatrix(2, 3) = 0;
+
+        orthMatrix(3, 0) = -((r + l) / (r - l));
+        orthMatrix(3, 1) = -((t + b) / (t - b));
+        orthMatrix(3, 2) = -((f + n) / (f - n));
+        orthMatrix(3, 3) = 1;
+
+        return orthMatrix;
+    }
 
     // Ostream operator
     std::ostream& operator<<(std::ostream& os, const mat4& mat)

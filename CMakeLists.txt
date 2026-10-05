@@ -25,6 +25,7 @@ add_executable(${PROJECT_NAME}
     "src/graphics/Buffers/PosColorBuffer.h" "src/graphics/Buffers/PosColorBuffer.cpp"
     "src/graphics/Buffers/UITextureBuffer.h" "src/graphics/Buffers/UITextureBuffer.cpp"
     "src/graphics/Buffers/TextBuffer.h" "src/graphics/Buffers/TextBuffer.cpp" 
+    "src/graphics/Buffers/GameObjectBuffer.h" "src/graphics/Buffers/GameObjectBuffer.cpp"
     
     # UI
     "src/UI/UI.h"
@@ -39,6 +40,7 @@ add_executable(${PROJECT_NAME}
     # UI - Windows
     "src/UI/Windows/TestWindow.h" "src/UI/Windows/TestWindow.cpp"
     "src/UI/Windows/ComponentWindow.h" "src/UI/Windows/ComponentWindow.cpp"
+    "src/UI/Windows/ViewportWindow.h" "src/UI/Windows/ViewportWindow.cpp"
     
     # UI - Elements
     "src/UI/Elements/FloatEntry.h" "src/UI/Elements/FloatEntry.cpp"
@@ -69,9 +71,12 @@ add_executable(${PROJECT_NAME}
 
     # GameObjects
     "src/GameObject/GameObject.h" "src/GameObject/GameObject.cpp" 
+    "src/GameObject/GameObjectManager.h" "src/GameObject/GameObjectManager.cpp"
+    "src/GameObject/Camera.h" "src/GameObject/Camera.cpp" 
 
     # Blunder (Software Class)
     "src/Runtime/Blunder.h" "src/Runtime/Blunder.cpp"
+
 )
 
 # Custom library for math functions and whatnot

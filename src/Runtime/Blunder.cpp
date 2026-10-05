@@ -48,6 +48,8 @@ bool Blunder::init(const unsigned int& width, const unsigned int& height)
     successfulInit &= mUniversalKeyMap.init(UNIVERSAL_KEYMAP_FILE);
     successfulInit &= mWindowManager.init(width, height);
 
+    GraphicsDevice::getInstance()->getRenderer()->getGameObjectBuffer()->setGameObjectManager(mProjectManager.getGameObjectManager());
+
     // Returning false if failed to init
     if (!successfulInit)
         return false;

@@ -88,6 +88,9 @@ void ComponentWindow::updateComponentGroupPositions()
 				// Updating yPos
 				yPos += element->getQuad().h + uiScale * 5;
 			}
+
+			// Adding a little offset before the next component group
+			yPos += uiScale * 5;
 		}
 
 		// Updating the position of the dropdown

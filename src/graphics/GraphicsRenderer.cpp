@@ -30,6 +30,14 @@ bool GraphicsRenderer::init(
         std::cout << "Failed to initialize Text mesh buffer" << std::endl;
         return false;
     }
+    
+    // Creating the GameObject buffer
+    mpGameObjectBuffer = new GameObjectBuffer();
+    if (!mpGameObjectBuffer->init())
+    {
+        std::cout << "Failed to initialize GameObject buffer" << std::endl;
+        return false;
+    }
 
     // Creating the depth texture
     updateDepthTexture((smath::ivec2)GraphicsDevice::getInstance()->getDisplayDimensions());
@@ -49,6 +57,8 @@ void GraphicsRenderer::cleanup()
     mpUITextureBuffer = nullptr;
     delete mpTextBuffer;
     mpTextBuffer = nullptr;
+    delete mpGameObjectBuffer;
+    mpGameObjectBuffer = nullptr;
 
     // Deallocating the depth texture
     SDL_ReleaseGPUTexture(GraphicsDevice::getInstance()->getDevice(), mpDepthTexture);
@@ -535,6 +545,7 @@ void GraphicsRenderer::drawBuffers()
     mpPosColorBuffer->sendMeshToGPU(commandBuffer);
     mpUITextureBuffer->sendMeshToGPU(commandBuffer);
     mpTextBuffer->sendMeshToGPU(commandBuffer);
+    mpGameObjectBuffer->drawToTexture();
 
 
     // * -------------------- *
@@ -584,6 +595,7 @@ void GraphicsRenderer::drawBuffers()
         mpPosColorBuffer->drawBuffer(commandBuffer, renderPass);
         mpUITextureBuffer->drawBuffer(commandBuffer, renderPass);
         mpTextBuffer->drawBuffer(commandBuffer, renderPass);
+        mpGameObjectBuffer->drawBuffer(commandBuffer, renderPass);
 
         // Ending the render pass and submitting the command buffer
         SDL_EndGPURenderPass(renderPass);

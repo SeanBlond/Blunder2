@@ -93,7 +93,8 @@ bool PosColorMeshBuffer::init()
 			.enable_depth_test = true,
 			.enable_depth_write = true,
 		},
-		.target_info = {
+		.target_info = 
+		{
 			.color_target_descriptions = colorTargetDescriptions,
 			.num_color_targets = 1,
 			.depth_stencil_format = SDL_GPU_TEXTUREFORMAT_D32_FLOAT,

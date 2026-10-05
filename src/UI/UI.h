@@ -6,6 +6,7 @@
 
 // UI - Windows
 #include "Windows/TestWindow.h"
+#include "Windows/ViewportWindow.h"
 #include "Windows/ComponentWindow.h"
 
 // UI - Elements

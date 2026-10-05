@@ -10,6 +10,7 @@
 #include "Buffers/PosColorBuffer.h"
 #include "Buffers/UITextureBuffer.h"
 #include "Buffers/TextBuffer.h"
+#include "Buffers/GameObjectBuffer.h"
 #include "../Color/Color.h"
 
 enum TextSize { TEXT_SMALL, TEXT_NORMAL, TEXT_LARGE };
@@ -87,6 +88,9 @@ public:
 	SDL_Rect* getViewportAddress(int index) { return &(mViewports[smath::clamp(index, 0, (int)mViewports.size() - 1)]); }
 	int getViewportCount() { return mViewports.size(); }
 
+
+	// Game Object Buffer getter
+	GameObjectBuffer* getGameObjectBuffer() { return mpGameObjectBuffer; }
 	// Runtime buffer functions
 	void updateDepthTexture(smath::ivec2 dimensions);
 	void drawBuffers();
@@ -96,6 +100,7 @@ private:
 	PosColorMeshBuffer* mpPosColorBuffer = nullptr;
 	UITextureMeshBuffer* mpUITextureBuffer = nullptr;
 	TextMeshBuffer* mpTextBuffer = nullptr;
+	GameObjectBuffer* mpGameObjectBuffer = nullptr;
 
 	// Depth related members
 	SDL_GPUTexture* mpDepthTexture = nullptr;

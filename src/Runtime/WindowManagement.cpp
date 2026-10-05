@@ -12,7 +12,7 @@ bool WindowManager::init(const unsigned int& width, const unsigned int& height)
 	mScreenDimensions = smath::vec2((int)width, (int)height);
 
 	// Creating the default windows
-	mpViewport = new TestWindow();
+	mpViewport = new ViewportWindow();
 	mpHierarchy = new TestWindow();
 	mpExplorerer = new TestWindow();
 	mpComponents = new ComponentWindow(Blunder::getInstance()->getProjectManager()->getActiveObject());

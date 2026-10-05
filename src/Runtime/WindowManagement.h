@@ -40,7 +40,7 @@ private:
 	TextInput* mActiveTextInput = nullptr;
 
 	// Useful UI Windows 
-	TestWindow* mpViewport = nullptr;
+	ViewportWindow* mpViewport = nullptr;
 	TestWindow* mpHierarchy = nullptr;
 	TestWindow* mpExplorerer = nullptr;
 	ComponentWindow* mpComponents = nullptr;

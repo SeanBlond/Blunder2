@@ -38,6 +38,8 @@ namespace smath
     smath::mat4 rotateY(const float& angle);
     smath::mat4 rotateZ(const float& angle);
     smath::mat4 rotate(smath::vec3 angles);
+    smath::mat4 orthographic(float l, float r, float b, float t);
+    smath::mat4 orthographic(float l, float r, float b, float t, float n, float f);
 
 }
 

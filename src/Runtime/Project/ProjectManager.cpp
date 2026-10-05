@@ -5,8 +5,12 @@
 // Management function definitions
 bool ProjectManager::init()
 {
+    // Checking if the object manager was created succesfully
+    bool success = true;
+    success &= mObjectManager.init();
+
     // Return true for succesful initialization
-    return true;
+    return success;
 }
 void ProjectManager::cleanup()
 {

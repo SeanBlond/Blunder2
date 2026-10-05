@@ -5,7 +5,7 @@
 #include <fstream>
 #include <vector>
 #include "../../Events/EventSystem.h"
-#include "../../GameObject/GameObject.h"
+#include "../../GameObject/GameObjectManager.h"
 
 class ProjectManager
 {
@@ -29,7 +29,8 @@ public:
     bool getProjectActive() const { return mProjectActive; }
     std::string getProjectFilePath() const { return mProjectFilePath; }
     std::string getProjectName() const { return mStoredProjectName; }
-    GameObject* getActiveObject() { return &mTempObject; }
+    GameObject* getActiveObject() { return mObjectManager.getActiveObject(); }
+    GameObjectManager* getGameObjectManager() { return &mObjectManager; }
 
     // Setters
     void setProjectFilepath(const std::string& filepath) { mProjectFilePath = filepath; }
@@ -39,7 +40,7 @@ private:
     std::string mProjectFilePath = "";
     std::string mStoredProjectName = "";
     bool mProjectActive = false;
-    GameObject mTempObject;
+    GameObjectManager mObjectManager;
 };
 
 // Max amount of images that can be loaded at once

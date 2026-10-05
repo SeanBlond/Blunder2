@@ -41,15 +41,27 @@ namespace smath
 
 			return *this;
 		}
-		smath::mat4 gettransformMatrix()
+		smath::mat4 getTransformMatrix()
 		{
-			return (smath::mat4() * smath::translate(smath::vec3(position, (float)layer / 255.0f)) * smath::rotateZ(rotation) * smath::scale(smath::vec3(scale, 1.0f)) );
+			// Applying transformations
+			smath::mat4 transformMatrix = 
+				smath::mat4() * 
+				smath::translate(smath::vec3(position, 0.05f)) * 
+				smath::rotateZ(rotation) * 
+				smath::scale(smath::vec3(scale, 1.0f));
+
+			// Applying parent transformation (if applicable)
+			if (parent)
+				transformMatrix *= parent->getTransformMatrix();
+
+			return transformMatrix;
 		}
 
 		smath::vec2 position;
 		int layer;
 		smath::vec2 scale;
 		float rotation;
+		transform2D* parent;
 	};
 }
 
