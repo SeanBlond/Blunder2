@@ -11,7 +11,7 @@ namespace smath
 	public:
 		// Constructors
 		transform2D(smath::vec2 position = smath::vec2(0), uint8_t layer = 0, float rotation = float(0), smath::vec2 scale = smath::vec2(1))
-			: position(position), rotation(rotation), scale(scale) {}
+			: position(position), rotation(rotation), scale(scale), layer(layer) {}
 
 		// Modifiers
 		// Position
@@ -46,8 +46,8 @@ namespace smath
 			// Applying transformations
 			smath::mat4 transformMatrix = 
 				smath::mat4() * 
-				smath::translate(smath::vec3(position, 0.05f)) * 
-				smath::rotateZ(rotation) * 
+				smath::translate(smath::vec3(position, (float)layer / 255.0f)) * 
+				smath::rotateZ(smath::DEG2RAD * rotation) * 
 				smath::scale(smath::vec3(scale, 1.0f));
 
 			// Applying parent transformation (if applicable)

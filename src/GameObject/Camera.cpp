@@ -15,11 +15,12 @@ smath::mat4 Camera::getProjectionMatrix()
 {
     smath::mat4 projectionMatrix = smath::mat4();
     projectionMatrix *= smath::orthographic(
-        mPosition.x - mScale,
-        mPosition.x + mScale,
-        mPosition.y - mAspectRatio * mScale,
-        mPosition.y + mAspectRatio * mScale,
+        mPosition.x - (mScale + 0.5f),
+        mPosition.x + (mScale + 0.5f),
+        mPosition.y - mAspectRatio * (mScale + 0.5f),
+        mPosition.y + mAspectRatio * (mScale + 0.5f),
         0.0f, 1.0f
     );
+    projectionMatrix *= smath::rotateZ(smath::DEG2RAD * mRotation);
     return projectionMatrix;
 }

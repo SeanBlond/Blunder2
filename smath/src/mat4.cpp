@@ -147,7 +147,7 @@ namespace smath
 
         orthMatrix(2, 0) = 0;
         orthMatrix(2, 1) = 0;
-        orthMatrix(2, 2) = -1;
+        orthMatrix(2, 2) = 1;
         orthMatrix(2, 3) = 0;
 
         orthMatrix(3, 0) = -((r + l) / (r - l));
@@ -174,7 +174,7 @@ namespace smath
 
         orthMatrix(2, 0) = 0;
         orthMatrix(2, 1) = 0;
-        orthMatrix(2, 2) = -2 / (f - n);
+        orthMatrix(2, 2) = 2 / (f - n);
         orthMatrix(2, 3) = 0;
 
         orthMatrix(3, 0) = -((r + l) / (r - l));

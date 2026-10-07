@@ -255,10 +255,10 @@ bool GameObjectBuffer::init()
 	// Defining the vertex and index arrays
 	PosTexVert vertices[] =
 	{
-		{ smath::vec3(-1, -1, 0), smath::vec2(0, 1) },
-		{ smath::vec3(-1,  1, 0), smath::vec2(0, 0) },
-		{ smath::vec3( 1,  1, 0), smath::vec2(1, 0) },
-		{ smath::vec3( 1, -1, 0), smath::vec2(1, 1) }
+		{ smath::vec3(-0.5f, -0.5f, 0.0f), smath::vec2(0, 1) },
+		{ smath::vec3(-0.5f,  0.5f, 0.0f), smath::vec2(0, 0) },
+		{ smath::vec3( 0.5f,  0.5f, 0.0f), smath::vec2(1, 0) },
+		{ smath::vec3( 0.5f, -0.5f, 0.0f), smath::vec2(1, 1) }
 	};
 	int indices[] =
 	{
@@ -398,7 +398,7 @@ void GameObjectBuffer::drawBuffer(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURe
 
 	// Setting the projection matrix uniform of the graphics pipeline
 	smath::mat4 projectionMatrix = GraphicsDevice::getInstance()->getProjectionMatrix();
-	projectionMatrix *= smath::translate(mDisplayPosition) * smath::scale(smath::vec3(mDisplaySize * 0.5f, 1.0f)) * smath::translate(smath::vec3(1, 1, 0));
+	projectionMatrix *= smath::translate(mDisplayPosition) * smath::scale(smath::vec3(mDisplaySize, 1.0f)) * smath::translate(smath::vec3(0.5f, 0.5f, 0.0f));
 	SDL_PushGPUVertexUniformData(commandBuffer, 0, &projectionMatrix, (uint32_t)sizeof(smath::mat4));
 
 	// Binding the vertex buffer

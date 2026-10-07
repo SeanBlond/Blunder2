@@ -6,9 +6,9 @@ bool GameObjectManager::init()
     // TODO: Create default material stored in the manager
 
     // Adding a few game objects
-    createEmptyObject(smath::transform2D(smath::vec2(0, 0), 10, 0.0f, smath::vec2(1)));
-    //createEmptyObject(smath::transform2D(smath::vec2(5, 2), 10, 0.0f, smath::vec2(5, 10)));
-    //createEmptyObject(smath::transform2D(smath::vec2(-5, -2), 10, 0.0f, smath::vec2(3, 2)));
+    createEmptyObject(smath::transform2D(smath::vec2(-5, -2), 3, 0.0f, smath::vec2(1)));
+    createEmptyObject(smath::transform2D(smath::vec2(5, 2), 1, 0.0f, smath::vec2(5, 10)));
+    createEmptyObject(smath::transform2D(smath::vec2(-5, -2), 2, 0.0f, smath::vec2(3, 2)));
 
     // Setting active object index
     setActiveObject(0);

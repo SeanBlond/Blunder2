@@ -42,10 +42,6 @@ void ComponentWindow::generateComponentGroups()
 	ComponentUIGroup* transformGroup = generateTransformGroup(mpGameObject, uiScale, yPos);
 	if (transformGroup)
 		addComponentGroup(transformGroup);
-
-	ComponentUIGroup* transformGroup2 = generateTransformGroup(mpGameObject, uiScale, yPos);
-	if (transformGroup2)
-		addComponentGroup(transformGroup2);
 }
 void ComponentWindow::updateComponentGroupPositions()
 {
