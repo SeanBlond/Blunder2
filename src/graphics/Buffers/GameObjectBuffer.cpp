@@ -573,6 +573,10 @@ void GameObjectBuffer::drawGameObjectToTexture(GameObject* object, SDL_GPUComman
 	if (--depth <= 0)
 		return;
 
+	// Checking if the object is hidden
+	if (!(object->getObjectUIData()->mVisible))
+		return;
+
 	// TODO: Implement a check for the material renderer of each game object and binding of the material pipeline
 
 	// Setting the projection matrix uniform of the graphics pipeline

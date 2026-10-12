@@ -66,7 +66,8 @@ void HierarchyWindow::addGroupFromObject(GameObject* object, float uiScale, floa
 			),
 			&(object->getObjectUIData()->mDroppedDown),
 			"Dropdown_True_Symbol",
-			"Dropdown_False_Symbol"
+			"Dropdown_False_Symbol",
+			new SoftwareRuntimeEvent(EVENT_SOFTWARE_HIERARCHY_DROPDOWN)
 		));
 	}
 
@@ -144,6 +145,9 @@ UIElement* HierarchyWindow::getElementAtPos(smath::ivec2 position)
 // Override function definitions (UIWindow)
 void HierarchyWindow::OpenWindow() 
 {
+	// Adding event listener
+	EventSystem::getInstance()->addListener(EVENT_SOFTWARE_HIERARCHY_DROPDOWN, this);
+
 	// Generating the groups
 	generateHierarchyGroups();
 }
@@ -199,5 +203,10 @@ void HierarchyWindow::DrawWindow(GraphicsRenderer* renderer)
 // Override function definitions (EventListener)
 void HierarchyWindow::handleEvent(const Event& event) 
 {
-
+	// Ensuring the propper event was received
+	if (event.getType() == EVENT_SOFTWARE_HIERARCHY_DROPDOWN)
+	{
+		// Regenerating hierarchy groups to account for dropdown change
+		generateHierarchyGroups();
+	}
 }

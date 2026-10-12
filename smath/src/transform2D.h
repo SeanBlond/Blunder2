@@ -57,7 +57,6 @@ namespace smath
 			// Applying transformations
 			smath::mat4 transformMatrix = smath::mat4();
 			if (parent) { transformMatrix *= parent->getParentTransformMatrix(); }
-			transformMatrix *= smath::scale(smath::vec3(scale, 1.0f));
 			transformMatrix *= smath::rotateZ(smath::DEG2RAD * rotation);
 			transformMatrix *= smath::translate(smath::vec3(position, 0.0f));
 
