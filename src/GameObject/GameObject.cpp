@@ -4,7 +4,7 @@
 GameObject::~GameObject()
 {
     // Deallocating all children
-    removeAllChildren();
+    deleteAllChildren();
 }
 
 // Getter definitions
@@ -18,73 +18,47 @@ GameObject* GameObject::getChildAtIndex(const int& index)
     return mpChildren[index];
 }
 
-// Parenting function definitions
-void GameObject::changeParent(GameObject* gameObject)
+void GameObject::setParent(GameObject* parent)
 {
-    // If the new parent is the same as the old, return out
-    if (mpParent == gameObject)
-        return;
+    if (this->mpParent != nullptr)
+        removeParent();
 
-    // If the current parent is valid, remove this object as a child
-    if (mpParent)
-        mpParent->removeChildFromPointer(this);
-
-    // Setting new parent
-    mpParent = gameObject;
-
-    // If the parent isn't null, add this object as a child
-    if (mpParent)
-        mpParent->addChild(this);
+    this->mpParent = parent;
+    parent->addChild(this);
 }
-
-// Children function definitions
-void GameObject::addChild(GameObject* childObject)
+void GameObject::addChild(GameObject* child)
 {
-    // If the object isn't null, set its parent and add it to the vector
-    if (childObject)
+    mpChildren.push_back(child);
+}
+void GameObject::removeParent()
+{
+    mpParent->removeChild(this);
+    mpParent = nullptr;
+}
+void GameObject::removeChild(GameObject* child)
+{
+    int childIndex = findChild(child);
+
+    if (childIndex == -1)
+        return;
+    else
     {
-        mpChildren.push_back(childObject);
+        mpChildren.erase(mpChildren.begin() + childIndex);
     }
 }
-void GameObject::removeChildAtIndex(const int& index)
+int GameObject::findChild(GameObject* child)
 {
-    // If index is invalid, return out
-    if (index < 0 || index >= mpChildren.size())
-        return;
-
-    // Setting the parent to be null
-    mpChildren[index]->changeParent(nullptr);
-
-    // Deleting the child
-    delete mpChildren[index];
-    mpChildren[index] = nullptr;
-
-    // Erasing the child from the vector
-    mpChildren.erase(mpChildren.begin() + index);
-}
-void GameObject::removeChildFromPointer(GameObject* childPointer)
-{
-    // Searching the vector for children
     for (int i = 0; i < mpChildren.size(); i++)
     {
-        // Checking if the child exists in the vector
-        if (mpChildren[i] == childPointer)
-        {
-            // Deleting the child
-            delete mpChildren[i];
-            mpChildren[i] = nullptr;
-
-            // Erasing the child from the vector
-            mpChildren.erase(mpChildren.begin() + i);
-        }
+        if (mpChildren[i] == child)
+            return i;
     }
+    return -1;
 }
-void GameObject::removeAllChildren()
+void GameObject::deleteAllChildren()
 {
-    // Looping through each child and removing it
     for (GameObject* object : mpChildren)
     {
-        // Deleting the child
         delete object;
         object = nullptr;
     }

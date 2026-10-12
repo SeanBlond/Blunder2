@@ -25,14 +25,13 @@ public:
     int getChildrenCount() const { return (int)(mpChildren.size()); }
     GameObject* getChildAtIndex(const int& index);
 
-    // Parenting functions
-    void changeParent(GameObject* gameObject);
-
-    // Children functions
-    void addChild(GameObject* childObject);
-    void removeChildAtIndex(const int& index);
-    void removeChildFromPointer(GameObject* childPointer);
-    void removeAllChildren();
+    // Hierarchy Functions
+    void setParent(GameObject* parent);
+    void addChild(GameObject* child);
+    void removeParent();
+    void removeChild(GameObject* child);
+    int findChild(GameObject* child);
+    void deleteAllChildren();
 
 private:
     // Transform is required, all GameObjects will have one

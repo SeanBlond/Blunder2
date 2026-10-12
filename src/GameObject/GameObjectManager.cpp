@@ -69,7 +69,7 @@ void GameObjectManager::addGameObject(GameObject* gameObject)
         return;
 
     // Pushing back the non-null object
-    gameObject->changeParent(mpRootObject);
+    gameObject->setParent(mpRootObject);
 }
 void GameObjectManager::removeAllObjects()
 {
