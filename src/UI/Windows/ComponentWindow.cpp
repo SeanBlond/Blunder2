@@ -31,6 +31,7 @@ void ComponentWindow::generateComponentGroups()
 	if (!mpGameObject)
 		return;
 
+
 	// Making Renderer & UI scale more accessible
 	GraphicsRenderer* renderer = GraphicsDevice::getInstance()->getRenderer();
 	float uiScale = renderer->getUIScale();
@@ -42,6 +43,17 @@ void ComponentWindow::generateComponentGroups()
 	ComponentUIGroup* transformGroup = generateTransformGroup(mpGameObject, uiScale, yPos);
 	if (transformGroup)
 		addComponentGroup(transformGroup);
+}
+void ComponentWindow::updateGameObject(GameObject* newObject)
+{
+	// Checking if the new game object is the same as the old
+	if (mpGameObject == newObject)
+		return;
+
+	// Setting new game object reference, then creating ui for it
+	mpGameObject = newObject;
+	generateComponentGroups();
+	updateComponentGroupPositions();
 }
 void ComponentWindow::updateComponentGroupPositions()
 {

@@ -13,7 +13,7 @@ bool WindowManager::init(const unsigned int& width, const unsigned int& height)
 
 	// Creating the default windows
 	mpViewport = new ViewportWindow();
-	mpHierarchy = new HierarchyWindow(Blunder::getInstance()->getProjectManager()->getRootObject());
+	mpHierarchy = new HierarchyWindow(Blunder::getInstance()->getProjectManager()->getRootObject(), Blunder::getInstance()->getProjectManager()->getActiveObject());
 	mpExplorerer = new TestWindow();
 	mpComponents = new ComponentWindow(Blunder::getInstance()->getProjectManager()->getActiveObject());
 

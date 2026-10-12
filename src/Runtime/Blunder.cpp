@@ -62,6 +62,7 @@ bool Blunder::init(const unsigned int& width, const unsigned int& height)
     EventSystem::getInstance()->addListener(EVENT_SOFTWARE_CREATE_NEW_PROJECT, this);
     EventSystem::getInstance()->addListener(EVENT_SOFTWARE_SET_ROOT_WINDOW, this);
     EventSystem::getInstance()->addListener(EVENT_SOFTWARE_CLOSE_PROJECT, this);
+    EventSystem::getInstance()->addListener(EVENT_CHANGE_ACTIVE_OBJECT, this);
 
     // Returning true for succesful initiailization
     return true;
@@ -156,5 +157,17 @@ void Blunder::handleEvent(const Event& event)
 
         // Resetting back to the load project window
         mWindowManager.changeRootWindow(WINDOW_PROJECT_LOADER);
+    }
+    else if (event.getType() == EVENT_CHANGE_ACTIVE_OBJECT)
+    {
+        // Casting the event to be a window resiae event
+        ActiveObjectChangeEvent castEvent = static_cast<const ActiveObjectChangeEvent&>(event);
+
+        // Setting the new active object in the project manager
+        mProjectManager.getGameObjectManager()->setActiveObject(castEvent.getNewObject());
+        
+        // Updating the active object in the component and hierarchy window
+        mWindowManager.getHierarchy()->setActiveObject(castEvent.getNewObject());
+        mWindowManager.getComponents()->updateGameObject(castEvent.getNewObject());
     }
 }

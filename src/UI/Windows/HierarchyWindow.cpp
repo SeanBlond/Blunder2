@@ -31,14 +31,15 @@ void HierarchyWindow::addGroupFromObject(GameObject* object, float uiScale, floa
 	yPos += group->mQuad.h + 5 * uiScale;
 
 	// Adding text input to the group
-	group->mpElements.push_back(new TextEntry(
+	group->mpElements.push_back(new HierarchyTextEntry(
 		UIQuad(
 			group->mQuad.x + uiScale * 25,
 			group->mQuad.y,
 			group->mQuad.w - uiScale * 50,
 			group->mQuad.h
 		),
-		object->getNameAddress()
+		object->getNameAddress(),
+		object
 	));
 
 	// Adding visibility toggle to the group
@@ -190,12 +191,17 @@ void HierarchyWindow::DrawWindow(GraphicsRenderer* renderer)
 	// Drawing all the hieerarchy groups
 	for (HierarchyUIGroup* group : mpHierarchyGroups)
 	{
-		// TODO: Check if the group's object is the active object, and draw a lighter box around it
+		// Checking if the group's object is the active object
+		if (group->mpObject == mpActiveObject)
+		{
+			// Drawing a light rectangle around the object
+			renderer->addRectangle(group->mQuad.getSDL_FRect(), 0.02f, Color(0.25f));
+		}
 
 		// Drawing all the elements within the group
 		for (UIElement* element : group->mpElements)
 		{
-			element->drawElement(renderer, 0.04f);
+			element->drawElement(renderer, 0.03f);
 		}
 	}
 }

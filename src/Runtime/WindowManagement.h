@@ -22,6 +22,9 @@ public:
 
 	// Getters
 	LockedWindow* getRootWindow() { return mpRootWindow; }
+	ViewportWindow* getViewport() { return mpViewport; }
+	HierarchyWindow* getHierarchy() { return mpHierarchy; }
+	ComponentWindow* getComponents() { return mpComponents; }
 
 	// Runtime Functions
 	void updateWindows(smath::vec2 screenDimensions);

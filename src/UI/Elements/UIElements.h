@@ -7,4 +7,4 @@
 #include "ViewportScroller.h"
 #include "FloatEntry.h"
 #include "IntEntry.h"
-#include "TextEntry.h"
+#include "HierarchyTextEntry.h"

@@ -34,6 +34,7 @@ enum EventType
     EVENT_SOFTWARE_CLOSE_PROJECT,
     EVENT_SOFTWARE_COMPONENT_DROPDOWN,
     EVENT_SOFTWARE_HIERARCHY_DROPDOWN,
+    EVENT_CHANGE_ACTIVE_OBJECT,
 };
 
 
@@ -262,4 +263,23 @@ public:
 
 private:
     RootWindowOptions mWindowOption;
+};
+
+// * ---------------------------- *
+// |  Active Object Change Event  |
+// * ---------------------------- *
+class GameObject;
+class ActiveObjectChangeEvent : public Event
+{
+public:
+
+    // Constructor
+    ActiveObjectChangeEvent(GameObject* newObject) : Event(EVENT_CHANGE_ACTIVE_OBJECT), mpNewObject(newObject) {}
+
+    // Getters
+    GameObject* getNewObject() { return mpNewObject; }
+
+
+private:
+    GameObject* mpNewObject = nullptr; // DO NOT OWN, DO NOT DEALLOCATE
 };

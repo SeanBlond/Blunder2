@@ -39,6 +39,7 @@ public:
     void removeAllComponentGroups();
     void addComponentGroup(ComponentUIGroup* componentGroup);
     void generateComponentGroups();
+    void updateGameObject(GameObject* newObject);
     void updateComponentGroupPositions();
     UIElement* getElementAtPos(smath::ivec2 position) override;
 

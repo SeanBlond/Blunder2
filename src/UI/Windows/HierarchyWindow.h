@@ -29,11 +29,14 @@ class HierarchyWindow : public UIWindow, public EventListener
 {
 public:
     // Constructor(s)
-    HierarchyWindow(GameObject* rootObject, float width, float height, float xoffset, float yoffset)
-        : mpRootObject(rootObject), UIWindow(width, height, xoffset, yoffset, "Hierarchy") {}
-    HierarchyWindow(GameObject* rootObject)
-        : mpRootObject(rootObject), UIWindow(0, 0, 0, 0, "Hierarchy") {}
+    HierarchyWindow(GameObject* rootObject, GameObject* activeObject, float width, float height, float xoffset, float yoffset)
+        : mpRootObject(rootObject), mpActiveObject(activeObject), UIWindow(width, height, xoffset, yoffset, "Hierarchy") {}
+    HierarchyWindow(GameObject* rootObject, GameObject* activeObject)
+        : mpRootObject(rootObject), mpActiveObject(activeObject), UIWindow(0, 0, 0, 0, "Hierarchy") {}
     ~HierarchyWindow() { removeAllHierarchyGroups(); }
+
+    // Setters
+    void setActiveObject(GameObject* object) { this->mpActiveObject = object; }
 
     // HierarchyGroup & Element related functions (some overrides)
     void removeAllHierarchyGroups();
@@ -53,6 +56,7 @@ public:
 
 private:
     GameObject* mpRootObject = nullptr; // DOES NOT OWN, DO NOT DEALLOCATE
+    GameObject* mpActiveObject = nullptr; // DOES NOT OWN, DO NOT DEALLOCATE
     std::vector<HierarchyUIGroup*> mpHierarchyGroups;
     const float INDENT_SCALE = 20.0f;
 };
