@@ -25,6 +25,9 @@ void GameObject::setParent(GameObject* parent)
 
     this->mpParent = parent;
     parent->addChild(this);
+
+    if (parent)
+        mTransform.parent = parent->getTransform();
 }
 void GameObject::addChild(GameObject* child)
 {

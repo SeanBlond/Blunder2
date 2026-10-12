@@ -579,6 +579,9 @@ void GameObjectBuffer::drawGameObjectToTexture(GameObject* object, SDL_GPUComman
 	smath::mat4 projectionMatrix = mCamera.getProjectionMatrix() * object->getTransform()->getTransformMatrix();
 	SDL_PushGPUVertexUniformData(commandBuffer, 0, &projectionMatrix, (uint32_t)sizeof(smath::mat4));
 
+	// Drawing the primtive for the game object
+	SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
+
 	// Looping through each child of the game object and drawing it
 	for (int i = 0; i < object->getChildrenCount(); i++)
 	{
@@ -587,7 +590,4 @@ void GameObjectBuffer::drawGameObjectToTexture(GameObject* object, SDL_GPUComman
 		if (child)
 			drawGameObjectToTexture(child, commandBuffer, renderPass, depth);
 	}
-
-	// Drawing the primtive for the game object
-	SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
 }

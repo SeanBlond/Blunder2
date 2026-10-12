@@ -44,15 +44,22 @@ namespace smath
 		smath::mat4 getTransformMatrix()
 		{
 			// Applying transformations
-			smath::mat4 transformMatrix = 
-				smath::mat4() * 
-				smath::translate(smath::vec3(position, (float)layer / 255.0f)) * 
-				smath::rotateZ(smath::DEG2RAD * rotation) * 
-				smath::scale(smath::vec3(scale, 1.0f));
+			smath::mat4 transformMatrix = smath::mat4();
+			if (parent) { transformMatrix *= parent->getParentTransformMatrix(); }
+			transformMatrix *= smath::scale(smath::vec3(scale, 1.0f));
+			transformMatrix *= smath::rotateZ(smath::DEG2RAD * rotation);
+			transformMatrix *= smath::translate(smath::vec3(position, (float)layer / 255.0f));
 
-			// Applying parent transformation (if applicable)
-			if (parent)
-				transformMatrix *= parent->getTransformMatrix();
+			return transformMatrix;
+		}
+		smath::mat4 getParentTransformMatrix()
+		{
+			// Applying transformations
+			smath::mat4 transformMatrix = smath::mat4();
+			if (parent) { transformMatrix *= parent->getParentTransformMatrix(); }
+			transformMatrix *= smath::scale(smath::vec3(scale, 1.0f));
+			transformMatrix *= smath::rotateZ(smath::DEG2RAD * rotation);
+			transformMatrix *= smath::translate(smath::vec3(position, 0.0f));
 
 			return transformMatrix;
 		}

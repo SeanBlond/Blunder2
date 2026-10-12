@@ -18,8 +18,7 @@ smath::mat4 Camera::getProjectionMatrix()
         mPosition.x - (mScale + 0.5f),
         mPosition.x + (mScale + 0.5f),
         mPosition.y - mAspectRatio * (mScale + 0.5f),
-        mPosition.y + mAspectRatio * (mScale + 0.5f),
-        0.0f, 1.0f
+        mPosition.y + mAspectRatio * (mScale + 0.5f)
     );
     projectionMatrix *= smath::rotateZ(smath::DEG2RAD * mRotation);
     return projectionMatrix;
