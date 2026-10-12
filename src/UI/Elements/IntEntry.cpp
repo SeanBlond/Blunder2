@@ -1,5 +1,14 @@
 #include "IntEntry.h"
 
+// Deconstructor
+IntEntry::~IntEntry()
+ { 
+    delete mpClamps; 
+    mpClamps = nullptr; 
+    delete mpClickEvent;
+    mpClickEvent = nullptr;
+}
+
 // Element function definitions
 void IntEntry::setValue(const int& value)
 { 
@@ -95,7 +104,6 @@ void IntEntry::drawElement(GraphicsRenderer* renderer, float layerOffset)
     }
 
     // Determing what text to draw
-    std::string drawText = "";
     if (getTyping())
     {
         drawTextInput(renderer, mInteractableQuad.Center() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.02f, Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);

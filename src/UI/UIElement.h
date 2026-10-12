@@ -8,7 +8,7 @@
 #include "../Events/EventSystem.h"
 
 // Enum for different UI elements
-enum ElementType { UI_NONE, UI_FLOAT_SLIDER, UI_TEXT, UI_BUTTON, UI_TEXT_ENTRY, UI_SCROLLER, UI_FLOAT_ENTRY, UI_INT_ENTRY };
+enum ElementType { UI_NONE, UI_FLOAT_SLIDER, UI_TEXT, UI_BUTTON, UI_SCROLLER, UI_FLOAT_ENTRY, UI_INT_ENTRY, UI_TEXT_ENTRY };
 
 // Base Class for a UI Element
 class UIElement
@@ -16,11 +16,9 @@ class UIElement
 public:
 	// Constructor & Deconstructor
 	UIElement(UIQuad quad, ElementType type)
-		: mQuad(quad), mType(type), mpInteractable(nullptr) {
-	}
+		: mQuad(quad), mType(type), mpInteractable(nullptr) {}
 	UIElement(SDL_FRect rect, ElementType type)
-		: mQuad(rect.x, rect.y, rect.w, rect.h), mType(type), mpInteractable(nullptr) {
-	}
+		: mQuad(rect.x, rect.y, rect.w, rect.h), mType(type), mpInteractable(nullptr) {}
 	virtual ~UIElement()
 	{
 		// When deleted, check if the element is highlighted and/or clicked, 

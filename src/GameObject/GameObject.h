@@ -22,8 +22,10 @@ public:
     // Getters
     smath::transform2D* getTransform() { return &mTransform; }
     std::string getName() const { return mName; }
+    std::string* getNameAddress() { return &mName; }
     int getChildrenCount() const { return (int)(mpChildren.size()); }
     GameObject* getChildAtIndex(const int& index);
+    ObjectUIData* getObjectUIData() { return &mUIData; }
 
     // Hierarchy Functions
     void setParent(GameObject* parent);
@@ -37,6 +39,8 @@ private:
     // Transform is required, all GameObjects will have one
     smath::transform2D mTransform;
     std::string mName = "";
+    ObjectUIData mUIData;
+
     GameObject* mpParent = nullptr; // DOES NOT OWN, DO NOT DEALLOCATE
     std::vector<GameObject*> mpChildren; // feel free to deallocate these tho
 };

@@ -1,5 +1,14 @@
 #include "FloatEntry.h"
 
+// Deconstructor
+FloatEntry::~FloatEntry()
+{
+    delete mpClamps;
+    mpClamps = nullptr;
+    delete mpClickEvent;
+    mpClickEvent = nullptr;
+}
+
 // Element function definitions
 void FloatEntry::setValue(float value)
 { 

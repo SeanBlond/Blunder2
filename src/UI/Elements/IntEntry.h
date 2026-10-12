@@ -15,10 +15,10 @@ class IntEntry : public UIElement, public TextInput
 {
 public:
     IntEntry(UIQuad quad, const std::string& label, int* value, float speed = 0.1f, Event* clickEvent = nullptr)
-        : mLabel(label), mpValue(value), mSpeed(speed), mpClickEvent(clickEvent), mpClamps(nullptr), UIElement(quad, UI_INT_ENTRY), TextInput(std::to_string(*value)) { setValue(*mpValue); }
+        : mLabel(label), mpValue(value), mSpeed(speed), mpClickEvent(clickEvent), mpClamps(nullptr), UIElement(quad, UI_INT_ENTRY), TextInput(std::to_string(*value)) { setValue(*mpValue); generateInteractable(); }
     IntEntry(UIQuad quad, const std::string& label, int* value, int min, int max, float speed = 0.1f, Event* clickEvent = nullptr)
-        : mLabel(label), mpValue(value), mSpeed(speed), mpClickEvent(clickEvent), mpClamps(new IntClamps(min, max)), UIElement(quad, UI_INT_ENTRY), TextInput(std::to_string(*value)) { setValue(*mpValue); }
-    ~IntEntry() { delete mpClamps; mpClamps = nullptr; }
+        : mLabel(label), mpValue(value), mSpeed(speed), mpClickEvent(clickEvent), mpClamps(new IntClamps(min, max)), UIElement(quad, UI_INT_ENTRY), TextInput(std::to_string(*value)) { setValue(*mpValue); generateInteractable(); }
+    ~IntEntry();
 
     // Element Functions
     void setValue(const int& value);

@@ -30,6 +30,7 @@ public:
     std::string getProjectFilePath() const { return mProjectFilePath; }
     std::string getProjectName() const { return mStoredProjectName; }
     GameObject* getActiveObject() { return mObjectManager.getActiveObject(); }
+    GameObject* getRootObject() { return mObjectManager.getRootObject(); }
     GameObjectManager* getGameObjectManager() { return &mObjectManager; }
 
     // Setters

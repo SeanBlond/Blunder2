@@ -58,8 +58,6 @@ public:
 private:
     GameObject* mpGameObject = nullptr; // DOES NOT OWN, DO NOT DEALLOCATE
     std::vector<ComponentUIGroup*> mpComponentGroups;
-    int mTestInt = 0;
-    int mTestClampInt = 0;
 };
 
 #endif // !COMPONENT_WINDOW

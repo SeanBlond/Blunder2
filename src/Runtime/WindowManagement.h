@@ -41,7 +41,7 @@ private:
 
 	// Useful UI Windows 
 	ViewportWindow* mpViewport = nullptr;
-	TestWindow* mpHierarchy = nullptr;
+	HierarchyWindow* mpHierarchy = nullptr;
 	TestWindow* mpExplorerer = nullptr;
 	ComponentWindow* mpComponents = nullptr;
 };
