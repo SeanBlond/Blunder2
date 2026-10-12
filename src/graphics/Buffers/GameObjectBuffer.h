@@ -34,6 +34,7 @@ public:
 	// Texture management functions
 	void updateTextureSize(const smath::ivec2& dimensions);
 	void drawToTexture();
+	void drawGameObjectToTexture(GameObject* object, SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass, int& depth);
 
 private:
 	// GPU-Related Members

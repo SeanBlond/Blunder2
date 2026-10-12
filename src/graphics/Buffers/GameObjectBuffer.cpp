@@ -379,7 +379,7 @@ void GameObjectBuffer::drawBuffer(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURe
         return;
 
 	// Checking if there are any game objects to draw
-	if (mpGameObjectManager->getObjectCount() <= 0)
+	if (mpGameObjectManager->getRootObject()->getChildrenCount() <= 0)
 		return;
 
 	// Checking if the display size is actually visible
@@ -533,7 +533,8 @@ void GameObjectBuffer::drawToTexture()
 		return;
 
 	// Checking if there are any game objects to draw
-	if (mpGameObjectManager->getObjectCount() <= 0)
+	GameObject* rootObject = mpGameObjectManager->getRootObject();
+	if (rootObject->getChildrenCount() <= 0)
 		return;
 
 	// Binding the vertex buffer
@@ -555,18 +556,38 @@ void GameObjectBuffer::drawToTexture()
 	// Binding the graphics pipeline
 	SDL_BindGPUGraphicsPipeline(renderPass, mpTempPipeline);
 
-	// Otherwise, loop through each game object, generate it's transformation matrix, and render it
-	for (int i = 0; i < mpGameObjectManager->getObjectCount(); i++)
+	// Starting draw at root object
+	int depth = 10;
+	for (int i = 0; i < rootObject->getChildrenCount(); i++)
 	{
-		// Setting the projection matrix uniform of the graphics pipeline
-		smath::mat4 projectionMatrix = mCamera.getProjectionMatrix() * mpGameObjectManager->getObjectAtIndex(i)->getTransform()->getTransformMatrix();
-		SDL_PushGPUVertexUniformData(commandBuffer, 0, &projectionMatrix, (uint32_t)sizeof(smath::mat4));
-
-		// Drawing the primtive for the game object
-		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
+		drawGameObjectToTexture(rootObject->getChildAtIndex(i), commandBuffer, renderPass, depth);
 	}
 
 	// End render pass and submit command buffer
 	SDL_EndGPURenderPass(renderPass);
 	SDL_SubmitGPUCommandBuffer(commandBuffer);
+}
+void GameObjectBuffer::drawGameObjectToTexture(GameObject* object, SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass, int& depth)
+{
+	// Checking for depth of the game objects checked
+	if (--depth <= 0)
+		return;
+
+	// TODO: Implement a check for the material renderer of each game object and binding of the material pipeline
+
+	// Setting the projection matrix uniform of the graphics pipeline
+	smath::mat4 projectionMatrix = mCamera.getProjectionMatrix() * object->getTransform()->getTransformMatrix();
+	SDL_PushGPUVertexUniformData(commandBuffer, 0, &projectionMatrix, (uint32_t)sizeof(smath::mat4));
+
+	// Looping through each child of the game object and drawing it
+	for (int i = 0; i < object->getChildrenCount(); i++)
+	{
+		GameObject* child = object->getChildAtIndex(i);
+
+		if (child)
+			drawGameObjectToTexture(child, commandBuffer, renderPass, depth);
+	}
+
+	// Drawing the primtive for the game object
+	SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
 }

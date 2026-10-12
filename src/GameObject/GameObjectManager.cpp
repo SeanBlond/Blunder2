@@ -3,15 +3,18 @@
 // Data management functions
 bool GameObjectManager::init()
 {
+    // Setting the root object to be null
+    mpRootObject = new GameObject("ROOT");
+
     // TODO: Create default material stored in the manager
 
     // Adding a few game objects
-    createEmptyObject(smath::transform2D(smath::vec2(-5, -2), 3, 0.0f, smath::vec2(1)));
-    createEmptyObject(smath::transform2D(smath::vec2(5, 2), 1, 0.0f, smath::vec2(5, 10)));
-    createEmptyObject(smath::transform2D(smath::vec2(-5, -2), 2, 0.0f, smath::vec2(3, 2)));
+    GameObject* newObject = createEmptyObject("Test 1", smath::transform2D(smath::vec2(-5, -2), 3, 0.0f, smath::vec2(1)));
+    createEmptyObject("Test 2", smath::transform2D(smath::vec2(5, 2), 1, 0.0f, smath::vec2(5, 10)));
+    createEmptyObject("Test 3", smath::transform2D(smath::vec2(-5, -2), 2, 0.0f, smath::vec2(3, 2)));
 
     // Setting active object index
-    setActiveObject(0);
+    setActiveObject(newObject);
 
     // Return true for successful initialization
     return true;
@@ -24,80 +27,52 @@ void GameObjectManager::cleanup()
     // TODO: Deallocate default material
 }
 
-// Getters
-GameObject* GameObjectManager::getObjectAtIndex(const int& index)
-{
-    // If index is invalid, return null
-    if (index < 0 || index > mpGameObjects.size())
-        return nullptr;
 
-    // Returning non-invalid game object
-    return mpGameObjects[index];
-}
-
-// Active Object function definitions
-GameObject* GameObjectManager::getActiveObject()
+// Active Object Setters
+void GameObjectManager::setActiveObject(GameObject* object)
 {
-    // if the active object index isn't valid, return null
-    if (mActiveProjectIndex < 0 || mActiveProjectIndex >= getObjectCount())
-        return nullptr;
-
-    // Returning the (valid) active object
-    return mpGameObjects[mActiveProjectIndex];
-}
-void GameObjectManager::setActiveObject(const int& index)
-{
-    // If the entered index isn't valid, reset the active object
-    if (index < 0 || index >= getObjectCount())
+    // Checking if new object is null
+    if (object == nullptr)
         resetActiveObject();
-    else
-        mActiveProjectIndex = index;
+
+    // Otherwise, set the active object
+    mpActiveObject = object;
 }
 void GameObjectManager::resetActiveObject()
 {
-    // Setting active index to be -1
-    mActiveProjectIndex = -1;
+    // Setting the active object to be the root object
+    mpActiveObject = mpRootObject;
 }
 
 // GameObject creation functions
-void GameObjectManager::createEmptyObject(smath::transform2D transform)
+GameObject* GameObjectManager::createEmptyObject(std::string name, smath::transform2D transform)
 {
     // Creating a simple ahh game object
-    GameObject* emptyObject = new GameObject(transform);
+    GameObject* emptyObject = new GameObject(name, transform);
 
     // Adding the game object
     addGameObject(emptyObject);
+
+    return emptyObject;
 }
-void GameObjectManager::createDefaultObject(smath::transform2D transform)
+GameObject* GameObjectManager::createDefaultObject(std::string name, smath::transform2D transform)
 {
     // Does nothing yet, need a material system
+    return nullptr;
 }
 
 // GameObject vector functions
 void GameObjectManager::addGameObject(GameObject* gameObject)
 {
     // Ensuring the object isn't null
-    if (!gameObject)
+    if (!gameObject || !mpRootObject)
         return;
 
     // Pushing back the non-null object
-    mpGameObjects.push_back(gameObject);
-}
-void GameObjectManager::removeObjectAt(const int& index)
-{
-    // If index is invalid, return out
-    if (index < 0 || index > mpGameObjects.size())
-        return;
-
-    // Removing the indexed object
-    mpGameObjects.erase(mpGameObjects.begin() + index);
+    gameObject->changeParent(mpRootObject);
 }
 void GameObjectManager::removeAllObjects()
 {
-    for (GameObject* object : mpGameObjects)
-    {
-        delete object;
-        object = nullptr;
-    }
-    mpGameObjects.clear();
+    delete mpRootObject;
+    mpRootObject = nullptr;
 }

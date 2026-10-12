@@ -61,7 +61,7 @@ namespace smath
 		int layer;
 		smath::vec2 scale;
 		float rotation;
-		transform2D* parent;
+		transform2D* parent = nullptr;
 	};
 }
 

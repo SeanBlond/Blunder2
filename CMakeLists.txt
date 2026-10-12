@@ -96,8 +96,8 @@ add_library(
     "smath/src/mat4.h" "smath/src/mat4.cpp"
 
     # Math - Tansforms
-    "smath/src/transform.h"
- "smath/src/transform2D.h")
+    "smath/src/transform.h" "smath/src/transform2D.h"
+)
 target_include_directories(SMATH PUBLIC smath/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE SMATH)
 

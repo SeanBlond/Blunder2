@@ -17,26 +17,24 @@ public:
     void cleanup();
 
     // Getters
-    int getObjectCount() const { return mpGameObjects.size(); }
-    GameObject* getObjectAtIndex(const int& index);
+    GameObject* getActiveObject() { return mpActiveObject; }
+    GameObject* getRootObject() { return mpRootObject; }
 
-    // Active Object functions
-    GameObject* getActiveObject();
-    void setActiveObject(const int& index);
+    // Active Object Setters
+    void setActiveObject(GameObject* object);
     void resetActiveObject();
 
     // GameObject creation functions
-    void createEmptyObject(smath::transform2D transform = smath::transform2D());
-    void createDefaultObject(smath::transform2D transform = smath::transform2D());
+    GameObject* createEmptyObject(std::string name, smath::transform2D transform = smath::transform2D());
+    GameObject* createDefaultObject(std::string name, smath::transform2D transform = smath::transform2D());
 
     // GameObject vector functions
     void addGameObject(GameObject* gameObject);
-    void removeObjectAt(const int& index);
     void removeAllObjects();
 
 private:
-    std::vector<GameObject*> mpGameObjects;
-    int mActiveProjectIndex = -1;
+    GameObject* mpRootObject = nullptr;
+    GameObject* mpActiveObject = nullptr;
 };
 
 #endif // !GAMEOBJECT_MANHGER
