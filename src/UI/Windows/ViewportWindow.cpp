@@ -19,6 +19,12 @@ smath::vec2 ViewportWindow::getRelativePosition(smath::vec2 pos)
     // Returning the properly found position
     return worldPos;
 }
+void ViewportWindow::setViewScale(const float& scale)
+{
+    // Reversing the scale to be a scale value
+    float value = log10(scale);
+    mViewportScaleValue = value;
+}
 
 // Element related functions
 void ViewportWindow::createElements()

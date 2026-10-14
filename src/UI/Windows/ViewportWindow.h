@@ -20,6 +20,8 @@ public:
     smath::vec2 getRelativePosition(smath::vec2 pos);
     smath::vec2 getViewPosition() const { return mViewportPosition; }
     void setViewPosition(const smath::vec2& position) { this->mViewportPosition = position; }
+    void setViewScaleValue(const float& scaleValue) { this->mViewportScaleValue = scaleValue; }
+    void setViewScale(const float& scale);
 
     // Override functions (UIWindow)
     void OpenWindow() override;

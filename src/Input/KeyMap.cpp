@@ -72,6 +72,8 @@ void KeyMap::handleEvent(const Event& event)
     // Casting the event
     const KeyDownEvent castEvent = static_cast<const KeyDownEvent&>(event);
     uint16_t keycode = castEvent.getKeyData().mKeycode;
+    
+    //std::cout << "Keycode: " << keycode << std::endl;
 
     // If the maps contains the keycode, do something with it
     if (mMappedKeys.contains(keycode) && EVENTCODE_TO_EVENTS.contains(mMappedKeys.at(keycode)))

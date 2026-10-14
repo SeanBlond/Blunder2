@@ -13,6 +13,7 @@ const std::unordered_map<std::string, EventType> EVENTCODE_TO_EVENTS =
     { "exit_software", EVENT_SOFTWARE_CLOSE },
     { "open_project", EVENT_SOFTWARE_OPEN_PROJECT_FILE_DIALOGUE },
     { "close_project", EVENT_SOFTWARE_CLOSE_PROJECT },
+    { "focus_on_active_object", EVENT_SOFTWARE_FOCUS_ON_ACTIVE_OBJECT },
 };
 
 class KeyMap : public EventListener

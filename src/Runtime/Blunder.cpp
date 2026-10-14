@@ -63,6 +63,7 @@ bool Blunder::init(const unsigned int& width, const unsigned int& height)
     EventSystem::getInstance()->addListener(EVENT_SOFTWARE_SET_ROOT_WINDOW, this);
     EventSystem::getInstance()->addListener(EVENT_SOFTWARE_CLOSE_PROJECT, this);
     EventSystem::getInstance()->addListener(EVENT_CHANGE_ACTIVE_OBJECT, this);
+    EventSystem::getInstance()->addListener(EVENT_SOFTWARE_FOCUS_ON_ACTIVE_OBJECT, this);
 
     // Returning true for succesful initiailization
     return true;
@@ -169,5 +170,14 @@ void Blunder::handleEvent(const Event& event)
         // Updating the active object in the component and hierarchy window
         mWindowManager.getHierarchy()->setActiveObject(castEvent.getNewObject());
         mWindowManager.getComponents()->updateGameObject(castEvent.getNewObject());
+    }
+    else if (event.getType() == EVENT_SOFTWARE_FOCUS_ON_ACTIVE_OBJECT)
+    {
+        // Getting the active object
+        GameObject* activeObject = mProjectManager.getGameObjectManager()->getActiveObject();
+
+        // Setting the viewport position and scale
+        mWindowManager.getViewport()->setViewPosition(activeObject->getTransform()->position);
+        mWindowManager.getViewport()->setViewScale(activeObject->getTransform()->scale.x * 0.5f + 2);
     }
 }
