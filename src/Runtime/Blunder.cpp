@@ -38,7 +38,7 @@ bool Blunder::init(const unsigned int& width, const unsigned int& height)
     // Initializing the various managers (that need to be initted)
     bool successfulInit = true;
     successfulInit &= GraphicsDevice::createInstance()->init(
-        width, height, "Blunder - v0.1", 
+        width, height, "Blunder2 - v0.1", 
         UI_TEXTURE_ATLAS_COORDS, UI_TEXTURE_ATLAS_IMAGE, TEXT_TEXTURE_ATLAS_COORDS, TEXT_TEXTURE_ATLAS_IMAGE);
     successfulInit &= ShaderCross::createInstance()->init();
     successfulInit &= Time::init();

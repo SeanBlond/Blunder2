@@ -110,6 +110,7 @@ struct UIQuad
     SDL_FRect getSDL_FRect() const { return { x, y, w, h }; }
     smath::vec2 getPosition() const { return smath::vec2(x, y); }
     smath::vec2 getSize() const { return smath::vec2(w, h); }
+    float getAspectRatio() const { return (w / h); }
 
     // Operator overloads
     UIQuad operator+(const UIQuad& aQuad) const

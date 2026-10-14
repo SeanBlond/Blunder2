@@ -14,12 +14,9 @@ void Camera::setAspectRatio(smath::vec2 dimensions)
 smath::mat4 Camera::getProjectionMatrix()
 {
     smath::mat4 projectionMatrix = smath::mat4();
-    projectionMatrix *= smath::orthographic(
-        mPosition.x - (mScale + 0.5f),
-        mPosition.x + (mScale + 0.5f),
-        mPosition.y - mAspectRatio * (mScale + 0.5f),
-        mPosition.y + mAspectRatio * (mScale + 0.5f)
-    );
+    projectionMatrix *= smath::scale(smath::vec3(1.0f) / smath::vec3(mScale, mScale * mAspectRatio, 1.0f));
     projectionMatrix *= smath::rotateZ(smath::DEG2RAD * mRotation);
+    projectionMatrix *= smath::translate(smath::vec3(mPosition, 0.0f));
+
     return projectionMatrix;
 }

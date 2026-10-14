@@ -3,17 +3,21 @@
 
 #include "../UIWindows.h"
 
-class ViewportWindow : public UIWindow
+class ViewportWindow : public UIWindow, public EventListener
 {
 public:
     // Constructor(s)
     ViewportWindow(float width, float height, float xoffset, float yoffset)
-        : UIWindow(width, height, xoffset, yoffset, "Viewport") {}
+        : UIWindow(width, height, xoffset, yoffset, "Viewport") { addEvents(); }
     ViewportWindow()
-        : UIWindow(0, 0, 0, 0, "Test") {}
+        : UIWindow(0, 0, 0, 0, "Viewport") { addEvents(); }
 
     // Element related functions
     void updateElements();
+
+    // Data management functions
+    void addEvents();
+    smath::vec2 getRelativePosition(smath::vec2 pos);
 
     // Override functions (UIWindow)
     void OpenWindow() override;
@@ -21,8 +25,15 @@ public:
     void ResizeWindow() override;
     void DrawWindow(GraphicsRenderer* renderer) override;
 
+    // Override functions (EventListener)
+    void handleEvent(const Event& event) override;
+
 private:
-    UIQuad mDisplayQuad;
+    UIQuad mViewQuad;
+    float mSensitivity = 0.1f;
+    float mViewportScaleValue = 1.0f;
+    smath::vec2 mViewportPosition;
+    float calculateViewportScale();
 };
 
 #endif // !TEST_WINDOW

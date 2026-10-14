@@ -2,6 +2,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 #include <cmath>
 
 namespace smath
@@ -59,6 +60,7 @@ namespace smath
 
 		// Conversion operators
 		explicit operator ivec2() const;
+		operator std::string() const { std::string tempString = ('(' + std::to_string(x) + ", " + std::to_string(y) + ')'); return tempString; }
 
 		// Length Calculation
 		float length() const;
@@ -112,6 +114,7 @@ namespace smath
 
 		// Cast operator overload
 		operator vec2() const { return vec2(this->x, this->y); }
+		operator std::string() const { std::string tempString = ('(' + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ')'); return tempString; }
 
 		// ostream Operator
 		friend std::ostream& operator<<(std::ostream& os, const vec3& vec);
@@ -178,6 +181,7 @@ namespace smath
 		// Cast operator overload
 		operator vec2() const { return vec2(this->x, this->y); }
 		operator vec3() const { return vec3(this->x, this->y, this->z); }
+		operator std::string() const { std::string tempString = ('(' + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ", " + std::to_string(w) + ')'); return tempString; }
 
 		// ostream Operator
 		friend std::ostream& operator<<(std::ostream& os, const vec4& vec);
