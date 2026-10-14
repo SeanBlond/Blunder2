@@ -13,11 +13,13 @@ public:
         : UIWindow(0, 0, 0, 0, "Viewport") { addEvents(); }
 
     // Element related functions
-    void updateElements();
+    void createElements();
 
     // Data management functions
     void addEvents();
     smath::vec2 getRelativePosition(smath::vec2 pos);
+    smath::vec2 getViewPosition() const { return mViewportPosition; }
+    void setViewPosition(const smath::vec2& position) { this->mViewportPosition = position; }
 
     // Override functions (UIWindow)
     void OpenWindow() override;

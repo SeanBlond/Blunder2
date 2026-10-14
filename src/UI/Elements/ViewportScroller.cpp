@@ -17,7 +17,7 @@ void ViewportScroller::onClick(MouseClickData clickData)
     {
         // Storing the initial mouse pos and offset
         mInitialPos = clickData.mPosition;
-        mInitialOffset = mpViewport->getOffset();
+        mInitialOffset = mpViewport->getViewPosition();
     }
 }
 void ViewportScroller::onHold(MouseClickData clickData)
@@ -29,6 +29,6 @@ void ViewportScroller::onHold(MouseClickData clickData)
         smath::vec2 scrollOffset = mpViewport->getRelativePosition(mInitialPos) - mpViewport->getRelativePosition(clickData.mPosition);
 
         // Setting the offset
-        mpViewport->setOffset(mInitialOffset + scrollOffset);
+        mpViewport->setViewPosition(mInitialOffset + scrollOffset);
     }
 }

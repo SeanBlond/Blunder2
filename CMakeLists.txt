@@ -51,6 +51,7 @@ add_executable(${PROJECT_NAME}
     "src/UI/Elements/ImageToggle.h" "src/UI/Elements/ImageToggle.cpp"
     "src/UI/Elements/TextButton.h" "src/UI/Elements/TextButton.cpp"
     "src/UI/Elements/Dropdown.h" "src/UI/Elements/Dropdown.cpp"     
+    "src/UI/Elements/ViewportScroller.h" "src/UI/Elements/ViewportScroller.cpp"     
     "src/UI/Elements/InvisibleButton.h" "src/UI/Elements/InvisibleButton.cpp"
 
     # Runtime

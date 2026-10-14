@@ -21,15 +21,20 @@ smath::vec2 ViewportWindow::getRelativePosition(smath::vec2 pos)
 }
 
 // Element related functions
-void ViewportWindow::updateElements()
+void ViewportWindow::createElements()
 {
-    // Does nothing yet
+    // Deleting old elements
+    removeAllElements();
+
+    // Creating the viewport scroller
+    addElement(new ViewportScroller(mViewQuad, this));
 }
 
 // Override functions (UIWindow)
 void ViewportWindow::OpenWindow()
 {
-    // Does nothing yet
+    // Creating elements
+    createElements();
 }
 void ViewportWindow::CloseWindow() 
 {
@@ -50,6 +55,9 @@ void ViewportWindow::ResizeWindow()
 
     // Setting the size of the game objecet display
 	renderer->getGameObjectBuffer()->updateTextureSize(smath::ivec2((int)mViewQuad.w, (int)mViewQuad.h));
+
+    // Recreating elements
+    createElements();
 }
 void ViewportWindow::DrawWindow(GraphicsRenderer* renderer) 
 {
@@ -61,7 +69,6 @@ void ViewportWindow::DrawWindow(GraphicsRenderer* renderer)
 
 	// Drawing the window title text
 	renderer->addText(mWindowName, smath::vec2(5, 25) * renderer->getUIScale() + mPosition.getOffset(), 0.01f, renderer->getTextSize(TEXT_LARGE));
-	renderer->addText(mViewportPosition, smath::vec2(150, 25) * renderer->getUIScale() + mPosition.getOffset(), 0.01f, renderer->getTextSize(TEXT_LARGE));
 
 	// Drawing the line under the text
 	renderer->addLine(
@@ -100,7 +107,7 @@ void ViewportWindow::handleEvent(const Event& event)
             // Zooming in on the mouse pos
             smath::vec2 mouseBeforePos = getRelativePosition(castEvent.getPosition()) + mViewportPosition;
             mViewportPosition = mouseBeforePos;
-            mViewportScaleValue += castEvent.getScroll().y * mSensitivity;
+            mViewportScaleValue -= castEvent.getScroll().y * mSensitivity;
 
             // Changing the offset so the highlighted spot stays at the same pos of the mouse
             smath::vec2 mouseAfterPos = getRelativePosition(castEvent.getPosition());
