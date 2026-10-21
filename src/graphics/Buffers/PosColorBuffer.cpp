@@ -10,7 +10,7 @@
 bool PosColorMeshBuffer::init()
 {
 	// Createing the vertex shader
-	SDL_GPUShader* vertexShader = ShaderCross::getInstance()->createShaderFromHLSL(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/PosColor.vert.hlsl", SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
+	SDL_GPUShader* vertexShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/PosColor.vert.hlsl", SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
 	if (vertexShader == nullptr)
 	{
 		std::cout << "Failed to create vertex shader with errors: " << SDL_GetError() << std::endl;
@@ -18,7 +18,7 @@ bool PosColorMeshBuffer::init()
 	}
 
 	// Creating the fragment shader
-	SDL_GPUShader* fragmentShader = ShaderCross::getInstance()->createShaderFromHLSL(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/PosColor.frag.hlsl", SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
+	SDL_GPUShader* fragmentShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/PosColor.frag.hlsl", SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
 	if (fragmentShader == nullptr)
 	{
 		std::cout << "Failed to create fragment shader with errors: " << SDL_GetError() << std::endl;

@@ -23,7 +23,8 @@ public:
     void cleanup();
 
     // Runtime Functions
-    SDL_GPUShader* createShaderFromHLSL(SDL_GPUDevice* device, std::string filepath, SDL_ShaderCross_ShaderStage stage);
+    SDL_GPUShader* createShaderFromHLSLFile(SDL_GPUDevice* device, std::string filepath, SDL_ShaderCross_ShaderStage stage);
+    SDL_GPUShader* createShaderFromHLSLCode(SDL_GPUDevice* device, const std::string& shaderCode, SDL_ShaderCross_ShaderStage stage);
     SDL_GPUComputePipeline* createComputePipelineFromHLSL(SDL_GPUDevice* device, std::string filepath);
 
     // Disallowing the copy constructor and assignment operator

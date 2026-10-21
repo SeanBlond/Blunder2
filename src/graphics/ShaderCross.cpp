@@ -75,12 +75,8 @@ void ShaderCross::cleanup()
 
 
 // Runtime Functions
-SDL_GPUShader* ShaderCross::createShaderFromHLSL(SDL_GPUDevice* device, std::string filepath, SDL_ShaderCross_ShaderStage stage)
+SDL_GPUShader* ShaderCross::createShaderFromHLSLFile(SDL_GPUDevice* device, std::string filepath, SDL_ShaderCross_ShaderStage stage)
 {
-    // Returning out if the stage is computer
-    if (stage == SDL_SHADERCROSS_SHADERSTAGE_COMPUTE)
-        return nullptr;
-
     // Loading in the shader file
     std::ifstream shaderFile(filepath);
 
@@ -96,10 +92,19 @@ SDL_GPUShader* ShaderCross::createShaderFromHLSL(SDL_GPUDevice* device, std::str
     shaderString << shaderFile.rdbuf();
     std::string shaderSourceCode = shaderString.str();
 
+    // Calling creation function with the source code
+    return createShaderFromHLSLCode(device, shaderSourceCode, stage);
+}
+SDL_GPUShader* ShaderCross::createShaderFromHLSLCode(SDL_GPUDevice* device, const std::string& shaderCode, SDL_ShaderCross_ShaderStage stage)
+{
+    // If the stage is compute, return null
+    if (stage == SDL_SHADERCROSS_SHADERSTAGE_COMPUTE)
+        return nullptr;
+
     // Creating the information for the shader
     SDL_ShaderCross_HLSL_Info tempHLSLInfo =
     {
-        .source = shaderSourceCode.c_str(),
+        .source = shaderCode.c_str(),
         .entrypoint = "main",
         .include_dir = nullptr, // maybe switch in future to unified shader source folder? (prob would be smart)
         .defines = nullptr,
@@ -125,7 +130,7 @@ SDL_GPUShader* ShaderCross::createShaderFromHLSL(SDL_GPUDevice* device, std::str
     // Returning null if the graphics shader could not be reflected
     if (!tempMetadata)
     {
-        std::cout << "Failed to create a graphics shader from the file " << filepath << ", with errors: " << SDL_GetError() << std::endl;
+        std::cout << "Failed to create a graphics shader with errors: " << SDL_GetError() << std::endl;
         return nullptr;
     }
 

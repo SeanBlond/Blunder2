@@ -10,7 +10,7 @@ bool GameObjectBuffer::init()
 	// * ------------------------ *
 
 	// Createing the vertex shader
-	SDL_GPUShader* tempVertexShader = ShaderCross::getInstance()->createShaderFromHLSL(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/GameObject.vert.hlsl", SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
+	SDL_GPUShader* tempVertexShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/GameObject.vert.hlsl", SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
 	if (!tempVertexShader)
 	{
 		std::cout << "Failed to create vertex shader with errors: " << SDL_GetError() << std::endl;
@@ -18,7 +18,7 @@ bool GameObjectBuffer::init()
 	}
 
 	// Creating the fragment shader
-	SDL_GPUShader* tempFragmentShader = ShaderCross::getInstance()->createShaderFromHLSL(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/GameObject.frag.hlsl", SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
+	SDL_GPUShader* tempFragmentShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/GameObject.frag.hlsl", SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
 	if (!tempFragmentShader)
 	{
 		std::cout << "Failed to create fragment shader with errors: " << SDL_GetError() << std::endl;
@@ -26,7 +26,7 @@ bool GameObjectBuffer::init()
 	}
 
 	// Createing the vertex shader
-	SDL_GPUShader* vertexShader = ShaderCross::getInstance()->createShaderFromHLSL(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/TextureDisplay.vert.hlsl", SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
+	SDL_GPUShader* vertexShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/TextureDisplay.vert.hlsl", SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
 	if (!vertexShader)
 	{
 		std::cout << "Failed to create vertex shader with errors: " << SDL_GetError() << std::endl;
@@ -34,7 +34,7 @@ bool GameObjectBuffer::init()
 	}
 
 	// Creating the fragment shader
-	SDL_GPUShader* fragmentShader = ShaderCross::getInstance()->createShaderFromHLSL(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/TextureDisplay.frag.hlsl", SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
+	SDL_GPUShader* fragmentShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/TextureDisplay.frag.hlsl", SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
 	if (!fragmentShader)
 	{
 		std::cout << "Failed to create fragment shader with errors: " << SDL_GetError() << std::endl;

@@ -10,7 +10,7 @@
 bool TextMeshBuffer::init(std::string textureAtlasCoords, std::string textureAtlasImage)
 {
 	// Createing the vertex shader
-	SDL_GPUShader* vertexShader = ShaderCross::getInstance()->createShaderFromHLSL(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/PosColorTex.vert.hlsl", SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
+	SDL_GPUShader* vertexShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/PosColorTex.vert.hlsl", SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
 	if (vertexShader == nullptr)
 	{
 		std::cout << "Failed to create vertex shader with errors: " << SDL_GetError() << std::endl;
@@ -18,7 +18,7 @@ bool TextMeshBuffer::init(std::string textureAtlasCoords, std::string textureAtl
 	}
 
 	// Creating the fragment shader
-	SDL_GPUShader* fragmentShader = ShaderCross::getInstance()->createShaderFromHLSL(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/PosColorTex.frag.hlsl", SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
+	SDL_GPUShader* fragmentShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/PosColorTex.frag.hlsl", SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
 	if (fragmentShader == nullptr)
 	{
 		std::cout << "Failed to create fragment shader with errors: " << SDL_GetError() << std::endl;
