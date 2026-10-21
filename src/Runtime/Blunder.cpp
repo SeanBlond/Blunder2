@@ -178,6 +178,6 @@ void Blunder::handleEvent(const Event& event)
 
         // Setting the viewport position and scale
         mWindowManager.getViewport()->setViewPosition(activeObject->getTransform()->position);
-        mWindowManager.getViewport()->setViewScale(activeObject->getTransform()->scale.x * 0.5f + 2);
+        mWindowManager.getViewport()->setViewScale(abs(activeObject->getTransform()->scale.x) * 0.5f + 2);
     }
 }

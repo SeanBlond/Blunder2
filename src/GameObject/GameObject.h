@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <smath/smath.h>
+#include "../Material/Material.h"
 
 struct ObjectUIData
 {
@@ -38,6 +39,7 @@ public:
 private:
     // Transform is required, all GameObjects will have one
     smath::transform2D mTransform;
+    Material mMaterial;
     std::string mName = "";
     ObjectUIData mUIData;
 
