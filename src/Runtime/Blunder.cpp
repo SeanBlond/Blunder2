@@ -35,7 +35,7 @@ void Blunder::destroyInstance()
 // Management Functions Definitions
 bool Blunder::init(const unsigned int& width, const unsigned int& height)
 {
-    // Initializing the various managers (that need to be initted)
+    // Initializing the various managers (that need to be initialized)
     bool successfulInit = true;
     successfulInit &= GraphicsDevice::createInstance()->init(
         width, height, "Blunder2 - v0.1", 
@@ -48,7 +48,9 @@ bool Blunder::init(const unsigned int& width, const unsigned int& height)
     successfulInit &= mUniversalKeyMap.init(UNIVERSAL_KEYMAP_FILE);
     successfulInit &= mWindowManager.init(width, height);
 
+    // Setting the information of the game object buffer
     GraphicsDevice::getInstance()->getRenderer()->getGameObjectBuffer()->setGameObjectManager(mProjectManager.getGameObjectManager());
+    GraphicsDevice::getInstance()->getRenderer()->getGameObjectBuffer()->setMaterialManager(mProjectManager.getMaterialManager());
 
     // Returning false if failed to init
     if (!successfulInit)

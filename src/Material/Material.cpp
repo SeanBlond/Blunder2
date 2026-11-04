@@ -8,14 +8,6 @@ Material::Material(std::string materialName, std::string codeFilepath)
 	// Storing material data
 	this->mMaterialName = materialName;
 	this->mCodeFilepath = codeFilepath;
-
-    // Adding some random uniforms
-    addUniform(new IntUniform("TestInt", 10));
-    addUniform(new FloatUniform("TestFloat", 3.1415f));
-    addUniform(new Float2Uniform("TestFloat2", smath::vec2(1.0f, 2.0f)));
-
-    // Generate code
-    generateGraphicsPipeline();
 }
 Material::~Material()
 {
@@ -26,6 +18,53 @@ Material::~Material()
         uniform = nullptr;
     }
     mpUniforms.clear();
+
+	// Deallocating the graphics pipeline
+	SDL_ReleaseGPUGraphicsPipeline(GraphicsDevice::getInstance()->getDevice(), mpPipeline);
+}
+
+// Shadercode filepath functions
+void Material::loadShadercodeFile()
+{
+	// If the code filepath can't be opened, create a new one
+	std::filesystem::path tempPath(mCodeFilepath);
+	if (std::filesystem::exists(tempPath))
+	{
+		// Shadercode file exists, return out!
+		return;
+	}
+
+
+	// Defining a propper filepath
+	std::string outputFilepath = (mCodeFilepath == "") ? ("resources/Materials/Shaders/" + mMaterialName + ".hlsl") : mCodeFilepath;
+
+	// Shadercode file doesn't exist, start creating a new one
+	std::cout << "Shadercode Filepath \"" << mCodeFilepath << "\" does not exist, creating a new one at " << outputFilepath << std::endl;
+	mCodeFilepath = outputFilepath;
+
+	// Creating the ostream file
+	std::ofstream shadercodeFile(outputFilepath);
+
+	// Outputting the blurb for the material name and available uniforms
+	shadercodeFile << "// Shadercode for Material: " << mMaterialName << std::endl;
+	shadercodeFile << R"(
+// Input Struct:
+// struct Input
+// {
+//     float4 Position : SV_Position;
+//     float2 WorldPosition : POSITION0;
+//     float2 TexCoord : TEXCOORD0;
+// };
+)" << std::endl;
+	shadercodeFile << "// Available Uniforms:" << std::endl;
+	for (Uniform* uniform : mpUniforms)
+	{
+		shadercodeFile << "// " << UniformTypeToString(uniform->getType()) << ' ' << uniform->getUniformName() << ";\n";
+	}
+	shadercodeFile << std::endl;
+
+	shadercodeFile << "// Main Function" << std::endl <<
+		"float4 mainColor(Input input) \n{\n    return float4(1.0, 1.0, 1.0, 1.0);\n};" << std::endl;
 }
 
 // Uniforms Management function definitions
@@ -115,9 +154,9 @@ struct Input
     // Adding in the propper main function
     shaderCodeStream <<
 R"(
-float4 mainOutput(Input input) : SV_Target0
+float4 main(Input input) : SV_Target0
 {
-    float4 shaderOutput = Output(input);
+    float4 shaderOutput = mainColor(input);
     return shaderOutput;
 };
 )";
@@ -246,7 +285,55 @@ bool Material::generateGraphicsPipeline()
 
 	return (mpPipeline != nullptr);
 }
-void Material::bind(SDL_GPURenderPass* renderPass)
+bool Material::bind(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass, smath::mat4* transformationMatrix)
 {
+	// If the pipeline is invalid, return false for failed binding
+	if (!mpPipeline)
+		return false;
 
+	// Binding the graphics pipeline
+	SDL_BindGPUGraphicsPipeline(renderPass, mpPipeline);
+
+	// Sending the transformation matrix
+	SDL_PushGPUVertexUniformData(commandBuffer, 0, transformationMatrix, (uint32_t)sizeof(smath::mat4));
+
+	// Calculating the total size of all the uniforms
+	uint32_t totalUniformSize = 0;
+	for (Uniform* uniform : mpUniforms)
+	{
+		// If uniform is invalid, skip!
+		if (!uniform)
+			continue;
+
+		// Adding the size
+		totalUniformSize += uniform->getSize();
+	}
+
+	// Reserving the space for the uniforms
+	uint8_t* uniformData = new uint8_t[totalUniformSize];
+
+	// Writing each of the uniform's data into the memory
+	uint32_t byteOffset = 0;
+	for (Uniform* uniform : mpUniforms)
+	{
+		// If uniform is invalid, skip!
+		if (!uniform)
+			continue;
+
+		// Copying the memory
+		SDL_memcpy(uniformData + byteOffset, uniform->getData(), uniform->getSize());
+
+		// Adding the byte offset
+		byteOffset += uniform->getSize();
+	}
+
+	// Sending the data to the gpu
+	SDL_PushGPUFragmentUniformData(commandBuffer, 0, uniformData, totalUniformSize);
+
+	// Deallocating the uniform data
+	delete[] uniformData;
+	uniformData = nullptr;
+
+	// Return true for succesful binding!
+	return true;
 }

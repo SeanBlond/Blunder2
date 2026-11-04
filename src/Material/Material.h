@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <unordered_set>
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <SDL3/SDL.h>
@@ -16,6 +17,9 @@ public:
     Material(std::string materialName, std::string codeFilepath);
     ~Material();
 
+    // Shadercode filepath functions
+    void loadShadercodeFile();
+
     // Uniforms Management functions
     void addUniform(Uniform* uniform);
     int getUniformCount() const;
@@ -23,7 +27,7 @@ public:
 
     // Graphics Pipeline functions
     bool generateGraphicsPipeline();
-    void bind(SDL_GPURenderPass* renderPass);
+    bool bind(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass, smath::mat4* transformationMatrix);
     static std::string getBaseVertexCode() { return VERTEX_SHADER_CODE; }
 
 private:
@@ -50,14 +54,12 @@ struct Input
 struct Output
 {
     float4 Position : SV_Position;
-    float2 WorldPosition : POSITION0;
     float2 TexCoord : TEXCOORD0;
 };
 Output main(Input input)
 {
     Output output;
     output.Position = mul(float4(input.Position, 1), windowProjection);
-    output.WorldPosition = input.Position.xy;
     output.TexCoord = input.TexCoord;
     return output;
 }

@@ -18,6 +18,17 @@ bool MaterialManager::init(std::string materialsFilepath)
     // Loading in the files
     loadMaterialsFromFile();
 
+	
+	// Creating a bsic material and adding some random uniforms
+	Material* tempMaterial = new Material("TestMaterial", "resources/Materials/Shaders/TestMaterial.hlsl");
+	tempMaterial->addUniform(new IntUniform("TestInt", 10));
+	tempMaterial->addUniform(new FloatUniform("TestFloat", 3.14159f));
+	tempMaterial->addUniform(new Float2Uniform("TestFloat2", smath::vec2(1.0f, 2.0f)));
+	tempMaterial->loadShadercodeFile();
+	tempMaterial->generateGraphicsPipeline();
+	mpMaterialsMap.insert({ 1, tempMaterial });
+
+
     // Return true for succesful initilization
     return true;
 }
@@ -30,6 +41,9 @@ void MaterialManager::cleanup()
         material.second = nullptr;
     }
     mpMaterialsMap.clear();
+
+	// Releasing basic graphics pipeline
+	SDL_ReleaseGPUGraphicsPipeline(GraphicsDevice::getInstance()->getDevice(), mpBasicPipeline);
 }
 SDL_GPUGraphicsPipeline* MaterialManager::generateBasicPipeline()
 {

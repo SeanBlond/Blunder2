@@ -15,7 +15,6 @@ public:
     // Data management functions
     bool init(std::string materialsFilepath);
     void cleanup();
-    SDL_GPUGraphicsPipeline* generateBasicPipeline();
 
     // Material loading & saving
     void loadMaterialsFromFile();
@@ -26,10 +25,16 @@ public:
     Material* getMaterial(int matKey);
     std::unordered_map<int, Material*>* getMaterialMap() { return &mpMaterialsMap; }
 
+    // Misc. Getters
+    SDL_GPUGraphicsPipeline* getBasicPipeline() { return mpBasicPipeline; }
+
 private:
     std::string mMaterialsFilepath = "";
     std::unordered_map<int, Material*> mpMaterialsMap;
     SDL_GPUGraphicsPipeline* mpBasicPipeline = nullptr;
+
+    // Function for creating the basic pipeline
+    SDL_GPUGraphicsPipeline* generateBasicPipeline();
 
     // Function for generating unique keys for newly created materials
     int generateNewKey();
@@ -40,7 +45,6 @@ private:
 struct Input
 {
     float4 Position : SV_Position;
-    float2 WorldPosition : POSITION0;
     float2 TexCoord : TEXCOORD0;
 };
 

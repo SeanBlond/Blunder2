@@ -27,6 +27,10 @@ public:
     int getChildrenCount() const { return (int)(mpChildren.size()); }
     GameObject* getChildAtIndex(const int& index);
     ObjectUIData* getObjectUIData() { return &mUIData; }
+    int getMaterialKey() const { return mMaterialKey; }
+
+    // Setters
+    void setMaterialKey(const int& key) { mMaterialKey = key; }
 
     // Hierarchy Functions
     void setParent(GameObject* parent);
@@ -39,6 +43,7 @@ public:
 private:
     // Transform is required, all GameObjects will have one
     smath::transform2D mTransform;
+    int mMaterialKey = -1;
     std::string mName = "";
     ObjectUIData mUIData;
 

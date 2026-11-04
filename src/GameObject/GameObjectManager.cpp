@@ -16,6 +16,8 @@ bool GameObjectManager::init()
     newObject2->setParent(newObject1);
     newObject3->setParent(newObject1);
 
+    newObject1->setMaterialKey(1);
+
     // Setting active object index
     setActiveObject(newObject1);
 

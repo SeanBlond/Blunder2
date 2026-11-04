@@ -460,8 +460,8 @@ void GameObjectBuffer::drawToTexture()
 	if (!mpTargetColorTexture || !mpTargetDepthTexture)
 		return;
 
-	// Checking if the manager exists
-	if (!mpGameObjectManager)
+	// Checking if the managers exists
+	if (!mpGameObjectManager || !mpMaterialManager)
 		return;
 
 	// Checking if there are any game objects to draw
@@ -506,15 +506,6 @@ void GameObjectBuffer::drawGameObjectToTexture(GameObject* object, SDL_GPUComman
 	if (!(object->getObjectUIData()->mVisible))
 		return;
 
-	// TODO: Implement a check for the material renderer of each game object and binding of the material pipeline
-
-	// Setting the projection matrix uniform of the graphics pipeline
-	smath::mat4 projectionMatrix = mCamera.getProjectionMatrix() * object->getTransform()->getTransformMatrix();
-	SDL_PushGPUVertexUniformData(commandBuffer, 0, &projectionMatrix, (uint32_t)sizeof(smath::mat4));
-
-	// Drawing the primtive for the game object
-	SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
-
 	// Looping through each child of the game object and drawing it
 	for (int i = 0; i < object->getChildrenCount(); i++)
 	{
@@ -523,4 +514,32 @@ void GameObjectBuffer::drawGameObjectToTexture(GameObject* object, SDL_GPUComman
 		if (child)
 			drawGameObjectToTexture(child, commandBuffer, renderPass, depth);
 	}
+	// (The children are drawn first, so that if the parent has a material error, the children are still drawn)
+
+	// Defining the object's projection matrix
+	smath::mat4 projectionMatrix = mCamera.getProjectionMatrix() * object->getTransform()->getTransformMatrix();
+
+	// Checking if the gameobject's material is valid
+	Material* objectMaterial = mpMaterialManager->getMaterial(object->getMaterialKey());
+	if (objectMaterial)
+	{
+		// Material is valid, binding it
+		if (!(objectMaterial->bind(commandBuffer, renderPass, &projectionMatrix)))
+			return; // Binding failed, return out!
+	}
+	else
+	{
+		// Material is invalid, binding the basic material maanager pipeline
+		if (!(mpMaterialManager->getBasicPipeline()))
+			return; // Basic pipeline doesn't exist, return out!
+
+		// Binding the basic pipeline
+		SDL_BindGPUGraphicsPipeline(renderPass, mpMaterialManager->getBasicPipeline());
+
+		// Passing in the project matrix
+		SDL_PushGPUVertexUniformData(commandBuffer, 0, &projectionMatrix, (uint32_t)sizeof(smath::mat4));
+	}
+
+	// Drawing the primtive for the game object
+	SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
 }

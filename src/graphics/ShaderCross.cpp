@@ -115,6 +115,13 @@ SDL_GPUShader* ShaderCross::createShaderFromHLSLCode(SDL_GPUDevice* device, cons
     size_t spirvCodeSize;
     void* spirvCode = SDL_ShaderCross_CompileSPIRVFromHLSL(&tempHLSLInfo, &spirvCodeSize);
 
+    // Checking if the compilation went wrong
+    if (!spirvCode)
+    {
+        std::cout << "Failed to compile hlsl shadercode to SPIRV with errors " << SDL_GetError() << std::endl;
+        return nullptr;
+    }
+
     // Creating info for the SPIRV shader (deja vu)
     SDL_ShaderCross_SPIRV_Info tempSPIRVInfo =
     {
