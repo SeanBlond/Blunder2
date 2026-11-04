@@ -45,10 +45,6 @@ private:
 	SDL_GPUGraphicsPipeline* mpDisplayPipeline = nullptr;
 	SDL_GPUSampler* mpDisplaySampler = nullptr;
 
-	// Pipeline will eventually be changed where each game object (should it have a material) will have it's own pipeline to use
-	// In the meantime, this basic one is used that simply shows the game object's UVs
-	SDL_GPUGraphicsPipeline* mpTempPipeline = nullptr;
-
 	// Pointer to the game object manager
 	GameObjectManager* mpGameObjectManager = nullptr; // DOES NOT OWN, DO NOT DEALLOCATE
 

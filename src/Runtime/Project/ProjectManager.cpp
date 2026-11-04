@@ -8,6 +8,7 @@ bool ProjectManager::init()
     // Checking if the object manager was created succesfully
     bool success = true;
     success &= mObjectManager.init();
+    success &= mMaterialManager.init(MATERIALS_FILEPATH);
 
     // Return true for succesful initialization
     return success;

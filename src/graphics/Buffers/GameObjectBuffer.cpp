@@ -5,26 +5,6 @@
 // Data Management Function definitions
 bool GameObjectBuffer::init()
 {
-	// * ------------------------ *
-	// |  Temp Graphics Pipeline  |
-	// * ------------------------ *
-
-	// Createing the vertex shader
-	SDL_GPUShader* tempVertexShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/GameObject.vert.hlsl", SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
-	if (!tempVertexShader)
-	{
-		std::cout << "Failed to create vertex shader with errors: " << SDL_GetError() << std::endl;
-		return false;
-	}
-
-	// Creating the fragment shader
-	SDL_GPUShader* tempFragmentShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/GameObject.frag.hlsl", SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
-	if (!tempFragmentShader)
-	{
-		std::cout << "Failed to create fragment shader with errors: " << SDL_GetError() << std::endl;
-		return false;
-	}
-
 	// Createing the vertex shader
 	SDL_GPUShader* vertexShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/TextureDisplay.vert.hlsl", SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
 	if (!vertexShader)
@@ -87,52 +67,6 @@ bool GameObjectBuffer::init()
 			}
 		}
 	};
-
-	// Creating the name for the graphics pipeline
-	SDL_PropertiesID tempPipelineProps = SDL_CreateProperties();
-	SDL_SetStringProperty(tempPipelineProps, SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING, "GameObjectTEMPORARY_Graphics_Pipeline");
-
-	// Creating the pipeline
-	SDL_GPUGraphicsPipelineCreateInfo tempPipelineCreateInfo = {
-		.vertex_shader = tempVertexShader,
-		.fragment_shader = tempFragmentShader,
-		.vertex_input_state = SDL_GPUVertexInputState{
-			.vertex_buffer_descriptions = vertexBufferDesc,
-			.num_vertex_buffers = 1,
-			.vertex_attributes = vertexAttributes,
-			.num_vertex_attributes = 2
-		},
-		.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST,
-		.depth_stencil_state =
-		{
-			.compare_op = SDL_GPU_COMPAREOP_GREATER_OR_EQUAL,
-			.enable_depth_test = true,
-			.enable_depth_write = true,
-		},
-		.target_info =
-		{
-			.color_target_descriptions = colorTargetDescriptions,
-			.num_color_targets = 1,
-			.depth_stencil_format = SDL_GPU_TEXTUREFORMAT_D32_FLOAT,
-			.has_depth_stencil_target = true
-		},
-		.props = tempPipelineProps,
-	};
-
-	mpTempPipeline = SDL_CreateGPUGraphicsPipeline(GraphicsDevice::getInstance()->getDevice(), &tempPipelineCreateInfo);
-	if (!mpTempPipeline)
-	{
-		std::cout << "Failed to create pipeline with errors: " << SDL_GetError() << std::endl;
-		return false;
-	}
-
-	// Freeing the props
-	SDL_DestroyProperties(tempPipelineProps);
-
-	// Releasing shaders
-	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), tempVertexShader);
-	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), tempFragmentShader);
-
 
 	// Creating the name for the graphics pipeline
 	SDL_PropertiesID pipelineProps = SDL_CreateProperties();
@@ -352,8 +286,6 @@ void GameObjectBuffer::cleanup()
 	SDL_ReleaseGPUTexture(GraphicsDevice::getInstance()->getDevice(), mpTargetDepthTexture);
 	SDL_ReleaseGPUGraphicsPipeline(GraphicsDevice::getInstance()->getDevice(), mpDisplayPipeline);
 	SDL_ReleaseGPUSampler(GraphicsDevice::getInstance()->getDevice(), mpDisplaySampler);
-
-	SDL_ReleaseGPUGraphicsPipeline(GraphicsDevice::getInstance()->getDevice(), mpTempPipeline);
 }
 
 // Window drawing position setter definitions
@@ -552,9 +484,6 @@ void GameObjectBuffer::drawToTexture()
 		.offset = 0
 	};
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
-
-	// Binding the graphics pipeline
-	SDL_BindGPUGraphicsPipeline(renderPass, mpTempPipeline);
 
 	// Starting draw at root object
 	int depth = 10;

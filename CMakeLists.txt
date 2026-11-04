@@ -76,10 +76,15 @@ add_executable(${PROJECT_NAME}
     "src/GameObject/GameObject.h" "src/GameObject/GameObject.cpp" 
     "src/GameObject/GameObjectManager.h" "src/GameObject/GameObjectManager.cpp"
     "src/GameObject/Camera.h" "src/GameObject/Camera.cpp" 
+    
+    # Material System
+    "src/Material/Uniforms.h" "src/Material/Uniform.cpp"
+    "src/Material/Material.h" "src/Material/Material.cpp"
+    "src/Material/MaterialManager.h" "src/Material/MaterialManager.cpp" 
 
     # Blunder (Software Class)
     "src/Runtime/Blunder.h" "src/Runtime/Blunder.cpp"
- "src/Material/Material.h" "src/Material/Uniforms.h" "src/Material/Material.cpp")
+)
 
 # Custom library for math functions and whatnot
 add_library(

@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <string>
+#include <unordered_set>
+#include <fstream>
 #include <sstream>
 #include <SDL3/SDL.h>
 #include "Uniforms.h"
@@ -11,7 +13,7 @@ class Material
 {
 public:
     // Constructor & Deconstructor
-    Material();
+    Material(std::string materialName, std::string codeFilepath);
     ~Material();
 
     // Uniforms Management functions
@@ -20,15 +22,46 @@ public:
     Uniform* getUniformAtIndex(const int& index);
 
     // Graphics Pipeline functions
-    void generateGraphicsPipeline();
+    bool generateGraphicsPipeline();
     void bind(SDL_GPURenderPass* renderPass);
+    static std::string getBaseVertexCode() { return VERTEX_SHADER_CODE; }
 
 private:
+    std::string mMaterialName = "";
     std::string mCodeFilepath = "";
     std::vector<Uniform*> mpUniforms;
     SDL_GPUGraphicsPipeline* mpPipeline = nullptr;
 
-    // Private function for converting 
+    // Private function for crteating the fragment shader
+    SDL_GPUShader* createFragmentShader();
+
+    // Static string of the vertex shader
+    inline static const char* VERTEX_SHADER_CODE =
+R"(
+cbuffer MatrixBuffer : register(b0, space1)
+{
+    float4x4 windowProjection;
+};
+struct Input
+{
+    float3 Position : POSITION0;
+    float2 TexCoord : TEXCOORD0;
+};
+struct Output
+{
+    float4 Position : SV_Position;
+    float2 WorldPosition : POSITION0;
+    float2 TexCoord : TEXCOORD0;
+};
+Output main(Input input)
+{
+    Output output;
+    output.Position = mul(float4(input.Position, 1), windowProjection);
+    output.WorldPosition = input.Position.xy;
+    output.TexCoord = input.TexCoord;
+    return output;
+}
+)";
 };
 
 #endif // !MATERIAL

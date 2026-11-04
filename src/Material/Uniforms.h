@@ -2,6 +2,7 @@
 #pragma once
 
 #include <string>
+#include <cctype>
 #include <smath/smath.h>
 
 // Various data types that can be passed into a material
@@ -24,30 +25,23 @@ public:
     Uniform(std::string name, UniformType type) : mType(type) { setName(name); }
 
     // Name management
-    std::string getPublicName() const { return mPublicName; }
-    std::string getPrivateName() const { return mPrivateName; }
-    void setName(std::string name)
-    {
-        // Capping the name to 32 characters
-        if (name.size() > 32)
-            name = name.substr(0, 32);
-
-        // TODO: Implement a good way of converting the public name to a (private) variable name
-
-        // Updating the names
-        mPublicName = mPrivateName = name;
-    }
+    std::string getUniformName() const { return mUniformName; }
+    void setName(std::string name);
 
     // Type Management
     UniformType getType() const { return mType; }
+
+    // Comparison operator
+    bool operator==(const Uniform& aUniform) const;
 
     // Pure virtual function for data accessing
     virtual void* getData() = 0;
 
 private:
-    std::string mPublicName;
-    std::string mPrivateName;
+    std::string mUniformName;
     UniformType mType;
+
+    static std::string convertToVariable(std::string name);
 };
 
 

@@ -138,12 +138,7 @@ SDL_GPUShader* ShaderCross::createShaderFromHLSLCode(SDL_GPUDevice* device, cons
     SDL_ShaderCross_GraphicsShaderResourceInfo tempShaderInfo = tempMetadata->resource_info;
 
     // Using the SPIRV info & code to create a dynamically allocated SDL_GPUShader!
-    SDL_GPUShader* tempShader = SDL_ShaderCross_CompileGraphicsShaderFromSPIRV(
-        device,
-        &tempSPIRVInfo,
-        &tempShaderInfo,
-        0
-    );
+    SDL_GPUShader* tempShader = SDL_ShaderCross_CompileGraphicsShaderFromSPIRV(device, &tempSPIRVInfo, &tempShaderInfo, 0);
 
     // Freeing the SPIRV bytecode after use
     SDL_free(spirvCode);
