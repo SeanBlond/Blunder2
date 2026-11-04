@@ -44,7 +44,8 @@ private:
         R"(
 struct Input
 {
-    float4 Position : SV_Position;
+    float4 ScreenPosition : SV_Position;
+    float3 Position : POSITION0;
     float2 TexCoord : TEXCOORD0;
 };
 

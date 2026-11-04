@@ -516,15 +516,12 @@ void GameObjectBuffer::drawGameObjectToTexture(GameObject* object, SDL_GPUComman
 	}
 	// (The children are drawn first, so that if the parent has a material error, the children are still drawn)
 
-	// Defining the object's projection matrix
-	smath::mat4 projectionMatrix = mCamera.getProjectionMatrix() * object->getTransform()->getTransformMatrix();
-
 	// Checking if the gameobject's material is valid
 	Material* objectMaterial = mpMaterialManager->getMaterial(object->getMaterialKey());
 	if (objectMaterial)
 	{
 		// Material is valid, binding it
-		if (!(objectMaterial->bind(commandBuffer, renderPass, &projectionMatrix)))
+		if (!(objectMaterial->bind(commandBuffer, renderPass)))
 			return; // Binding failed, return out!
 	}
 	else
@@ -535,10 +532,15 @@ void GameObjectBuffer::drawGameObjectToTexture(GameObject* object, SDL_GPUComman
 
 		// Binding the basic pipeline
 		SDL_BindGPUGraphicsPipeline(renderPass, mpMaterialManager->getBasicPipeline());
-
-		// Passing in the project matrix
-		SDL_PushGPUVertexUniformData(commandBuffer, 0, &projectionMatrix, (uint32_t)sizeof(smath::mat4));
 	}
+
+	// Passing in the project matrix & world transformation matrix
+	DualTransformMatrices matrices =
+	{
+		mCamera.getProjectionMatrix() * object->getTransform()->getTransformMatrix(),
+		object->getTransform()->getTransformMatrix(),
+	};
+	SDL_PushGPUVertexUniformData(commandBuffer, 0, &matrices, (uint32_t)sizeof(DualTransformMatrices));
 
 	// Drawing the primtive for the game object
 	SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);

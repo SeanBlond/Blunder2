@@ -59,6 +59,13 @@ private:
 	smath::vec3 mDisplayPosition;
 	smath::vec2 mDisplaySize;
 	int mViewportIndex = 0;
+
+	// Struct for sending the two project matrices to the gpu
+	struct DualTransformMatrices
+	{
+		smath::mat4 projectionTransform;
+		smath::mat4 worldTransform;
+	};
 };
 
 #endif

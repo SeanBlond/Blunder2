@@ -27,7 +27,7 @@ public:
 
     // Graphics Pipeline functions
     bool generateGraphicsPipeline();
-    bool bind(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass, smath::mat4* transformationMatrix);
+    bool bind(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass);
     static std::string getBaseVertexCode() { return VERTEX_SHADER_CODE; }
 
 private:
@@ -45,6 +45,7 @@ R"(
 cbuffer MatrixBuffer : register(b0, space1)
 {
     float4x4 windowProjection;
+    float4x4 worldTransformation;
 };
 struct Input
 {
@@ -53,13 +54,15 @@ struct Input
 };
 struct Output
 {
-    float4 Position : SV_Position;
+    float4 ScreenPosition : SV_Position;
+    float3 Position: POSITION0;
     float2 TexCoord : TEXCOORD0;
 };
 Output main(Input input)
 {
     Output output;
-    output.Position = mul(float4(input.Position, 1), windowProjection);
+    output.ScreenPosition = mul(float4(input.Position, 1), windowProjection);
+    output.Position = mul(float4(input.Position, 1), worldTransformation).xyz;
     output.TexCoord = input.TexCoord;
     return output;
 }

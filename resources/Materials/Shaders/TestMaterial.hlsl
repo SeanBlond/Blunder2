@@ -1,11 +1,8 @@
 // Shadercode for Material: TestMaterial
 
-// Input Struct:
-// struct Input
-// {
-//     float4 Position : SV_Position;
-//     float2 TexCoord : TEXCOORD0;
-// };
+// Input Struct contains:
+// float3 input.Position, world position of the object
+// float2 input.TexCoord, texture coordinate of the object
 
 // Available Uniforms:
 // int _TestInt;
@@ -15,5 +12,6 @@
 // Main Function
 float4 mainColor(Input input) 
 {
-    return float4(1.0, 1.0, 1.0, 1.0);
+    float3 outputColor = clamp(input.Position, 0, 1);
+    return float4(outputColor, 1.0);
 };

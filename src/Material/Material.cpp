@@ -48,13 +48,9 @@ void Material::loadShadercodeFile()
 	// Outputting the blurb for the material name and available uniforms
 	shadercodeFile << "// Shadercode for Material: " << mMaterialName << std::endl;
 	shadercodeFile << R"(
-// Input Struct:
-// struct Input
-// {
-//     float4 Position : SV_Position;
-//     float2 WorldPosition : POSITION0;
-//     float2 TexCoord : TEXCOORD0;
-// };
+// Input Struct contains:
+// float3 input.Position, world position of the object
+// float2 input.TexCoord, texture coordinate of the object
 )" << std::endl;
 	shadercodeFile << "// Available Uniforms:" << std::endl;
 	for (Uniform* uniform : mpUniforms)
@@ -96,8 +92,8 @@ SDL_GPUShader* Material::createFragmentShader()
 R"(
 struct Input
 {
-    float4 Position : SV_Position;
-    float2 WorldPosition : POSITION0;
+    float4 ScreenPosition : SV_Position;
+    float3 Position : POSITION0;
     float2 TexCoord : TEXCOORD0;
 };
 )" << std::endl;
@@ -285,7 +281,7 @@ bool Material::generateGraphicsPipeline()
 
 	return (mpPipeline != nullptr);
 }
-bool Material::bind(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass, smath::mat4* transformationMatrix)
+bool Material::bind(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass)
 {
 	// If the pipeline is invalid, return false for failed binding
 	if (!mpPipeline)
@@ -293,9 +289,6 @@ bool Material::bind(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* rend
 
 	// Binding the graphics pipeline
 	SDL_BindGPUGraphicsPipeline(renderPass, mpPipeline);
-
-	// Sending the transformation matrix
-	SDL_PushGPUVertexUniformData(commandBuffer, 0, transformationMatrix, (uint32_t)sizeof(smath::mat4));
 
 	// Calculating the total size of all the uniforms
 	uint32_t totalUniformSize = 0;
