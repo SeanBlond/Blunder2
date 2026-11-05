@@ -15,8 +15,12 @@ uint8_t Float2Entry::determineAxisSelected(const smath::vec2& position)
     float closestAxisDistance = abs(position.x - mAxisXPositions[0]);
     for (int i = 1; i < 2; i++)
     {
-        if (abs(position.x - mAxisXPositions[i]) < closestAxisDistance)
+        float distance = abs(position.x - mAxisXPositions[i]);
+        if (distance < closestAxisDistance)
+        {
             closestAxis = i;
+            closestAxisDistance = distance;
+        }
     }
 
     // Returning the closest axis
