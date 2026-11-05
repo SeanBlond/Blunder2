@@ -1,7 +1,7 @@
 #ifndef FLOAT2_ENTRY
 #pragma once
 
-#include "../UIElement.h"
+#include "../../UIElement.h"
 
 class Float2Entry : public UIElement, public TextInput
 {

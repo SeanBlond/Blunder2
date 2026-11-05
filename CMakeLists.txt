@@ -45,9 +45,6 @@ add_executable(${PROJECT_NAME}
     "src/UI/Windows/MaterialWindow.h" "src/UI/Windows/MaterialWindow.cpp" 
     
     # UI - Elements
-    "src/UI/Elements/FloatEntry.h" "src/UI/Elements/FloatEntry.cpp"
-    "src/UI/Elements/Float2Entry.h" "src/UI/Elements/Float2Entry.cpp"
-    "src/UI/Elements/IntEntry.h" "src/UI/Elements/IntEntry.cpp"
     "src/UI/Elements/HierarchyTextEntry.h" "src/UI/Elements/HierarchyTextEntry.cpp"
     "src/UI/Elements/ImageButton.h" "src/UI/Elements/ImageButton.cpp"
     "src/UI/Elements/ImageToggle.h" "src/UI/Elements/ImageToggle.cpp"
@@ -55,6 +52,13 @@ add_executable(${PROJECT_NAME}
     "src/UI/Elements/Dropdown.h" "src/UI/Elements/Dropdown.cpp"     
     "src/UI/Elements/ViewportScroller.h" "src/UI/Elements/ViewportScroller.cpp"     
     "src/UI/Elements/InvisibleButton.h" "src/UI/Elements/InvisibleButton.cpp"
+
+    # UI - Labelled Elements
+    "src/UI/Elements/Labelled Elements/IntEntry.h" "src/UI/Elements/Labelled Elements/IntEntry.cpp"
+    "src/UI/Elements/Labelled Elements/FloatEntry.h" "src/UI/Elements/Labelled Elements/FloatEntry.cpp"
+    "src/UI/Elements/Labelled Elements/Float2Entry.h" "src/UI/Elements/Labelled Elements/Float2Entry.cpp"
+    "src/UI/Elements/Labelled Elements/Float3Entry.h" "src/UI/Elements/Labelled Elements/Float3Entry.cpp"
+    "src/UI/Elements/Labelled Elements/Float4Entry.h" "src/UI/Elements/Labelled Elements/Float4Entry.cpp"
 
     # Runtime
     "src/Runtime/WindowManagement.h" "src/Runtime/WindowManagement.cpp" 
