@@ -42,9 +42,11 @@ add_executable(${PROJECT_NAME}
     "src/UI/Windows/ComponentWindow.h" "src/UI/Windows/ComponentWindow.cpp"
     "src/UI/Windows/ViewportWindow.h" "src/UI/Windows/ViewportWindow.cpp"
     "src/UI/Windows/HierarchyWindow.h" "src/UI/Windows/HierarchyWindow.cpp"
+    "src/UI/Windows/MaterialWindow.h" "src/UI/Windows/MaterialWindow.cpp" 
     
     # UI - Elements
     "src/UI/Elements/FloatEntry.h" "src/UI/Elements/FloatEntry.cpp"
+    "src/UI/Elements/Float2Entry.h" "src/UI/Elements/Float2Entry.cpp"
     "src/UI/Elements/IntEntry.h" "src/UI/Elements/IntEntry.cpp"
     "src/UI/Elements/HierarchyTextEntry.h" "src/UI/Elements/HierarchyTextEntry.cpp"
     "src/UI/Elements/ImageButton.h" "src/UI/Elements/ImageButton.cpp"

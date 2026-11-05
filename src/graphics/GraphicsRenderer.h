@@ -56,6 +56,7 @@ public:
 	void addLine(const smath::vec2& startPos, const smath::vec2& endPos, const float& layerOffset, const Color& color, const float& thickness);
 	void addRectangle(const SDL_FRect& rect, const float& layerOffset, const Color& color);
 	void addRectangle(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const Color& color);
+	void addCenteredRectangle(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const Color& color);
 	void addRectangleOutline(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const Color& color, const float& thickness);
 	void addRectangleOutline(const SDL_FRect& rect, const float& layerOffset, const Color& color, const float& thickness);
 	void addCircle(const smath::vec2& center, const smath::vec2& radii, const float& layerOffset, const Color& color, const int& quality = 24);

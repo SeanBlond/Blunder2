@@ -8,7 +8,20 @@
 #include "../Events/EventSystem.h"
 
 // Enum for different UI elements
-enum ElementType { UI_NONE, UI_FLOAT_SLIDER, UI_TEXT, UI_BUTTON, UI_SCROLLER, UI_FLOAT_ENTRY, UI_INT_ENTRY, UI_TEXT_ENTRY };
+enum ElementType 
+{ 
+	UI_NONE, 
+	UI_FLOAT_SLIDER, 
+	UI_TEXT, 
+	UI_BUTTON, 
+	UI_SCROLLER, 
+	UI_FLOAT_ENTRY, 
+	UI_FLOAT2_ENTRY, 
+	UI_FLOAT3_ENTRY, 
+	UI_FLOAT4_ENTRY, 
+	UI_INT_ENTRY, 
+	UI_TEXT_ENTRY 
+};
 
 // Base Class for a UI Element
 class UIElement

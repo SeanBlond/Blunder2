@@ -6,5 +6,6 @@
 #include "Dropdown.h"
 #include "ViewportScroller.h"
 #include "FloatEntry.h"
+#include "Float2Entry.h"
 #include "IntEntry.h"
 #include "HierarchyTextEntry.h"

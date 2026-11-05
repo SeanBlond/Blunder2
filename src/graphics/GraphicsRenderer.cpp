@@ -162,6 +162,10 @@ void GraphicsRenderer::addRectangle(const smath::vec2& position, const smath::ve
     // Adding the mesh to the buffer
     addMesh(tempMesh);
 }
+void GraphicsRenderer::addCenteredRectangle(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const Color& color)
+{
+    addRectangle(position - size * 0.5f, size, layerOffset, color);
+}
 void GraphicsRenderer::addRectangleOutline(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const Color& color, const float& thickness)
 {
     // Creating the corner positions

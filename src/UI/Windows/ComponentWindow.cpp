@@ -242,24 +242,12 @@ ComponentUIGroup* ComponentWindow::generateTransformGroup(GameObject* gameObject
 	ComponentUIGroup* transformGroup = new ComponentUIGroup("Transform2D");
 	yPos += transformGroup->mQuad.h + uiScale * 5;
 
-	// Adding float entry for x-axis
-	float* xAxis = &(gameObject->getTransform()->position.x);
-	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Position X", xAxis));
+	// Adding float2 entry for position
+	transformGroup->mpElements.push_back(new Float2Entry(UIQuad(), "Position", &(gameObject->getTransform()->position)));
 	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
 
-	// Adding float entry for y-axis
-	float* yAxis = &(gameObject->getTransform()->position.y);
-	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Position Y", yAxis));
-	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
-
-	// Adding float entry for x-scale
-	float* xScale = &(gameObject->getTransform()->scale.x);
-	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Scale X", xScale));
-	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
-
-	// Adding float entry for y-scale
-	float* yScale = &(gameObject->getTransform()->scale.y);
-	transformGroup->mpElements.push_back(new FloatEntry(UIQuad(), "Scale Y", yScale));
+	// Adding float2 entry for scale
+	transformGroup->mpElements.push_back(new Float2Entry(UIQuad(), "Scale", &(gameObject->getTransform()->scale)));
 	yPos += transformGroup->mpElements.back()->getQuad().h + uiScale * 5;
 
 	// Adding float entry for rotation
