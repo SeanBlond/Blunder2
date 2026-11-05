@@ -179,7 +179,7 @@ void HierarchyWindow::DrawWindow(GraphicsRenderer* renderer)
 		0.01f, Color(0.2f), 3.0f
 	);
 
-	// Drawing a background to the histogram
+	// Drawing a background to the heirarchy
 	renderer->addRectangle(
 		{
 			renderer->getUIScale() * 5 + mPosition.getXOffset(), renderer->getUIScale() * 40 + mPosition.getYOffset(),

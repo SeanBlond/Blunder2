@@ -15,7 +15,8 @@ bool WindowManager::init(const unsigned int& width, const unsigned int& height)
 	mpViewport = new ViewportWindow();
 	mpHierarchy = new HierarchyWindow(Blunder::getInstance()->getProjectManager()->getRootObject(), Blunder::getInstance()->getProjectManager()->getActiveObject());
 	mpExplorerer = new TestWindow();
-	mpComponents = new ComponentWindow(Blunder::getInstance()->getProjectManager()->getActiveObject());
+	//mpComponents = new ComponentWindow(Blunder::getInstance()->getProjectManager()->getActiveObject());
+	mpMaterial = new MaterialWindow(nullptr);
 
 	// Creating locked windows from the default windows
 	mpRootWindow = new LockedWindow(mpViewport, nullptr, mScreenDimensions, LockedWindow::POS_NONE, GraphicsDevice::getInstance()->getRenderer()->getUIScale() * 3.0f);
@@ -23,7 +24,7 @@ bool WindowManager::init(const unsigned int& width, const unsigned int& height)
 	mpRootWindow->getWindow()->OpenWindow();
 	mpRootWindow->setLeftWindow(mpHierarchy, 0.25f);
 	mpRootWindow->setBottomWindow(mpExplorerer, 0.333f);
-	mpRootWindow->setRightWindow(mpComponents, 0.25f);
+	mpRootWindow->setRightWindow(mpMaterial, 0.25f);
 
 	// Add Event Listseners
 	EventSystem::getInstance()->addListener(EVENT_MOUSE_MOVE, this);

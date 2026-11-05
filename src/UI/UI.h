@@ -9,6 +9,7 @@
 #include "Windows/ViewportWindow.h"
 #include "Windows/ComponentWindow.h"
 #include "Windows/HierarchyWindow.h"
+#include "Windows/MaterialWindow.h"
 
 // UI - Elements
 #include "TextInput.h"

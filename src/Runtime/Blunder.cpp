@@ -48,6 +48,9 @@ bool Blunder::init(const unsigned int& width, const unsigned int& height)
     successfulInit &= mUniversalKeyMap.init(UNIVERSAL_KEYMAP_FILE);
     successfulInit &= mWindowManager.init(width, height);
 
+    // Temporarily setting the material for the material window
+    mWindowManager.getMaterial()->changeMaterial(mProjectManager.getMaterialManager()->getMaterial(1));
+
     // Setting the information of the game object buffer
     GraphicsDevice::getInstance()->getRenderer()->getGameObjectBuffer()->setGameObjectManager(mProjectManager.getGameObjectManager());
     GraphicsDevice::getInstance()->getRenderer()->getGameObjectBuffer()->setMaterialManager(mProjectManager.getMaterialManager());

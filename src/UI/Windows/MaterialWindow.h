@@ -17,6 +17,8 @@ public:
     // Functions for generating UI
     void changeMaterial(Material* material);
     void createMaterialElements();
+    void updateElementPositions();
+    UIElement* createElementFromUniform(Uniform* uniform);
 
     // Override functions (UIWindow)
     void OpenWindow() override;

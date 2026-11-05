@@ -102,7 +102,7 @@ struct Input
     if (mpUniforms.size() != 0)
     {
         // Adding the buffer to the stream
-        shaderCodeStream << "cbuffer UBO : register(b0, space0) \n{\n";
+        shaderCodeStream << "cbuffer UBO : register(b0, space3) \n{\n";
 
 		// Creating an unordedred set to keep track of the uniforms added, so there can be no repeats
 		std::unordered_set<std::string> usedUniformNames;

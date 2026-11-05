@@ -25,6 +25,7 @@ public:
 	ViewportWindow* getViewport() { return mpViewport; }
 	HierarchyWindow* getHierarchy() { return mpHierarchy; }
 	ComponentWindow* getComponents() { return mpComponents; }
+	MaterialWindow* getMaterial() { return mpMaterial; }
 
 	// Runtime Functions
 	void updateWindows(smath::vec2 screenDimensions);
@@ -47,6 +48,7 @@ private:
 	HierarchyWindow* mpHierarchy = nullptr;
 	TestWindow* mpExplorerer = nullptr;
 	ComponentWindow* mpComponents = nullptr;
+	MaterialWindow* mpMaterial = nullptr;
 };
 
 #endif // !WINDOW_MANAGEMENT

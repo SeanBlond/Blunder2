@@ -21,9 +21,7 @@ bool MaterialManager::init(std::string materialsFilepath)
 	
 	// Creating a bsic material and adding some random uniforms
 	Material* tempMaterial = new Material("TestMaterial", "resources/Materials/Shaders/TestMaterial.hlsl");
-	tempMaterial->addUniform(new IntUniform("TestInt", 10));
-	tempMaterial->addUniform(new FloatUniform("TestFloat", 3.14159f));
-	tempMaterial->addUniform(new Float2Uniform("TestFloat2", smath::vec2(1.0f, 2.0f)));
+	tempMaterial->addUniform(new Float3Uniform("Test Color", smath::vec3(0.1f, 0.3f, 0.5f)));
 	tempMaterial->loadShadercodeFile();
 	tempMaterial->generateGraphicsPipeline();
 	mpMaterialsMap.insert({ 1, tempMaterial });

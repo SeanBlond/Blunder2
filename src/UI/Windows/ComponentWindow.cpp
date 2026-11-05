@@ -31,7 +31,6 @@ void ComponentWindow::generateComponentGroups()
 	if (!mpGameObject)
 		return;
 
-
 	// Making Renderer & UI scale more accessible
 	GraphicsRenderer* renderer = GraphicsDevice::getInstance()->getRenderer();
 	float uiScale = renderer->getUIScale();
