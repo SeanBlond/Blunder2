@@ -10,18 +10,18 @@
 bool TextMeshBuffer::init(std::string textureAtlasCoords, std::string textureAtlasImage)
 {
 	// Createing the vertex shader
-	SDL_GPUShader* vertexShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/PosColorTex.vert.hlsl", SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
-	if (vertexShader == nullptr)
+	HLSLCompilationResult vertexShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/PosColorTex.vert.hlsl", SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
+	if (!(vertexShader.shaderExists()))
 	{
-		std::cout << "Failed to create vertex shader with errors: " << SDL_GetError() << std::endl;
+		std::cout << "Failed to create vertex shader with errors: " << vertexShader.outputCompilationErrors() << std::endl;
 		return false;
 	}
 
 	// Creating the fragment shader
-	SDL_GPUShader* fragmentShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/PosColorTex.frag.hlsl", SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
-	if (fragmentShader == nullptr)
+	HLSLCompilationResult fragmentShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/PosColorTex.frag.hlsl", SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
+	if (!(fragmentShader.shaderExists()))
 	{
-		std::cout << "Failed to create fragment shader with errors: " << SDL_GetError() << std::endl;
+		std::cout << "Failed to create fragment shader with errors: " << fragmentShader.outputCompilationErrors() << std::endl;
 		return false;
 	}
 
@@ -84,8 +84,8 @@ bool TextMeshBuffer::init(std::string textureAtlasCoords, std::string textureAtl
 
 	// Creating the pipeline
 	SDL_GPUGraphicsPipelineCreateInfo pipelineCreateInfo = {
-		.vertex_shader = vertexShader,
-		.fragment_shader = fragmentShader,
+		.vertex_shader = vertexShader.mpCompiledShader,
+		.fragment_shader = fragmentShader.mpCompiledShader,
 		.vertex_input_state = SDL_GPUVertexInputState{
 			.vertex_buffer_descriptions = vertexBufferDesc,
 			.num_vertex_buffers = 1,
@@ -120,8 +120,8 @@ bool TextMeshBuffer::init(std::string textureAtlasCoords, std::string textureAtl
 	SDL_DestroyProperties(pipelineProps);
 
 	// Releasing shaders
-	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), vertexShader);
-	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), fragmentShader);
+	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), vertexShader.mpCompiledShader);
+	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), fragmentShader.mpCompiledShader);
 
 	// Small amount of initial elements to set the initial capacities of the buffers
 	const size_t INITIAL_ELEMENT_COUNT = 64;

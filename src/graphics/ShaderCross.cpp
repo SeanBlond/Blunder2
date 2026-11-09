@@ -75,7 +75,7 @@ void ShaderCross::cleanup()
 
 
 // Runtime Functions
-SDL_GPUShader* ShaderCross::createShaderFromHLSLFile(SDL_GPUDevice* device, std::string filepath, SDL_ShaderCross_ShaderStage stage)
+HLSLCompilationResult ShaderCross::createShaderFromHLSLFile(SDL_GPUDevice* device, std::string filepath, SDL_ShaderCross_ShaderStage stage)
 {
     // Loading in the shader file
     std::ifstream shaderFile(filepath);
@@ -84,7 +84,7 @@ SDL_GPUShader* ShaderCross::createShaderFromHLSLFile(SDL_GPUDevice* device, std:
     if (!shaderFile)
     {
         std::cout << "Failed to load shader file found at path: " << filepath << std::endl;
-        return nullptr;
+        return HLSLCompilationResult();
     }
 
     // Loading the file into a stringstream so it can be converted to a string for the info to use
@@ -95,11 +95,11 @@ SDL_GPUShader* ShaderCross::createShaderFromHLSLFile(SDL_GPUDevice* device, std:
     // Calling creation function with the source code
     return createShaderFromHLSLCode(device, shaderSourceCode, stage);
 }
-SDL_GPUShader* ShaderCross::createShaderFromHLSLCode(SDL_GPUDevice* device, const std::string& shaderCode, SDL_ShaderCross_ShaderStage stage)
+HLSLCompilationResult ShaderCross::createShaderFromHLSLCode(SDL_GPUDevice* device, const std::string& shaderCode, SDL_ShaderCross_ShaderStage stage)
 {
     // If the stage is compute, return null
     if (stage == SDL_SHADERCROSS_SHADERSTAGE_COMPUTE)
-        return nullptr;
+        return HLSLCompilationResult();
 
     // Creating the information for the shader
     SDL_ShaderCross_HLSL_Info tempHLSLInfo =
@@ -118,8 +118,13 @@ SDL_GPUShader* ShaderCross::createShaderFromHLSLCode(SDL_GPUDevice* device, cons
     // Checking if the compilation went wrong
     if (!spirvCode)
     {
-        std::cout << "Failed to compile hlsl shadercode to SPIRV with errors " << SDL_GetError() << std::endl;
-        return nullptr;
+        // Creating output struct
+        HLSLCompilationResult result =
+        {
+            .mpCompiledShader = nullptr,
+            .mErrors = parseErrorsAfterFailure()
+        };
+        return result;
     }
 
     // Creating info for the SPIRV shader (deja vu)
@@ -138,7 +143,7 @@ SDL_GPUShader* ShaderCross::createShaderFromHLSLCode(SDL_GPUDevice* device, cons
     if (!tempMetadata)
     {
         std::cout << "Failed to create a graphics shader with errors: " << SDL_GetError() << std::endl;
-        return nullptr;
+        return HLSLCompilationResult();
     }
 
     // Getting the resource info
@@ -159,11 +164,15 @@ SDL_GPUShader* ShaderCross::createShaderFromHLSLCode(SDL_GPUDevice* device, cons
     {
         std::cout << "Failed to convert SPIRV bytecode to shader" << std::endl;
         std::cout << SDL_GetError() << std::endl;
-        return nullptr;
+        return HLSLCompilationResult();
     }
 
-    // Returning the properly compiled shader!
-    return tempShader;
+    // Creating output struct
+    HLSLCompilationResult result =
+    {
+        .mpCompiledShader = tempShader,
+    };
+    return result;
 }
 SDL_GPUComputePipeline* ShaderCross::createComputePipelineFromHLSL(SDL_GPUDevice* device, std::string filepath)
 {
@@ -235,4 +244,77 @@ SDL_GPUComputePipeline* ShaderCross::createComputePipelineFromHLSL(SDL_GPUDevice
 
     // Returning the pipeline
     return tempPipeline;
+}
+
+// Private error parsing function definition
+std::vector<HLSLError> ShaderCross::parseErrorsAfterFailure()
+{
+    // Obtainting the error message
+    std::string errorMessage = SDL_GetError();
+
+    // Checking if the message starts with "HLSL compilation failed: "
+    if (errorMessage.substr(0, 25) != "HLSL compilation failed: ")
+    {
+        // Contains no hlsl compilation errors, return blank
+        return {};
+    }
+
+    // Defining a vector of errors that will be returned
+    std::vector<HLSLError> errors;
+
+    // Creating a readble string stream from the clipped error message
+    std::stringstream errorStream(errorMessage.substr(25));
+
+    // Looping through each line of the error stream a max of 10 times
+    for (int i = 0; i < 10; i++)
+    {
+
+        // Reading the line from the stream
+        std::string tempString = "";
+        std::getline(errorStream, tempString);
+
+        // Checking if the line means that the loop should quit
+        if (tempString == "" || tempString == "\n")
+            break;
+
+        // Checking if the line starts with the hlsl error code
+        if (tempString.substr(0, 8) == "hlsl.hlsl:")
+            continue;
+
+        // Getting the line info using regex
+        tempString = tempString.substr(8);
+        std::regex errorPattern(R"(:([0-9]+):([0-9]+):\s*error:\s*(.*))");
+        std::smatch errorMatches;
+
+        if (std::regex_search(tempString, errorMatches, errorPattern))
+        {
+            errors.push_back(
+            {
+                .mLine = std::stoi(errorMatches[1].str()),
+                .mCharacter = std::stoi(errorMatches[2].str()),
+                .mErrorMessage = errorMatches[3].str()
+            });
+        }
+    }
+
+    // Adding an HLSLError for each error observed in the SDL_Error
+    return errors;
+}
+
+// Function definition for error output handling
+std::string HLSLError::outputError()
+{
+    std::string errorString = "ERROR AT LINE " + std::to_string(mLine) + ", CHAR " + std::to_string(mCharacter) + ": " + mErrorMessage + '\n';
+    return errorString;
+}
+
+std::string HLSLCompilationResult::outputCompilationErrors()
+{
+    // Adding each compilation error to a string
+    std::string outputString = "\n";
+    for (HLSLError error : mErrors)
+    {
+        outputString += error.outputError();
+    }
+    return outputString;
 }

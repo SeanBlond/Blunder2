@@ -61,6 +61,15 @@ void MaterialWindow::createMaterialElements()
         ));
         yPos += createdElement->getQuad().h + uiScale * 5;
     }
+
+    // Adding a button for recompiling the material
+    UIElement* recompileButton = new TextButton(UIQuad(
+        smath::vec2(mPosition.getXOffset() + 10 * uiScale, yPos),
+        smath::vec2(mPosition.getWidth() - 20 * uiScale, 40 * uiScale)),
+        "Recompile", new Event(EVENT_SOFTWARE_RECOMPILE_MATERIAL), renderer->getTextSize(TEXT_NORMAL)
+    );
+    addElement(recompileButton);
+    yPos += recompileButton->getQuad().h + uiScale * 5;
 }
 void MaterialWindow::createMaterialSettings()
 {
@@ -283,6 +292,12 @@ void MaterialWindow::handleEvent(const Event& event)
             mpMaterial->generateGraphicsPipeline();
         }
     }
+    else if (event.getType() == EVENT_SOFTWARE_RECOMPILE_MATERIAL)
+    {
+        // If there is an active material, recompile it!
+        if (mpMaterial)
+            mpMaterial->generateGraphicsPipeline();
+    }
 }
 
 // Private function for adding events to listen to
@@ -290,4 +305,5 @@ void MaterialWindow::addEvents()
 {
     EventSystem::getInstance()->addListener(EVENT_SOFTWARE_TOGGLE_MATERIAL_EDITING, this);
     EventSystem::getInstance()->addListener(EVENT_SOFTWARE_UPDATE_UNIFORM_TYPE, this);
+    EventSystem::getInstance()->addListener(EVENT_SOFTWARE_RECOMPILE_MATERIAL, this);
 }

@@ -29,6 +29,7 @@ public:
     // Graphics Pipeline functions
     bool generateGraphicsPipeline();
     bool bind(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass);
+    bool hasValidPipeline() { return (mpPipeline != nullptr); }
     static std::string getBaseVertexCode() { return VERTEX_SHADER_CODE; }
 
     // Getters

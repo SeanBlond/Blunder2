@@ -6,18 +6,18 @@
 bool GameObjectBuffer::init()
 {
 	// Createing the vertex shader
-	SDL_GPUShader* vertexShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/TextureDisplay.vert.hlsl", SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
-	if (!vertexShader)
+	HLSLCompilationResult vertexShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/TextureDisplay.vert.hlsl", SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
+	if (!(vertexShader.shaderExists()))
 	{
-		std::cout << "Failed to create vertex shader with errors: " << SDL_GetError() << std::endl;
+		std::cout << "Failed to create vertex shader with errors: " << vertexShader.outputCompilationErrors() << std::endl;
 		return false;
 	}
 
 	// Creating the fragment shader
-	SDL_GPUShader* fragmentShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/TextureDisplay.frag.hlsl", SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
-	if (!fragmentShader)
+	HLSLCompilationResult fragmentShader = ShaderCross::getInstance()->createShaderFromHLSLFile(GraphicsDevice::getInstance()->getDevice(), "resources/shaders/TextureDisplay.frag.hlsl", SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
+	if (!(fragmentShader.shaderExists()))
 	{
-		std::cout << "Failed to create fragment shader with errors: " << SDL_GetError() << std::endl;
+		std::cout << "Failed to create fragment shader with errors: " << fragmentShader.outputCompilationErrors() << std::endl;
 		return false;
 	}
 
@@ -75,8 +75,8 @@ bool GameObjectBuffer::init()
 	// Creating the pipeline
 	colorTargetDescriptions->format = SDL_GetGPUSwapchainTextureFormat(GraphicsDevice::getInstance()->getDevice(), GraphicsDevice::getInstance()->getWindow());
 	SDL_GPUGraphicsPipelineCreateInfo pipelineCreateInfo = {
-		.vertex_shader = vertexShader,
-		.fragment_shader = fragmentShader,
+		.vertex_shader = vertexShader.mpCompiledShader,
+		.fragment_shader = fragmentShader.mpCompiledShader,
 		.vertex_input_state = SDL_GPUVertexInputState{
 			.vertex_buffer_descriptions = vertexBufferDesc,
 			.num_vertex_buffers = 1,
@@ -111,8 +111,8 @@ bool GameObjectBuffer::init()
 	SDL_DestroyProperties(pipelineProps);
 
 	// Releasing shaders
-	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), vertexShader);
-	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), fragmentShader);
+	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), vertexShader.mpCompiledShader);
+	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), fragmentShader.mpCompiledShader);
 
 	// * --------------------------------- *
 	// |  Creating Vertex & Index Buffers  |
@@ -518,7 +518,7 @@ void GameObjectBuffer::drawGameObjectToTexture(GameObject* object, SDL_GPUComman
 
 	// Checking if the gameobject's material is valid
 	Material* objectMaterial = mpMaterialManager->getMaterial(object->getMaterialKey());
-	if (objectMaterial)
+	if (objectMaterial && objectMaterial->hasValidPipeline())
 	{
 		// Material is valid, binding it
 		if (!(objectMaterial->bind(commandBuffer, renderPass)))

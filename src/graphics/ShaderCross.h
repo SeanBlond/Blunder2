@@ -4,10 +4,29 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <vector>
 #include <mutex>
+#include <regex>
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_gpu.h>
 #include <SDL3_shadercross/SDL_shadercross.h>
+
+// Struct for containing hlsl compilation errors
+struct HLSLError
+{
+    int mLine;
+    int mCharacter;
+    std::string mErrorMessage;
+    std::string outputError();
+};
+struct HLSLCompilationResult
+{
+    SDL_GPUShader* mpCompiledShader = nullptr;
+    std::vector<HLSLError> mErrors;
+
+    bool shaderExists() { return (mpCompiledShader != nullptr); }
+    std::string outputCompilationErrors();
+};
 
 // Singleton class meant to simplify the use of SDL_ShaderCross throughout the project
 class ShaderCross
@@ -23,8 +42,8 @@ public:
     void cleanup();
 
     // Runtime Functions
-    SDL_GPUShader* createShaderFromHLSLFile(SDL_GPUDevice* device, std::string filepath, SDL_ShaderCross_ShaderStage stage);
-    SDL_GPUShader* createShaderFromHLSLCode(SDL_GPUDevice* device, const std::string& shaderCode, SDL_ShaderCross_ShaderStage stage);
+    HLSLCompilationResult createShaderFromHLSLFile(SDL_GPUDevice* device, std::string filepath, SDL_ShaderCross_ShaderStage stage);
+    HLSLCompilationResult createShaderFromHLSLCode(SDL_GPUDevice* device, const std::string& shaderCode, SDL_ShaderCross_ShaderStage stage);
     SDL_GPUComputePipeline* createComputePipelineFromHLSL(SDL_GPUDevice* device, std::string filepath);
 
     // Disallowing the copy constructor and assignment operator
@@ -37,6 +56,8 @@ private:
     static std::mutex mThread;
     static bool mInitialized;
 
+    // Private function for parsing errors from a failed shader creation
+    std::vector<HLSLError> parseErrorsAfterFailure();
 
     // Making the constructor & deconstructor private to enfore the singleton
     ShaderCross() {}

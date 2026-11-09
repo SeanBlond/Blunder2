@@ -172,12 +172,28 @@ float4 main(Input input) : SV_Target0
 
     // Creating a pipeline from the code
     std::string sourceCode = shaderCodeStream.str();
-    SDL_GPUShader* fragShader = ShaderCross::getInstance()->createShaderFromHLSLCode(GraphicsDevice::getInstance()->getDevice(), sourceCode, SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
+    HLSLCompilationResult fragShader = ShaderCross::getInstance()->createShaderFromHLSLCode(GraphicsDevice::getInstance()->getDevice(), sourceCode, SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
 
-    // TODO: Add output for errors in code if there are any
+    // Relative output for errors in code if there are any
+	if (!(fragShader.shaderExists()))
+	{
+		if (fragShader.mErrors.size() > 0)
+		{
+			std::cout << "Material \"" << mMaterialName << "\" has compilation errors: " << std::endl;
+			for (HLSLError error : fragShader.mErrors)
+			{
+				std::cout << "ERROR " << (error.mLine - 12) << ':' << error.mCharacter << ": " << error.mErrorMessage << std::endl;
+			}
+			std::cout << std::endl;
+		}
+		else
+		{
+			std::cout << "Material \"" << mMaterialName << "\" fragment shader could not be loaded: " << std::endl;
+		}
+	}
 
     // Returning the shader (whether it be null or not)
-    return fragShader;
+    return fragShader.mpCompiledShader;
 }
 bool Material::generateGraphicsPipeline()
 {
@@ -196,10 +212,10 @@ bool Material::generateGraphicsPipeline()
     }
 
     // Creating the vertex shader
-    SDL_GPUShader* vertShader = ShaderCross::getInstance()->createShaderFromHLSLCode(GraphicsDevice::getInstance()->getDevice(), VERTEX_SHADER_CODE, SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
-    if (!vertShader)
+    HLSLCompilationResult vertShader = ShaderCross::getInstance()->createShaderFromHLSLCode(GraphicsDevice::getInstance()->getDevice(), VERTEX_SHADER_CODE, SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
+    if (!(vertShader.shaderExists()))
     {
-        std::cout << "Failed to create vertex shader with errors: " << SDL_GetError() << std::endl;
+        std::cout << "Failed to create vertex shader with errors: " << vertShader.outputCompilationErrors() << std::endl;
         return false;
     }
 
@@ -257,7 +273,7 @@ bool Material::generateGraphicsPipeline()
 
 	// Creating the pipeline
 	SDL_GPUGraphicsPipelineCreateInfo pipelineCreateInfo = {
-		.vertex_shader = vertShader,
+		.vertex_shader = vertShader.mpCompiledShader,
 		.fragment_shader = fragShader,
 		.vertex_input_state = SDL_GPUVertexInputState{
 			.vertex_buffer_descriptions = vertexBufferDesc,
@@ -292,7 +308,7 @@ bool Material::generateGraphicsPipeline()
 	SDL_DestroyProperties(pipelineProps);
 
 	// Releasing shaders
-	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), vertShader);
+	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), vertShader.mpCompiledShader);
 	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), fragShader);
 
 	return (mpPipeline != nullptr);

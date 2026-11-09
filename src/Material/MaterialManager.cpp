@@ -46,16 +46,16 @@ void MaterialManager::cleanup()
 SDL_GPUGraphicsPipeline* MaterialManager::generateBasicPipeline()
 {
 	// Creating the vertex shader
-	SDL_GPUShader* vertShader = ShaderCross::getInstance()->createShaderFromHLSLCode(GraphicsDevice::getInstance()->getDevice(), Material::getBaseVertexCode(), SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
-	if (!vertShader)
+	HLSLCompilationResult vertShader = ShaderCross::getInstance()->createShaderFromHLSLCode(GraphicsDevice::getInstance()->getDevice(), Material::getBaseVertexCode(), SDL_SHADERCROSS_SHADERSTAGE_VERTEX);
+	if (!(vertShader.shaderExists()))
 	{
 		std::cout << "Failed to create Material Manager base vertex shader with errors: " << SDL_GetError() << std::endl;
 		return nullptr;
 	}
 
 	// Creating the fragment shader
-	SDL_GPUShader* fragShader = ShaderCross::getInstance()->createShaderFromHLSLCode(GraphicsDevice::getInstance()->getDevice(), FRAGMENT_SHADER_CODE, SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
-	if (!fragShader)
+	HLSLCompilationResult fragShader = ShaderCross::getInstance()->createShaderFromHLSLCode(GraphicsDevice::getInstance()->getDevice(), FRAGMENT_SHADER_CODE, SDL_SHADERCROSS_SHADERSTAGE_FRAGMENT);
+	if (!(fragShader.shaderExists()))
 	{
 		std::cout << "Failed to create Material Manager base fragment shader with errors: " << SDL_GetError() << std::endl;
 		return nullptr;
@@ -115,8 +115,8 @@ SDL_GPUGraphicsPipeline* MaterialManager::generateBasicPipeline()
 
 	// Creating the pipeline
 	SDL_GPUGraphicsPipelineCreateInfo pipelineCreateInfo = {
-		.vertex_shader = vertShader,
-		.fragment_shader = fragShader,
+		.vertex_shader = vertShader.mpCompiledShader,
+		.fragment_shader = fragShader.mpCompiledShader,
 		.vertex_input_state = SDL_GPUVertexInputState{
 			.vertex_buffer_descriptions = vertexBufferDesc,
 			.num_vertex_buffers = 1,
@@ -150,8 +150,8 @@ SDL_GPUGraphicsPipeline* MaterialManager::generateBasicPipeline()
 	SDL_DestroyProperties(pipelineProps);
 
 	// Releasing shaders
-	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), vertShader);
-	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), fragShader);
+	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), vertShader.mpCompiledShader);
+	SDL_ReleaseGPUShader(GraphicsDevice::getInstance()->getDevice(), fragShader.mpCompiledShader);
 
 	// Returning the pipeline
 	return tempPipeline;
