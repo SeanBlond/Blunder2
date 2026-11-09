@@ -22,6 +22,7 @@ public:
 
     // Uniforms Management functions
     void addUniform(Uniform* uniform);
+    void replaceUniformAt(UniformType newType, int index);
     int getUniformCount() const;
     Uniform* getUniformAtIndex(const int& index);
 
@@ -29,6 +30,10 @@ public:
     bool generateGraphicsPipeline();
     bool bind(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass);
     static std::string getBaseVertexCode() { return VERTEX_SHADER_CODE; }
+
+    // Getters
+    std::string getName() const { return mMaterialName; }
+    std::string* getNameAddress() { return &mMaterialName; }
 
 private:
     std::string mMaterialName = "";

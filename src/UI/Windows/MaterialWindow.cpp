@@ -29,7 +29,13 @@ void MaterialWindow::createMaterialElements()
     // Determining the starting y position of the elements
     float yPos = 45 * uiScale + mPosition.getYOffset();
 
-    // TODO: Add a text entry for the material name
+    // Adding a button for settings
+    UIElement* settingsButton = new ImageButton(UIQuad(
+        smath::vec2(mPosition.getXOffset() + mPosition.getWidth() - uiScale * 45, yPos + uiScale * 5),
+        smath::vec2(uiScale * 30)), 
+        "Settings_Symbol", new Event(EVENT_SOFTWARE_TOGGLE_MATERIAL_EDITING));
+    addElement(settingsButton);
+    yPos += uiScale * 45;
 
     // Looping through each uniform in the material and adding it
     for (int i = 0; i < mpMaterial->getUniformCount(); i++)
@@ -54,6 +60,57 @@ void MaterialWindow::createMaterialElements()
             smath::vec2(mPosition.getWidth() - 20 * uiScale, 40 * uiScale)
         ));
         yPos += createdElement->getQuad().h + uiScale * 5;
+    }
+}
+void MaterialWindow::createMaterialSettings()
+{
+    // Removing all the old elements
+    removeAllElements();
+
+    // Clearing the uniform type vector
+    mUniformTypes.clear();
+
+    // Checking if the material is null
+    if (!mpMaterial)
+        return; // Do nothing!
+
+    // Making Renderer & UI scale more accessible
+    GraphicsRenderer* renderer = GraphicsDevice::getInstance()->getRenderer();
+    float uiScale = renderer->getUIScale();
+
+    // Determining the starting y position of the elements
+    float yPos = 45 * uiScale + mPosition.getYOffset();
+
+    // Adding a button for settings
+    UIElement* settingsButton = new ImageButton(UIQuad(
+        smath::vec2(mPosition.getXOffset() + mPosition.getWidth() - uiScale * 45, yPos + uiScale * 5),
+        smath::vec2(uiScale * 30)),
+        "Settings_Symbol", new Event(EVENT_SOFTWARE_TOGGLE_MATERIAL_EDITING));
+    addElement(settingsButton);
+
+    // Adding a text entry for the name
+    UIElement* nameTextEntry = new TextEntry(UIQuad(
+        smath::vec2(mPosition.getXOffset() + uiScale * 10, yPos),
+        smath::vec2(mPosition.getWidth() - 80 * uiScale, 40 * uiScale)),
+        mpMaterial->getNameAddress()
+        );
+    addElement(nameTextEntry);
+    yPos += nameTextEntry->getQuad().h + uiScale * 5;
+
+    // Looping through each uniform in the material and creating settings for it
+    for (int i = 0; i < mpMaterial->getUniformCount(); i++)
+    {
+        Uniform* uniform = mpMaterial->getUniformAtIndex(i);
+
+        // Adding a integer value for the uniform type
+        mUniformTypes.push_back((!uniform ? 0 : (int)(uniform->getType())));
+
+        // If the uniform is null, skip
+        if (!uniform)
+            continue;
+
+        // Otherwise, create settings elements for it
+        createSettingsFromUniform(uniform, i, uiScale, yPos);
     }
 }
 void MaterialWindow::updateElementPositions()
@@ -107,6 +164,28 @@ UIElement* MaterialWindow::createElementFromUniform(Uniform* uniform)
     // Returning the (potentially) newly created elements
     return outputElement;
 }
+void MaterialWindow::createSettingsFromUniform(Uniform* uniform, int uniformIndex, float uiScale, float& yPos)
+{
+    // Calculating the width of each ui element
+    float elementWidth = (mPosition.getWidth() - uiScale * 25.0f) * 0.5f;
+
+    // Creating a text entry for the uniform name
+    UIElement* uniformNameEntry = new UniformTextEntry(UIQuad(
+        smath::vec2(mPosition.getXOffset() + uiScale * 10, yPos),
+        smath::vec2(elementWidth, 40 * uiScale)),
+        uniform);
+    addElement(uniformNameEntry);
+
+    // Creating a dropdown for the uniform type
+    UIElement* uniformTypeDropdown = new Dropdown(UIQuad(
+        smath::vec2(mPosition.getXOffset() + uiScale * 15 + elementWidth, yPos),
+        smath::vec2(elementWidth, 40 * uiScale)), 
+        &mUniformTypes[uniformIndex], UNIFORM_OPTIONS, new IntValueEvent(EVENT_SOFTWARE_UPDATE_UNIFORM_TYPE, uniformIndex));
+    addElement(uniformTypeDropdown);
+
+    yPos += uniformNameEntry->getQuad().h + uiScale * 5;
+}
+
 
 // Override functions (UIWindow)
 void MaterialWindow::OpenWindow()
@@ -150,9 +229,65 @@ void MaterialWindow::DrawWindow(GraphicsRenderer* renderer)
         0.01f, Color(0.2f)
     );
 
+    // If not editing, draw name of the material
+    if (!mIsEditing && mpMaterial)
+    {
+        renderer->addText(
+            mpMaterial->getName(),
+            mPosition.getOffset() + smath::vec2(renderer->getUIScale() * 10, renderer->getUIScale() * 55), 0.04f, renderer->getTextSize(TEXT_NORMAL),
+            Color(1), TEXT_H_LEFT, TEXT_V_TOP
+        );
+    }
+
     // Looping through each element and drawing it
     for (UIElement* element : mpElements)
     {
         element->drawElement(renderer, 0.05f);
     }
+}
+
+// Override function definition (EventListener)
+void MaterialWindow::handleEvent(const Event& event)
+{
+    // Checking if proper event was received
+    if (event.getType() == EVENT_SOFTWARE_TOGGLE_MATERIAL_EDITING)
+    {
+        // If currently editing, delete edditing elements and spawn in new ones
+        if (mIsEditing)
+        {
+            createMaterialElements();
+            mIsEditing = false;
+        }
+        // Otherwise, spawn in settings elements
+        else
+        {
+            createMaterialSettings();
+            mIsEditing = true;
+        }
+    }
+    else if (event.getType() == EVENT_SOFTWARE_UPDATE_UNIFORM_TYPE)
+    {
+        // Casting the event to the propper type
+        const IntValueEvent& castEvent = static_cast<const IntValueEvent&>(event);
+
+        // Determing the new value type of the uniform
+        UniformType newType = (UniformType)mUniformTypes[castEvent.getIntValue()];
+
+        // If the material is valid, replace the uniform with a new type
+        if (mpMaterial)
+        {
+            // Replacing the uniform
+            mpMaterial->replaceUniformAt(newType, castEvent.getIntValue());
+
+            // Recompilig the material
+            mpMaterial->generateGraphicsPipeline();
+        }
+    }
+}
+
+// Private function for adding events to listen to
+void MaterialWindow::addEvents()
+{
+    EventSystem::getInstance()->addListener(EVENT_SOFTWARE_TOGGLE_MATERIAL_EDITING, this);
+    EventSystem::getInstance()->addListener(EVENT_SOFTWARE_UPDATE_UNIFORM_TYPE, this);
 }

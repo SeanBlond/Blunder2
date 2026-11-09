@@ -36,6 +36,8 @@ enum EventType
     EVENT_SOFTWARE_HIERARCHY_DROPDOWN,
     EVENT_CHANGE_ACTIVE_OBJECT,
     EVENT_SOFTWARE_FOCUS_ON_ACTIVE_OBJECT,
+    EVENT_SOFTWARE_TOGGLE_MATERIAL_EDITING,
+    EVENT_SOFTWARE_UPDATE_UNIFORM_TYPE,
 };
 
 
@@ -236,7 +238,7 @@ public:
     IntValueEvent(EventType event, int value) : Event(event), mIntValue(value) {}
 
     // Getters
-    int getIntValue() { return mIntValue; }
+    int getIntValue() const { return mIntValue; }
 
 private:
     int mIntValue;

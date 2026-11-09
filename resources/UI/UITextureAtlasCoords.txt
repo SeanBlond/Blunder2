@@ -61,3 +61,7 @@ SIZE 0.2 0.2
 NAME Close_Symbol
 ORIGIN 0.0 0.6
 SIZE 0.2 0.2
+
+NAME Settings_Symbol
+ORIGIN 0.2 0.6
+SIZE 0.2 0.2

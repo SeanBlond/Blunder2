@@ -149,5 +149,32 @@ inline std::string UniformTypeToString(UniformType type)
     return output;
 }
 
+inline Uniform* newUniformFromType(UniformType type, std::string name)
+{
+    Uniform* output = nullptr;
+
+    switch (type)
+    {
+    case UNIFORM_INT:
+        output = new IntUniform(name, 0);
+        break;
+    case UNIFORM_FLOAT:
+        output = new FloatUniform(name, 0.0f);
+        break;
+    case UNIFORM_FLOAT2:
+        output = new Float2Uniform(name, smath::vec2());
+        break;
+    case UNIFORM_FLOAT3:
+        output = new Float3Uniform(name, smath::vec3());
+        break;
+    case UNIFORM_FLOAT4:
+        output = new Float4Uniform(name, smath::vec4());
+        break;
+    }
+
+    return output;
+}
+
+
 
 #endif // !UNIFORMS

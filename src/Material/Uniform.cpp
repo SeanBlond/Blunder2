@@ -34,8 +34,8 @@ std::string Uniform::convertToVariable(std::string name)
     if (name.empty())
         return "_var";
     
-    // Deifning the output variable, and that it starts with a '_'
-    std::string outputName = "_";
+    // Deifning the output variable, and that it starts with a '_', if it doesn't already
+    std::string outputName = (name[0] == '_' ? "" : "_");
 
     // Looping through each character
     for (char ch : name)

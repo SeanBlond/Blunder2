@@ -58,6 +58,10 @@ void Dropdown::onRelease(MouseClickData clickData)
 {
     // Deactivating dropdown
     mDroppedDown = false;
+
+    // Calling click event if needed
+    if (mpClickEvent)
+        EventSystem::getInstance()->fire(*mpClickEvent);
 }
 void Dropdown::drawElement(GraphicsRenderer* renderer, float layerOffset)
 {

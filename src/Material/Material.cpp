@@ -68,6 +68,19 @@ void Material::addUniform(Uniform* uniform)
 {
     mpUniforms.push_back(uniform);
 }
+void Material::replaceUniformAt(UniformType newType, int index)
+{
+	// Do nothing if invalid index
+	if (index < 0 || index >= mpUniforms.size())
+		return;
+
+	// Removing the old one
+	std::string uniformName = mpUniforms[index]->getUniformName();
+	mpUniforms.erase(mpUniforms.begin() + index);
+
+	// Adding the new uniform
+    mpUniforms.insert(mpUniforms.begin() + index, newUniformFromType(newType, uniformName));
+}
 int Material::getUniformCount() const
 {
     return mpUniforms.size();
@@ -170,7 +183,10 @@ bool Material::generateGraphicsPipeline()
 {
 	// Deallocating the current pipeline if it exists
 	if (mpPipeline)
+	{
 		SDL_ReleaseGPUGraphicsPipeline(GraphicsDevice::getInstance()->getDevice(), mpPipeline);
+		mpPipeline = nullptr;
+	}
 
     // Creating the fragment shader
     SDL_GPUShader* fragShader = createFragmentShader();

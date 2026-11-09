@@ -1,4 +1,4 @@
-#ifndef TEXT_ENTRY
+#ifndef HIERARCHY_TEXT_ENTRY
 #pragma once
 
 #include "../UIElement.h"

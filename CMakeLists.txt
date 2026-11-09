@@ -52,6 +52,8 @@ add_executable(${PROJECT_NAME}
     "src/UI/Elements/Dropdown.h" "src/UI/Elements/Dropdown.cpp"     
     "src/UI/Elements/ViewportScroller.h" "src/UI/Elements/ViewportScroller.cpp"     
     "src/UI/Elements/InvisibleButton.h" "src/UI/Elements/InvisibleButton.cpp"
+    "src/UI/Elements/TextEntry.h" "src/UI/Elements/TextEntry.cpp"
+    "src/UI/Elements/UniformTextEntry.h" "src/UI/Elements/UniformTextEntry.cpp"
 
     # UI - Labelled Elements
     "src/UI/Elements/Labelled Elements/IntEntry.h" "src/UI/Elements/Labelled Elements/IntEntry.cpp"

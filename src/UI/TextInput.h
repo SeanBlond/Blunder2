@@ -41,6 +41,7 @@ public:
     void startTyping(const std::string& text);
     void inputText(const std::string& text);
     void endTyping(bool saveText);
+    void setText(std::string text) { mInputText = mStoredText = text; }
 
     // Drawing function
     void drawTextInput(GraphicsRenderer* renderer, smath::vec2 pos, float layerOffset, Color color = Color(1),
