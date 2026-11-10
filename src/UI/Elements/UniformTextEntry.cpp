@@ -18,8 +18,17 @@ void UniformTextEntry::onRelease(MouseClickData clickData)
 }
 void UniformTextEntry::drawElement(GraphicsRenderer* renderer, float layerOffset)
 {
+    // Determing the background color of the text entry
+    Color backgroundColor = 0.15f;
+    if (mClicked || getTyping())
+        backgroundColor = 0.075f;
+    else if (mHighlighted)
+        backgroundColor = 0.1f;
+
     // Drawing a rect around the text entry
-    Color backgroundColor = getTyping() ? Color(0.1f) : Color(0.15f);
+    renderer->addRectangle(mQuad.getSDL_FRect(), layerOffset, backgroundColor);
+
+    // Drawing a rect around the text entry]
     renderer->addRectangle(mQuad.getSDL_FRect(), layerOffset, backgroundColor);
 
     // Drawing the text

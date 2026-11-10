@@ -73,14 +73,14 @@ void Dropdown::drawElement(GraphicsRenderer* renderer, float layerOffset)
         effect = 0.75f;
 
     // Drawing Dropdown Box
-    renderer->addRectangle(mQuad.getSDL_FRect(), layerOffset, Color(0.2f) * effect);
+    renderer->addRectangle(mQuad.getSDL_FRect(), layerOffset, Color(0.15f) * effect);
     
     // Drawing text for the current value
     renderer->addText(mOptions[*mpIndex], mQuad.MiddleRight() - smath::vec2(1.0f * renderer->getUIScale(), 0.0f), layerOffset + 0.01f, renderer->getTextSize(TEXT_NORMAL), Color(1.0f), TEXT_H_RIGHT, TEXT_V_MIDDLE);
 
     // Drawing Dropdown Icon
     std::string dropdownKey = (mDroppedDown ? "Dropdown_True_Symbol" : "Dropdown_False_Symbol");
-    renderer->addTexQuad(mQuad.MiddleLeft() + smath::vec2(8.0f * renderer->getUIScale(), 0.0f), smath::vec2(mQuad.h * 0.5f), 0.04f, dropdownKey, Color(1), true);
+    renderer->addTexQuad(mQuad.MiddleLeft() + smath::vec2(8.0f * renderer->getUIScale(), 0.0f), smath::vec2(mQuad.h * 0.5f), layerOffset + 0.02f, dropdownKey, Color(1), true);
 
     // Drawing each option if dropped down
     if (mDroppedDown)
