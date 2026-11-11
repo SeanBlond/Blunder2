@@ -77,7 +77,12 @@ void MaterialWindow::createMaterialSettings()
     removeAllElements();
 
     // Clearing the uniform type vector
-    mUniformTypes.clear();
+    for (int* type : mpUniformTypes)
+    {
+        delete type;
+        type = nullptr;
+    }
+    mpUniformTypes.clear();
 
     // Checking if the material is null
     if (!mpMaterial)
@@ -102,7 +107,7 @@ void MaterialWindow::createMaterialSettings()
         smath::vec2(mPosition.getXOffset() + uiScale * 10, yPos),
         smath::vec2(mPosition.getWidth() - 80 * uiScale, 40 * uiScale)),
         mpMaterial->getNameAddress()
-        );
+    );
     addElement(nameTextEntry);
     yPos += nameTextEntry->getQuad().h + uiScale * 5;
 
@@ -112,7 +117,7 @@ void MaterialWindow::createMaterialSettings()
         Uniform* uniform = mpMaterial->getUniformAtIndex(i);
 
         // Adding a integer value for the uniform type
-        mUniformTypes.push_back((!uniform ? 0 : (int)(uniform->getType())));
+        mpUniformTypes.push_back((!uniform ? 0 : new int(uniform->getType())));
 
         // If the uniform is null, skip
         if (!uniform)
@@ -121,6 +126,15 @@ void MaterialWindow::createMaterialSettings()
         // Otherwise, create settings elements for it
         createSettingsFromUniform(uniform, i, uiScale, yPos);
     }
+
+    // Adding a button for adding a new uniform
+    UIElement* addUniformButton = new TextButton(UIQuad(
+        smath::vec2(mPosition.getXOffset() + 10 * uiScale, yPos),
+        smath::vec2(mPosition.getWidth() - 20 * uiScale, 40 * uiScale)),
+        "Add Uniform", new Event(EVENT_SOFTWARE_ADD_UNIFORM), renderer->getTextSize(TEXT_NORMAL)
+    );
+    addElement(addUniformButton);
+    yPos += addUniformButton->getQuad().h + uiScale * 5;
 }
 void MaterialWindow::updateElementPositions()
 {
@@ -176,7 +190,7 @@ UIElement* MaterialWindow::createElementFromUniform(Uniform* uniform)
 void MaterialWindow::createSettingsFromUniform(Uniform* uniform, int uniformIndex, float uiScale, float& yPos)
 {
     // Calculating the width of each ui element
-    float elementWidth = (mPosition.getWidth() - uiScale * 25.0f) * 0.5f;
+    float elementWidth = (mPosition.getWidth() - uiScale * (25 + 45)) * 0.5f;
 
     // Creating a text entry for the uniform name
     UIElement* uniformNameEntry = new UniformTextEntry(UIQuad(
@@ -188,9 +202,16 @@ void MaterialWindow::createSettingsFromUniform(Uniform* uniform, int uniformInde
     // Creating a dropdown for the uniform type
     UIElement* uniformTypeDropdown = new Dropdown(UIQuad(
         smath::vec2(mPosition.getXOffset() + uiScale * 15 + elementWidth, yPos),
-        smath::vec2(elementWidth, 40 * uiScale)), 
-        &mUniformTypes[uniformIndex], UNIFORM_OPTIONS, new IntValueEvent(EVENT_SOFTWARE_UPDATE_UNIFORM_TYPE, uniformIndex));
+        smath::vec2(elementWidth, 40 * uiScale)),
+        mpUniformTypes[uniformIndex], UNIFORM_OPTIONS, new IntValueEvent(EVENT_SOFTWARE_UPDATE_UNIFORM_TYPE, uniformIndex));
     addElement(uniformTypeDropdown);
+
+    // Creating a uniform delete button
+    UIElement* uniformDeleteButton = new ImageButton(UIQuad(
+        smath::vec2(mPosition.getXOffset() + mPosition.getWidth() - 50 * uiScale, yPos),
+        smath::vec2(40 * uiScale)),
+        "Trash_Symbol", new IntValueEvent(EVENT_SOFTWARE_REMOVE_UNIFORM, uniformIndex));
+    addElement(uniformDeleteButton);
 
     yPos += uniformNameEntry->getQuad().h + uiScale * 5;
 }
@@ -280,15 +301,52 @@ void MaterialWindow::handleEvent(const Event& event)
         const IntValueEvent& castEvent = static_cast<const IntValueEvent&>(event);
 
         // Determing the new value type of the uniform
-        UniformType newType = (UniformType)mUniformTypes[castEvent.getIntValue()];
+        UniformType newType = (UniformType)(*mpUniformTypes[castEvent.getIntValue()]);
 
         // If the material is valid, replace the uniform with a new type
         if (mpMaterial)
         {
+            // Checking if the new uniform type is the same as the previous
+            if (newType == mpMaterial->getUniformAtIndex(castEvent.getIntValue())->getType())
+                return; // Does nothing
+
             // Replacing the uniform
             mpMaterial->replaceUniformAt(newType, castEvent.getIntValue());
 
             // Recompilig the material
+            mpMaterial->generateGraphicsPipeline();
+        }
+    }
+    else if (event.getType() == EVENT_SOFTWARE_REMOVE_UNIFORM)
+    {
+        // Casting the event to the propper type
+        const IntValueEvent& castEvent = static_cast<const IntValueEvent&>(event);
+
+        // If the material is valid, remove the uniform of the event index
+        if (mpMaterial)
+        {
+            // Removing the uniform
+            mpMaterial->removeUniformAt(castEvent.getIntValue());
+
+            // Recreating settings UI
+            createMaterialSettings();
+
+            // Recompiling the shader
+            mpMaterial->generateGraphicsPipeline();
+        }
+    }
+    else if (event.getType() == EVENT_SOFTWARE_ADD_UNIFORM)
+    {
+        // Checking if the material is valid
+        if (mpMaterial)
+        {
+            // Adding a basic uniform
+            mpMaterial->addBlankUniform();
+
+            // Recreating settings UI
+            createMaterialSettings();
+
+            // Recompiling the shader
             mpMaterial->generateGraphicsPipeline();
         }
     }
@@ -298,6 +356,12 @@ void MaterialWindow::handleEvent(const Event& event)
         if (mpMaterial)
             mpMaterial->generateGraphicsPipeline();
     }
+    else if (event.getType() == EVENT_SOFTWARE_MANAGE_UNIFORM_NAMES)
+    {
+        // If there is an active material, call the manage names function
+        if (mpMaterial)
+            mpMaterial->manageUniformNames();
+    }
 }
 
 // Private function for adding events to listen to
@@ -305,5 +369,8 @@ void MaterialWindow::addEvents()
 {
     EventSystem::getInstance()->addListener(EVENT_SOFTWARE_TOGGLE_MATERIAL_EDITING, this);
     EventSystem::getInstance()->addListener(EVENT_SOFTWARE_UPDATE_UNIFORM_TYPE, this);
+    EventSystem::getInstance()->addListener(EVENT_SOFTWARE_REMOVE_UNIFORM, this);
+    EventSystem::getInstance()->addListener(EVENT_SOFTWARE_ADD_UNIFORM, this);
     EventSystem::getInstance()->addListener(EVENT_SOFTWARE_RECOMPILE_MATERIAL, this);
+    EventSystem::getInstance()->addListener(EVENT_SOFTWARE_MANAGE_UNIFORM_NAMES, this);
 }

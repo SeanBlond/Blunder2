@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
     if (!(Blunder::getInstance()->init()))
     {
         // Exiting program if failed initialization
-        std::cout << "Failed to initialize Blunder Software, exiting program" << std::endl;
+        std::cout << "Failed to initialize Blunder2, exiting program" << std::endl;
     }
     else
     {

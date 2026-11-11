@@ -192,6 +192,10 @@ void WindowManager::handleEvent(const Event& event)
 			mClickedElement->setClicked(false);
 			mClickedElement->onRelease(castEvent.getClickData());
 
+			// Checking if the release event happened to have deleted the click element
+			if (!mClickedElement)
+				return;
+
 			// Checking if the element has now started a text entry
 			TextInput* textInput = mClickedElement->getTextInput();
 			if (textInput && textInput->getTyping())

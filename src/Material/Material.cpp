@@ -66,9 +66,34 @@ void Material::loadShadercodeFile()
 // Uniforms Management function definitions
 void Material::addUniform(Uniform* uniform)
 {
+	// If the material already has the max amount of uniforms, delete the uniform and do nothing
+	if (mpUniforms.size() >= MAX_UNIFORM_AMOUNT)
+	{
+		delete uniform;
+		uniform = nullptr;
+		return;
+	}
+
     mpUniforms.push_back(uniform);
 }
-void Material::replaceUniformAt(UniformType newType, int index)
+void Material::addBlankUniform()
+{
+	// Adding a blank float uniform with name "New_Float"
+	addUniform(new FloatUniform("_New_Float", 0.0f));
+
+	// Calling function to manage names
+	manageUniformNames();
+}
+void Material::removeUniformAt(const int& index)
+{
+	// If index is invalid, return out
+	if (index < 0 || index >= mpUniforms.size())
+		return;
+
+	// Otherwise, remove the uniform!
+	mpUniforms.erase(mpUniforms.begin() + index);
+}
+void Material::replaceUniformAt(const UniformType& newType, const int& index)
 {
 	// Do nothing if invalid index
 	if (index < 0 || index >= mpUniforms.size())
@@ -92,6 +117,41 @@ Uniform* Material::getUniformAtIndex(const int& index)
         return nullptr;
 
     return mpUniforms[index];
+}
+void Material::manageUniformNames()
+{
+	// Defining a set that will contain all uniform names
+	std::unordered_set<std::string> usedUniformNames;
+
+	// Loop through all uniforms and add it's name to a 
+	for (Uniform* uniform : mpUniforms)
+	{
+		// Checking if the uniform is equivalent to one already used
+		if (usedUniformNames.count(uniform->getUniformName()))
+		{
+			std::string invalidName = uniform->getUniformName();
+
+			// Equivalent uniform name already taken, adding a footer to it's name then adding it
+			for (int i = 0; i < MAX_UNIFORM_AMOUNT + 1; i++)
+			{
+				// Defining a new name with a number-based footer
+				std::string newName = invalidName + '_' + std::to_string(i);
+
+				// If this name is not used, change and add it, then break out of the for loop
+				if (!(usedUniformNames.count(newName)))
+				{
+					uniform->setName(newName);
+					usedUniformNames.insert(uniform->getUniformName());
+					break;
+				}
+			}
+		}
+		else
+		{
+			// Uniform equivalent not used, add it to the set
+			usedUniformNames.insert(uniform->getUniformName());
+		}
+	}
 }
 
 // Graphics Pipeline function definitions

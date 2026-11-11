@@ -22,9 +22,12 @@ public:
 
     // Uniforms Management functions
     void addUniform(Uniform* uniform);
-    void replaceUniformAt(UniformType newType, int index);
+    void addBlankUniform();
+    void removeUniformAt(const int& index);
+    void replaceUniformAt(const UniformType& newType, const int& index);
     int getUniformCount() const;
     Uniform* getUniformAtIndex(const int& index);
+    void manageUniformNames();
 
     // Graphics Pipeline functions
     bool generateGraphicsPipeline();
@@ -44,6 +47,9 @@ private:
 
     // Private function for crteating the fragment shader
     SDL_GPUShader* createFragmentShader();
+
+    // Static max number of uniforms 
+    static const int MAX_UNIFORM_AMOUNT = 32;
 
     // Static string of the vertex shader
     inline static const char* VERTEX_SHADER_CODE =

@@ -44,7 +44,7 @@ private:
         "float3",
         "float4"
     };
-    std::vector<int> mUniformTypes;
+    std::vector<int*> mpUniformTypes;
     Uniform* newUniformFromType();
 
     // Private function for adding events to listen to

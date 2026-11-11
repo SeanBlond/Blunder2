@@ -42,5 +42,10 @@ void UniformTextEntry::handleInput()
 
     // Otherwise, set the uniform name from the entry
     mpUniform->setName(getInputText());
+
+    // Sending out an event to manage uniform names
+    EventSystem::getInstance()->fire(SoftwareRuntimeEvent(EVENT_SOFTWARE_MANAGE_UNIFORM_NAMES));
+
+    // Setting the display text to the the (now managed) name
     setText(mpUniform->getUniformName());
 }
