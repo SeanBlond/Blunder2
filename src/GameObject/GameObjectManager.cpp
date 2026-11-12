@@ -6,8 +6,6 @@ bool GameObjectManager::init()
     // Setting the root object to be null
     mpRootObject = new GameObject("ROOT", smath::transform2D(smath::vec2(0, 0), 0, 0.0f, smath::vec2(1)));
 
-    // TODO: Create default material stored in the manager
-
     // Adding a few game objects
     GameObject* newObject1 = createEmptyObject("Test 1", smath::transform2D(smath::vec2(0, 0), 0, 0.0f, smath::vec2(2)));
     GameObject* newObject2 = createEmptyObject("Test 2", smath::transform2D(smath::vec2(2, 0), 0, 0.0f, smath::vec2(1.5f, 1.0f)));

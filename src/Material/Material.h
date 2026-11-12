@@ -14,7 +14,8 @@ class Material
 {
 public:
     // Constructor & Deconstructor
-    Material(std::string materialName, std::string codeFilepath);
+    Material(std::string materialName, std::string codeFilepath, std::string materialFilepath) :
+        mMaterialName(materialName), mCodeFilepath(codeFilepath), mMaterialFilepath(materialFilepath) {}
     ~Material();
 
     // Shadercode filepath functions
@@ -35,13 +36,18 @@ public:
     bool hasValidPipeline() { return (mpPipeline != nullptr); }
     static std::string getBaseVertexCode() { return VERTEX_SHADER_CODE; }
 
+    // Saving function
+    void saveMaterialToFile();
+
     // Getters
     std::string getName() const { return mMaterialName; }
     std::string* getNameAddress() { return &mMaterialName; }
+    std::string getMaterialFilepath() const { return mMaterialFilepath; }
 
 private:
     std::string mMaterialName = "";
     std::string mCodeFilepath = "";
+    std::string mMaterialFilepath = "";
     std::vector<Uniform*> mpUniforms;
     SDL_GPUGraphicsPipeline* mpPipeline = nullptr;
 

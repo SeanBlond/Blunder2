@@ -39,6 +39,7 @@ public:
     // Pure virtual function for data accessing
     virtual void* getData() = 0;
     virtual uint32_t getSize() = 0;
+    virtual std::string getUniformSaveCode() = 0;
 
 private:
     std::string mUniformName;
@@ -61,6 +62,7 @@ public:
     // Value getter override
     void* getData() override { return static_cast<void*>(&mValue); }
     uint32_t getSize() override { return (uint32_t)sizeof(int); }
+    std::string getUniformSaveCode() override;
 
 private:
     int mValue;
@@ -75,6 +77,7 @@ public:
     // Value getter override
     void* getData() override { return static_cast<void*>(&mValue); }
     uint32_t getSize() override { return (uint32_t)sizeof(float); }
+    std::string getUniformSaveCode() override;
 
 
 private:
@@ -90,6 +93,7 @@ public:
     // Value getter override
     void* getData() override { return static_cast<void*>(&mValue); }
     uint32_t getSize() override { return (uint32_t)sizeof(smath::vec2); }
+    std::string getUniformSaveCode() override;
 
 private:
     smath::vec2 mValue;
@@ -104,6 +108,7 @@ public:
     // Value getter override
     void* getData() override { return static_cast<void*>(&mValue); }
     uint32_t getSize() override { return (uint32_t)sizeof(smath::vec3); }
+    std::string getUniformSaveCode() override;
 
 private:
     smath::vec3 mValue;
@@ -118,6 +123,7 @@ public:
     // Value getter override
     void* getData() override { return static_cast<void*>(&mValue); }
     uint32_t getSize() override { return (uint32_t)sizeof(smath::vec4); }
+    std::string getUniformSaveCode() override;
 
 private:
     smath::vec4 mValue;
@@ -132,6 +138,7 @@ public:
     // Value getter override
     void* getData() override { return static_cast<void*>(&mValue); }
     uint32_t getSize() override { return (uint32_t)sizeof(Color); }
+    std::string getUniformSaveCode() override;
 
 private:
     Color mValue;

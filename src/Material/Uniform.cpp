@@ -50,3 +50,51 @@ std::string Uniform::convertToVariable(std::string name)
     // Returning the output name
     return outputName;
 }
+
+// Uniform output savecode functions
+std::string IntUniform::getUniformSaveCode()
+{
+    std::string outputString = "INT " + getUniformName() + ' ' + std::to_string(mValue);
+    return outputString;
+}
+std::string FloatUniform::getUniformSaveCode()
+{
+    std::string outputString = "FLOAT1 " + getUniformName() + ' ' + std::to_string(mValue);
+    return outputString;
+}
+std::string Float2Uniform::getUniformSaveCode()
+{
+    std::string outputString = "FLOAT2 " + getUniformName();
+    for (int i = 0; i < 2; i++)
+    {
+        outputString += ' ' + std::to_string(*((float*)(&mValue) + i));
+    }
+    return outputString;
+}
+std::string Float3Uniform::getUniformSaveCode()
+{
+    std::string outputString = "FLOAT3 " + getUniformName();
+    for (int i = 0; i < 3; i++)
+    {
+        outputString += ' ' + std::to_string(*((float*)(&mValue) + i));
+    }
+    return outputString;
+}
+std::string Float4Uniform::getUniformSaveCode()
+{
+    std::string outputString = "FLOAT4 " + getUniformName();
+    for (int i = 0; i < 4; i++)
+    {
+        outputString += ' ' + std::to_string(*((float*)(&mValue) + i));
+    }
+    return outputString;
+}
+std::string ColorUniform::getUniformSaveCode()
+{
+    std::string outputString = "COLOR " + getUniformName();
+    for (int i = 0; i < 4; i++)
+    {
+        outputString += ' ' + std::to_string(*((float*)(&mValue) + i));
+    }
+    return outputString;
+}

@@ -3,12 +3,6 @@
 #include "../graphics/GraphicsDevice.h"
 
 // Constructor & Deconstructor definitions
-Material::Material(std::string materialName, std::string codeFilepath)
-{
-	// Storing material data
-	this->mMaterialName = materialName;
-	this->mCodeFilepath = codeFilepath;
-}
 Material::~Material()
 {
     // Deallocating all uniforms
@@ -425,4 +419,28 @@ bool Material::bind(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* rend
 
 	// Return true for succesful binding!
 	return true;
+}
+
+// Saving function defintiion
+void Material::saveMaterialToFile()
+{
+	// Creating the output file
+	std::ofstream outputFile(mMaterialFilepath);
+
+	// Checking if the output file is valid
+	if (!outputFile)
+	{
+		std::cout << "Could not save material \"" << mMaterialName << "\" to file \"" << mMaterialFilepath << '\"' << std::endl;
+		return;
+	}
+
+	// Otherwise, start outputting material info
+	outputFile << "MATERIAL " << mMaterialName << std::endl;
+	outputFile << "SHADERCODE " << mCodeFilepath << std::endl;
+
+	// Looping through each uniform and outputting it
+	for (Uniform* uniform : mpUniforms)
+	{
+		outputFile << "UNIFORM " << uniform->getUniformSaveCode() << std::endl;
+	}
 }

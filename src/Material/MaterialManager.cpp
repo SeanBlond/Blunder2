@@ -23,6 +23,9 @@ bool MaterialManager::init(const std::string& materialsFilepath)
 }
 void MaterialManager::cleanup()
 {
+	// Saving the materials
+	saveMaterialsToFile();
+
     // Looping through all materials in the map and deallocating them
     for (auto material : mpMaterialsMap)
     {
@@ -203,11 +206,21 @@ void MaterialManager::loadMaterialsFromFile()
 
 	// Closing the file
 	materialFile.close();
-
 }
 void MaterialManager::saveMaterialsToFile()
 {
-	
+	// Creating a file to save the materials & keys to
+	std::ofstream outputFile(mMaterialsFilepath);
+
+	// Looping through each material & key and saving it to the file (as well as saving the individual materials to their files)
+	for (auto pair : mpMaterialsMap)
+	{
+		// Saving the material
+		pair.second->saveMaterialToFile();
+
+		// Storing the material map data
+		outputFile << pair.first << ' ' << pair.second->getMaterialFilepath() << std::endl;
+	}
 }
 Material* MaterialManager::createMaterialFromFilepath(const std::string& filepath)
 {
@@ -251,7 +264,7 @@ Material* MaterialManager::createMaterialFromFilepath(const std::string& filepat
 	shadercodePath = shadercodePath.substr(1);
 
 	// Creating a material with this basic information
-	Material* newMaterial = new Material(materialName, shadercodePath);
+	Material* newMaterial = new Material(materialName, shadercodePath, filepath);
 
 	// Looping until the end of the file to add uniforms
 	while (!(inputFile.eof()))
