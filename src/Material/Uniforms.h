@@ -4,6 +4,7 @@
 #include <string>
 #include <cctype>
 #include <smath/smath.h>
+#include "../color/color.h"
 
 // Various data types that can be passed into a material
 enum UniformType
@@ -13,6 +14,7 @@ enum UniformType
     UNIFORM_FLOAT2,
     UNIFORM_FLOAT3,
     UNIFORM_FLOAT4,
+    UNIFORM_COLOR,
 };
 
 // * ---------------------- *
@@ -121,6 +123,20 @@ private:
     smath::vec4 mValue;
 };
 
+// Color Uniform
+class ColorUniform : public Uniform
+{
+public:
+    ColorUniform(std::string name, const Color& value) : mValue(value), Uniform(name, UNIFORM_COLOR) {}
+
+    // Value getter override
+    void* getData() override { return static_cast<void*>(&mValue); }
+    uint32_t getSize() override { return (uint32_t)sizeof(Color); }
+
+private:
+    Color mValue;
+};
+
 
 // Function for converting UniformTypes to strings
 inline std::string UniformTypeToString(UniformType type)
@@ -142,6 +158,9 @@ inline std::string UniformTypeToString(UniformType type)
         output = "float3";
         break;
     case UNIFORM_FLOAT4:
+        output = "float4";
+        break;
+    case UNIFORM_COLOR:
         output = "float4";
         break;
     }
@@ -169,6 +188,9 @@ inline Uniform* newUniformFromType(UniformType type, std::string name)
         break;
     case UNIFORM_FLOAT4:
         output = new Float4Uniform(name, smath::vec4());
+        break;
+    case UNIFORM_COLOR:
+        output = new ColorUniform(name, Color());
         break;
     }
 

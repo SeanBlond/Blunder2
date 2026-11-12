@@ -42,7 +42,8 @@ private:
         "float",
         "float2",
         "float3",
-        "float4"
+        "float4",
+        "color",
     };
     std::vector<int*> mpUniformTypes;
     Uniform* newUniformFromType();

@@ -8,17 +8,13 @@ class ColorWindow : public UIWindow
 public:
     // Constructor(s)
     ColorWindow(Color* color, float width, float height, float xoffset, float yoffset)
-        : mpMaterial(material), UIWindow(width, height, xoffset, yoffset, "Material") {
-        addEvents();
-    }
-    ColorWindow(Material* material)
-        : mpMaterial(material), UIWindow(0, 0, 0, 0, "Material") {
-        addEvents();
-    }
-    ~ColorWindow() { }
+        : mpColor(color), UIWindow(width, height, xoffset, yoffset, "Color") {}
+    ColorWindow(Color* color)
+        : mpColor(color), UIWindow(0, 0, 0, 0, "Color") {}
+    ~ColorWindow() {}
 
     // Function for creating elements
-    void CreateUIFromSelected();
+    void CreateUIFromColor();
 
     // Override functions (UIWindow)
     void OpenWindow() override;
@@ -27,7 +23,7 @@ public:
     void DrawWindow(GraphicsRenderer* renderer) override;
 
 private:
-    Color* interactingColor;
+    Color* mpColor;
     std::vector<std::string> colorMode = { "RGBA", "HSVA" };
     int currentColorMode = 1;
     smath::vec4 colorData;

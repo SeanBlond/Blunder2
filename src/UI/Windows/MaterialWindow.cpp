@@ -182,6 +182,9 @@ UIElement* MaterialWindow::createElementFromUniform(Uniform* uniform)
     case UNIFORM_FLOAT4:
         outputElement = new Float4Entry(UIQuad(), uniform->getUniformName(), static_cast<smath::vec4*>(uniform->getData()));
         break;
+    case UNIFORM_COLOR:
+        outputElement = new ColorEntry(UIQuad(), uniform->getUniformName(), static_cast<Color*>(uniform->getData()));
+        break;
     }
 
     // Returning the (potentially) newly created elements

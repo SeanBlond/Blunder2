@@ -3,7 +3,7 @@
 #include "../graphics/ShaderCross.h"
 
 // Data management function definitions
-bool MaterialManager::init(std::string materialsFilepath)
+bool MaterialManager::init(const std::string& materialsFilepath)
 {
     // Creating a basic pipeline that can be used if materials fail to create proper pieplines
     mpBasicPipeline = generateBasicPipeline();
@@ -17,15 +17,6 @@ bool MaterialManager::init(std::string materialsFilepath)
 
     // Loading in the files
     loadMaterialsFromFile();
-
-	
-	// Creating a bsic material and adding some random uniforms
-	Material* tempMaterial = new Material("TestMaterial", "resources/Materials/Shaders/TestMaterial.hlsl");
-	tempMaterial->addUniform(new Float3Uniform("Test Color", smath::vec3(0.1f, 0.3f, 0.5f)));
-	tempMaterial->loadShadercodeFile();
-	tempMaterial->generateGraphicsPipeline();
-	mpMaterialsMap.insert({ 1, tempMaterial });
-
 
     // Return true for succesful initilization
     return true;
@@ -160,11 +151,232 @@ SDL_GPUGraphicsPipeline* MaterialManager::generateBasicPipeline()
 // Material loading & saving definitions
 void MaterialManager::loadMaterialsFromFile()
 {
+	// Attempting to load the materials filepath
+	std::ifstream materialFile(mMaterialsFilepath);
+
+	// Checking if the material filepath exists
+	if (!materialFile)
+	{
+		std::cout << "Materials file does not exist, could not load any :(" << std::endl;
+		return;
+	}
+
+	// File succesfully loaded, looping through it to load materials
+	while (!(materialFile.eof()))
+	{
+		// Trying to read a material key
+		std::string tempString;
+		materialFile >> tempString;
+		uint16_t readValue;
+
+		// Reading the int value
+		try
+		{
+			readValue = (uint16_t)std::stoi(tempString);
+		}
+		catch (const std::invalid_argument& e)
+		{
+			std::cout << "Materials file improperly formatted, resulting in error: " << e.what() << std::endl;
+			break;
+		}
+		catch (const std::out_of_range& e)
+		{
+			std::cout << "Materials file improperly formatted, resulting in error: " << e.what() << std::endl;
+			break;
+		}
+
+		// Finding the material filepath
+		std::string materialFilepath;
+		std::getline(materialFile, materialFilepath);
+		materialFilepath = materialFilepath.substr(1);
+
+		// Checking if the key already exists
+		if (mpMaterialsMap.find(readValue) != mpMaterialsMap.end())
+			continue; // Key already used, skip over this material
+
+		// Otherwise, create a new material and (should it not be null) add it to the map
+		Material* newMaterial = createMaterialFromFilepath(materialFilepath);
+		if (!newMaterial) { continue; }
+		newMaterial->generateGraphicsPipeline();
+		mpMaterialsMap.insert({ readValue, newMaterial });
+	}
+
+	// Closing the file
+	materialFile.close();
 
 }
 void MaterialManager::saveMaterialsToFile()
 {
+	
+}
+Material* MaterialManager::createMaterialFromFilepath(const std::string& filepath)
+{
+	// Creating a filestream from the filepath
+	std::ifstream inputFile(filepath);
 
+	// If file is invalid, return null
+	if (!inputFile)
+	{
+		std::cout << "Could not find filepath \"" << filepath << '\"' << std::endl;
+		return nullptr;
+	}
+
+	// Otherwise, try to read name
+	std::string tempString;
+	inputFile >> tempString;
+	if (tempString != "MATERIAL")
+	{
+		std::cout << "Material found at \"" << filepath << "\" is improperly formatted" << std::endl;
+		inputFile.close();
+		return nullptr;
+	}
+
+	// Storing material name
+	std::string materialName;
+	std::getline(inputFile, materialName);
+	materialName = materialName.substr(1);
+
+	// Trying to read shadercode filepath
+	inputFile >> tempString;
+	if (tempString != "SHADERCODE")
+	{
+		std::cout << "Material found at \"" << filepath << "\" is improperly formatted" << std::endl;
+		inputFile.close();
+		return nullptr;
+	}
+
+	// Storing material name
+	std::string shadercodePath;
+	std::getline(inputFile, shadercodePath);
+	shadercodePath = shadercodePath.substr(1);
+
+	// Creating a material with this basic information
+	Material* newMaterial = new Material(materialName, shadercodePath);
+
+	// Looping until the end of the file to add uniforms
+	while (!(inputFile.eof()))
+	{
+		// Reading the start of a uniform
+		inputFile >> tempString;
+		if (tempString != "UNIFORM")
+			continue;
+
+		// Trying to read uniform type and name
+		std::string uniformType, uniformName;
+		inputFile >> uniformType;
+		inputFile >> uniformName;
+
+		// Trying to read uniform values
+		if (uniformType == "INT")
+		{
+			// Attempting to read the integer value
+			inputFile >> tempString;
+			int readValue;
+
+			try
+			{
+				readValue = std::stoi(tempString);
+			}
+			catch (const std::invalid_argument& e)
+			{
+				std::cout << "Uniform \"" << uniformName << "\" was not formatted properly resulting in error: " << e.what() << std::endl;
+				continue;
+			}
+			catch (const std::out_of_range& e)
+			{
+				std::cout << "Uniform \"" << uniformName << "\" was not formatted properly resulting in error: " << e.what() << std::endl;
+				continue;
+			}
+		}
+		else if (uniformType.substr(0, 5) == "FLOAT")
+		{
+			// Trying to read the integer value of the float number
+			int floatNum;
+			try { floatNum = std::stoi(uniformType.substr(5, 1)); }
+			catch (const std::invalid_argument& e) { continue; }
+			catch (const std::out_of_range& e) { continue; }
+			if (floatNum < 1 || floatNum > 4) { continue; }
+
+			std::vector<float> floatValues;
+			for (int i = 0; i < floatNum; i++)
+			{
+				float readValue;
+				inputFile >> tempString;
+				try
+				{
+					readValue = std::stof(tempString);
+				}
+				catch (const std::invalid_argument& e)
+				{
+					std::cout << "Uniform \"" << uniformName << "\" was not formatted properly resulting in error: " << e.what() << std::endl;
+					continue;
+				}
+				catch (const std::out_of_range& e)
+				{
+					std::cout << "Uniform \"" << uniformName << "\" was not formatted properly resulting in error: " << e.what() << std::endl;
+					continue;
+				}
+				floatValues.push_back(readValue);
+			}
+
+			// If the number of floats added doesn't equal the expected number, skip!
+			if (floatValues.size() != floatNum)
+				continue;
+
+			// Otherwise, create a new uniform from the float values
+			switch (floatNum)
+			{
+			case 1:
+				newMaterial->addUniform(new FloatUniform(uniformName, floatValues[0]));
+				break;
+			case 2:
+				newMaterial->addUniform(new Float2Uniform(uniformName, { floatValues[0], floatValues[1] }));
+				break;
+			case 3:
+				newMaterial->addUniform(new Float3Uniform(uniformName, { floatValues[0], floatValues[1], floatValues[2] }));
+				break;
+			case 4:
+				newMaterial->addUniform(new Float4Uniform(uniformName, { floatValues[0], floatValues[1], floatValues[2], floatValues[3] }));
+				break;
+			}
+		}
+		else if (uniformType == "COLOR")
+		{
+			std::vector<float> floatValues;
+			for (int i = 0; i < 4; i++)
+			{
+				float readValue;
+				try
+				{
+					readValue = std::stof(tempString);
+				}
+				catch (const std::invalid_argument& e)
+				{
+					std::cout << "Uniform \"" << uniformName << "\" was not formatted properly resulting in error: " << e.what() << std::endl;
+					continue;
+				}
+				catch (const std::out_of_range& e)
+				{
+					std::cout << "Uniform \"" << uniformName << "\" was not formatted properly resulting in error: " << e.what() << std::endl;
+					continue;
+				}
+				floatValues.push_back(readValue);
+			}
+
+			// If the number of floats added doesn't equal the expected number, skip!
+			if (floatValues.size() != 4)
+				continue;
+
+			// Otherwise, create a color uniform from the read values
+			newMaterial->addUniform(new ColorUniform(uniformName, { floatValues[0], floatValues[1], floatValues[2], floatValues[3] }));
+		}
+	}
+
+	// Closing the input file
+	inputFile.close();
+
+	// Returning the new material
+	return newMaterial;
 }
 
 // Materials map function definitions
@@ -175,13 +387,13 @@ void MaterialManager::addMaterial(Material* newMat)
         return;
 
     // Generating a new key for the material
-    int newKey = generateNewKey();
+	int newKey = generateNewKey();
 
-    // If the key isn't -1, add the material
-    if (newKey != -1)
-        mpMaterialsMap.insert({ newKey, newMat });
+    // If the key isn't 0, add the material
+    if (newKey != 0)
+        mpMaterialsMap.insert({ (uint16_t)newKey, newMat });
 }
-Material* MaterialManager::getMaterial(int matKey)
+Material* MaterialManager::getMaterial(uint16_t matKey)
 {
     // Finding the material (if it exists)
     auto material = mpMaterialsMap.find(matKey);
@@ -195,20 +407,20 @@ Material* MaterialManager::getMaterial(int matKey)
 }
 
 // Function definition for generating unique keys for newly created materials
-int MaterialManager::generateNewKey()
+uint16_t MaterialManager::generateNewKey()
 {
-    // Looping until a random number that isn't already used or isn't -1
-    // After 100 iterations, the function will return -1, which means a key couldn't be found
+    // Looping until a random number that isn't already used or isn't 0
+    // After 100 iterations, the function will return 0, which means a key couldn't be found
     for (int i = 0; i < 100; i++)
     {
         // Generating random number
-        int potentialKey = std::rand();
+        int potentialKey = (uint16_t)std::rand();
 
         // Checking random number
-        if (!(mpMaterialsMap.contains(potentialKey)) && potentialKey != -1)
+        if (!(mpMaterialsMap.contains(potentialKey)) && potentialKey != 0)
             return potentialKey;
     }
 
-    // Returning -1
-    return -1;
+    // Returning 0
+    return 0;
 }

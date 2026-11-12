@@ -30,7 +30,7 @@ public:
     int getMaterialKey() const { return mMaterialKey; }
 
     // Setters
-    void setMaterialKey(const int& key) { mMaterialKey = key; }
+    void setMaterialKey(const uint16_t& key) { mMaterialKey = key; }
 
     // Hierarchy Functions
     void setParent(GameObject* parent);
@@ -43,7 +43,7 @@ public:
 private:
     // Transform is required, all GameObjects will have one
     smath::transform2D mTransform;
-    int mMaterialKey = -1;
+    uint16_t mMaterialKey = 0;
     std::string mName = "";
     ObjectUIData mUIData;
 

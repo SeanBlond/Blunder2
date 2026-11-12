@@ -13,3 +13,4 @@
 #include "Labelled Elements/Float3Entry.h"
 #include "Labelled Elements/Float4Entry.h"
 #include "Labelled Elements/IntEntry.h"
+#include "Labelled Elements/ColorEntry.h"

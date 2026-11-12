@@ -20,7 +20,8 @@ enum ElementType
 	UI_FLOAT3_ENTRY, 
 	UI_FLOAT4_ENTRY, 
 	UI_INT_ENTRY, 
-	UI_TEXT_ENTRY 
+	UI_TEXT_ENTRY,
+	UI_COLOR_ENTRY,
 };
 
 // Base Class for a UI Element

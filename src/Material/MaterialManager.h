@@ -13,31 +13,32 @@ public:
     ~MaterialManager() { cleanup(); }
 
     // Data management functions
-    bool init(std::string materialsFilepath);
+    bool init(const std::string& materialsFilepath);
     void cleanup();
 
     // Material loading & saving
     void loadMaterialsFromFile();
     void saveMaterialsToFile();
+    Material* createMaterialFromFilepath(const std::string& filepath);
 
     // Materials map functions
     void addMaterial(Material* newMat);
-    Material* getMaterial(int matKey);
-    std::unordered_map<int, Material*>* getMaterialMap() { return &mpMaterialsMap; }
+    Material* getMaterial(uint16_t matKey);
+    std::unordered_map<uint16_t, Material*>* getMaterialMap() { return &mpMaterialsMap; }
 
     // Misc. Getters
     SDL_GPUGraphicsPipeline* getBasicPipeline() { return mpBasicPipeline; }
 
 private:
     std::string mMaterialsFilepath = "";
-    std::unordered_map<int, Material*> mpMaterialsMap;
+    std::unordered_map<uint16_t, Material*> mpMaterialsMap;
     SDL_GPUGraphicsPipeline* mpBasicPipeline = nullptr;
 
     // Function for creating the basic pipeline
     SDL_GPUGraphicsPipeline* generateBasicPipeline();
 
     // Function for generating unique keys for newly created materials
-    int generateNewKey();
+    uint16_t generateNewKey();
 
     // Static string of the vertex shader
     inline static const char* FRAGMENT_SHADER_CODE =

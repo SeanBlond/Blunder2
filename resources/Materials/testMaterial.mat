@@ -1,0 +1,3 @@
+MATERIAL materialName
+SHADERCODE resources/Materials/Shaders/TestMaterial.hlsl
+UNIFORM FLOAT3 _Float3_Uniform 0.2 0.4 0.6

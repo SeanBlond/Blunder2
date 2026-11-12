@@ -43,6 +43,9 @@ add_executable(${PROJECT_NAME}
     "src/UI/Windows/ViewportWindow.h" "src/UI/Windows/ViewportWindow.cpp"
     "src/UI/Windows/HierarchyWindow.h" "src/UI/Windows/HierarchyWindow.cpp"
     "src/UI/Windows/MaterialWindow.h" "src/UI/Windows/MaterialWindow.cpp" 
+
+    # UI - Pop-Up Windows
+    # "src/UI/Windows/Pop-Up Windows/ColorWindow.h" "src/UI/Windows/Pop-Up Windows/ColorWindow.cpp"
     
     # UI - Elements
     "src/UI/Elements/HierarchyTextEntry.h" "src/UI/Elements/HierarchyTextEntry.cpp"
@@ -61,6 +64,7 @@ add_executable(${PROJECT_NAME}
     "src/UI/Elements/Labelled Elements/Float2Entry.h" "src/UI/Elements/Labelled Elements/Float2Entry.cpp"
     "src/UI/Elements/Labelled Elements/Float3Entry.h" "src/UI/Elements/Labelled Elements/Float3Entry.cpp"
     "src/UI/Elements/Labelled Elements/Float4Entry.h" "src/UI/Elements/Labelled Elements/Float4Entry.cpp"
+    "src/UI/Elements/Labelled Elements/ColorEntry.h" "src/UI/Elements/Labelled Elements/ColorEntry.cpp"
 
     # Runtime
     "src/Runtime/WindowManagement.h" "src/Runtime/WindowManagement.cpp" 
@@ -92,7 +96,8 @@ add_executable(${PROJECT_NAME}
 
     # Blunder (Software Class)
     "src/Runtime/Blunder.h" "src/Runtime/Blunder.cpp"
- "src/UI/Windows/Pop-Up Windows/ColorWindow.h")
+
+)
 
 # Custom library for math functions and whatnot
 add_library(
