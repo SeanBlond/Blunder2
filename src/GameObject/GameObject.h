@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <smath/smath.h>
-#include "../Material/Material.h"
 
 struct ObjectUIData
 {

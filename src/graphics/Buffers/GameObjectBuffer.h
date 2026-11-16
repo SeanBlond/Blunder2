@@ -6,7 +6,6 @@
 #include <smath/smath.h>
 #include "../../GameObject/GameObjectManager.h"
 #include "../../GameObject/Camera.h"
-#include "../../Material/MaterialManager.h"
 #include "Vertices.h"
 
 // Buffer Class
@@ -30,7 +29,6 @@ public:
 
 	// Buffer-modifying functions
 	void setGameObjectManager(GameObjectManager* manager) { this->mpGameObjectManager = manager; }
-	void setMaterialManager(MaterialManager* manager) { this->mpMaterialManager = manager; }
 	void drawBuffer(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass);
 
 	// Texture management functions
@@ -49,7 +47,6 @@ private:
 
 	// Pointer to the game object manager & material manager
 	GameObjectManager* mpGameObjectManager = nullptr; // DOES NOT OWN, DO NOT DEALLOCATE
-	MaterialManager* mpMaterialManager = nullptr; // DOES NOT OWN, DO NOT DEALLOCATE
 
 	// Member for keeping track of rendering texture details
 	smath::ivec2 mDimensions;

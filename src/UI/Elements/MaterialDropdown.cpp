@@ -1,4 +1,6 @@
 #include "MaterialDropdown.h"
+#include "../../Material/Material.h"
+#include "../../ResourceManagement/ResourceManager.h"
 
 // Override functions
 void MaterialDropdown::generateInteractable()
@@ -12,19 +14,35 @@ void MaterialDropdown::generateInteractable()
 
 void MaterialDropdown::onClick(MouseClickData clickData)
 {
+    // Clearing the options list (just in case it isn't already)
+    mMaterialOptions.clear();
+
+    // Attempting to get a pointer to the Material Managers
+    MaterialManager* manager = ResourceManager::getInstance()->getMaterialManager();
+    if (!manager) { return; } // No manager, return out
+
+    // Generating the material options
+    for (auto materialOption : *(manager->getMaterialMap()))
+    {
+        mMaterialOptions.push_back({
+            materialOption.first,
+            materialOption.second->getName()
+        });
+    }
+
     // Activating dropdown
     mDroppedDown = true;
 
     // Clamping value to bhe within the options range
-    *mpIndex = smath::clamp(*mpIndex, 0, (int)mOptions.size());
+    mIndex = smath::clamp(mIndex, 0, (int)mMaterialOptions.size());
 }
 void MaterialDropdown::onHold(MouseClickData clickData)
 {
-    float lowestPoint = mQuad.y + mQuad.h + (mQuad.h * mOptions.size());
+    float lowestPoint = mQuad.y + mQuad.h + (mQuad.h * mMaterialOptions.size());
     bool directionDown = (lowestPoint < GraphicsDevice::getInstance()->getDisplayHeight());
 
     // Checking each options for a mouse y-collision
-    for (int i = 0; i < mOptions.size(); i++)
+    for (int i = 0; i < mMaterialOptions.size(); i++)
     {
         // Getting the y positions to check
         float optionHeight = mQuad.h;
@@ -49,7 +67,7 @@ void MaterialDropdown::onHold(MouseClickData clickData)
         // Checking collision
         if (clickData.mPosition.y >= optionCorners.x && clickData.mPosition.y <= optionCorners.y)
         {
-            *mpIndex = i;
+            mIndex = i;
             break;
         }
     }
@@ -58,6 +76,18 @@ void MaterialDropdown::onRelease(MouseClickData clickData)
 {
     // Deactivating dropdown
     mDroppedDown = false;
+
+    // Updating the gameobject material based on the selected option
+    if (mpObject)
+    {
+        mpObject->setMaterialKey(mMaterialOptions[mIndex].mKey);
+    }
+
+    // Storing the newly selected material name
+    storeMaterialName();
+
+    // Clearing the options list
+    mMaterialOptions.clear();
 
     // Calling click event if needed
     if (mpClickEvent)
@@ -76,7 +106,7 @@ void MaterialDropdown::drawElement(GraphicsRenderer* renderer, float layerOffset
     renderer->addRectangle(mQuad.getSDL_FRect(), layerOffset, Color(0.15f) * effect);
 
     // Drawing text for the current value
-    renderer->addText(mOptions[*mpIndex], mQuad.MiddleRight() - smath::vec2(1.0f * renderer->getUIScale(), 0.0f), layerOffset + 0.01f, renderer->getTextSize(TEXT_NORMAL), Color(1.0f), TEXT_H_RIGHT, TEXT_V_MIDDLE);
+    renderer->addText(mStoredMaterialName, mQuad.MiddleRight() - smath::vec2(1.0f * renderer->getUIScale(), 0.0f), layerOffset + 0.01f, renderer->getTextSize(TEXT_NORMAL), Color(1.0f), TEXT_H_RIGHT, TEXT_V_MIDDLE);
 
     // Drawing Dropdown Icon
     std::string dropdownKey = (mDroppedDown ? "Dropdown_True_Symbol" : "Dropdown_False_Symbol");
@@ -95,27 +125,27 @@ void MaterialDropdown::drawElement(GraphicsRenderer* renderer, float layerOffset
         float optionWidth = mQuad.w;
 
         // Checking if there is enough space for the dropdown to drop downwards
-        float lowestPoint = mQuad.y + mQuad.h + (mQuad.h * mOptions.size());
+        float lowestPoint = mQuad.y + mQuad.h + (mQuad.h * mMaterialOptions.size());
         bool directionDown = (lowestPoint < GraphicsDevice::getInstance()->getDisplayHeight());
 
         // Drawing a quad that outlines the options
         SDL_FRect outlineCorner =
         {
             mQuad.x - (renderer->getUIScale() * 5.0f),
-            mQuad.y + (directionDown ? mQuad.h : -(mQuad.h * mOptions.size()) - (renderer->getUIScale() * 5.0f)),
+            mQuad.y + (directionDown ? mQuad.h : -(mQuad.h * mMaterialOptions.size()) - (renderer->getUIScale() * 5.0f)),
             mQuad.w + (renderer->getUIScale() * 10.0f),
-            (mQuad.h * mOptions.size()) + (renderer->getUIScale() * 5.0f)
+            (mQuad.h * mMaterialOptions.size()) + (renderer->getUIScale() * 5.0f)
         };
         renderer->addRectangle(outlineCorner, 0.0f, Color(0.25f));
 
         // Drawing each option
-        for (int i = 0; i < mOptions.size(); i++)
+        for (int i = 0; i < mMaterialOptions.size(); i++)
         {
             float optionYOffset = mQuad.y + (directionDown ? 1 : -1) * (mQuad.h * (i + 1));
 
             // Highlighting the option if it is currently selected
             Color optionColor = (i % 2 == 0 ? Color(0.225f) : Color(0.2f));
-            optionColor = (i == *mpIndex ? Color(0.275f) : optionColor);
+            optionColor = (i == mIndex ? Color(0.275f) : optionColor);
 
             // Drawing Dropdown Box
             renderer->addRectangle(
@@ -130,10 +160,40 @@ void MaterialDropdown::drawElement(GraphicsRenderer* renderer, float layerOffset
             renderer->addCircle(smath::vec2(mQuad.x + 8.0f * renderer->getUIScale(), optionYOffset + mQuad.h * 0.5f), 3.0f * renderer->getUIScale(), 0.03f, Color(1), 18);
 
             // Drawing Value
-            renderer->addText(mOptions[i], smath::vec2(mQuad.x + mQuad.w, mQuad.h * 0.5f) + smath::vec2(-1.0f * renderer->getUIScale(), optionYOffset), 0.02f, renderer->getTextSize(TEXT_NORMAL), Color(1.0f), TEXT_H_RIGHT, TEXT_V_MIDDLE);
+            renderer->addText(mMaterialOptions[i].mName, smath::vec2(mQuad.x + mQuad.w, mQuad.h * 0.5f) + smath::vec2(-1.0f * renderer->getUIScale(), optionYOffset), 0.02f, renderer->getTextSize(TEXT_NORMAL), Color(1.0f), TEXT_H_RIGHT, TEXT_V_MIDDLE);
         }
 
         // Reverting to old layer 
         renderer->setActiveLayer(oldLayer);
     }
+}
+
+// Definitioon for private function for generating material name
+void MaterialDropdown::storeMaterialName()
+{
+    // Checking for the game object's material name
+    if (!mpObject)
+    {
+        mStoredMaterialName = "INVALID GAMEOBJECT";
+        return;
+    }
+
+    // Attempting to access the material manager
+    MaterialManager* manager = ResourceManager::getInstance()->getMaterialManager();
+    if (!manager)
+    {
+        mStoredMaterialName = "NO MATERIAL MANAGER";
+        return;
+    }
+
+    // Attempting to get the specific material
+    Material* material = manager->getMaterial(mpObject->getMaterialKey());
+    if (!material)
+    {
+        mStoredMaterialName = "DEFAULT MATERIAL";
+        return;
+    }
+
+    // Outputting the material name (finally)
+    mStoredMaterialName = material->getName();
 }

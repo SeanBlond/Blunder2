@@ -188,6 +188,8 @@ void MaterialManager::loadMaterialsFromFile()
 			break;
 		}
 
+		// TODO: Check if the read key is already used! (VERY IMPORTANT)
+		
 		// Finding the material filepath
 		std::string materialFilepath;
 		std::getline(materialFile, materialFilepath);

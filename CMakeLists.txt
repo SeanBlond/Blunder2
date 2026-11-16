@@ -57,6 +57,7 @@ add_executable(${PROJECT_NAME}
     "src/UI/Elements/InvisibleButton.h" "src/UI/Elements/InvisibleButton.cpp"
     "src/UI/Elements/TextEntry.h" "src/UI/Elements/TextEntry.cpp"
     "src/UI/Elements/UniformTextEntry.h" "src/UI/Elements/UniformTextEntry.cpp"
+    "src/UI/Elements/MaterialDropdown.h" "src/UI/Elements/MaterialDropdown.cpp" 
 
     # UI - Labelled Elements
     "src/UI/Elements/Labelled Elements/IntEntry.h" "src/UI/Elements/Labelled Elements/IntEntry.cpp"
@@ -92,12 +93,15 @@ add_executable(${PROJECT_NAME}
     # Material System
     "src/Material/Uniforms.h" "src/Material/Uniform.cpp"
     "src/Material/Material.h" "src/Material/Material.cpp"
-    "src/Material/MaterialManager.h" "src/Material/MaterialManager.cpp" 
+
+    # Resource Management
+    "src/ResourceManagement/ResourceManager.h" "src/ResourceManagement/ResourceManager.cpp"
+    "src/ResourceManagement/MaterialManager.h" "src/ResourceManagement/MaterialManager.cpp" 
 
     # Blunder (Software Class)
     "src/Runtime/Blunder.h" "src/Runtime/Blunder.cpp"
 
- "src/UI/Elements/MaterialDropdown.h" "src/UI/Elements/MaterialDropdown.cpp")
+)
 
 # Custom library for math functions and whatnot
 add_library(

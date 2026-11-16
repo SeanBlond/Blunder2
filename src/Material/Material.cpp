@@ -245,10 +245,6 @@ float4 main(Input input) : SV_Target0
 			std::cout << "Material \"" << mMaterialName << "\" fragment shader could not be loaded: " << std::endl;
 		}
 	}
-	else
-	{
-		std::cout << "Material \"" << mMaterialName << "\" has compiled successfully" << std::endl;
-	}
 
     // Returning the shader (whether it be null or not)
     return fragShader.mpCompiledShader;

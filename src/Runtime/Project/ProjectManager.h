@@ -6,7 +6,6 @@
 #include <vector>
 #include "../../Events/EventSystem.h"
 #include "../../GameObject/GameObjectManager.h"
-#include "../../Material/MaterialManager.h"
 
 class ProjectManager
 {
@@ -33,7 +32,6 @@ public:
     GameObject* getActiveObject() { return mObjectManager.getActiveObject(); }
     GameObject* getRootObject() { return mObjectManager.getRootObject(); }
     GameObjectManager* getGameObjectManager() { return &mObjectManager; }
-    MaterialManager* getMaterialManager() { return &mMaterialManager; }
 
     // Setters
     void setProjectFilepath(const std::string& filepath) { mProjectFilePath = filepath; }
@@ -44,9 +42,6 @@ private:
     std::string mStoredProjectName = "";
     bool mProjectActive = false;
     GameObjectManager mObjectManager;
-    MaterialManager mMaterialManager;
-
-    const std::string MATERIALS_FILEPATH = "resources/Materials/materials.txt";
 };
 
 // Save file callback function

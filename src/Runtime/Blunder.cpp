@@ -42,6 +42,7 @@ bool Blunder::init(const unsigned int& width, const unsigned int& height)
         UI_TEXTURE_ATLAS_COORDS, UI_TEXTURE_ATLAS_IMAGE, TEXT_TEXTURE_ATLAS_COORDS, TEXT_TEXTURE_ATLAS_IMAGE);
     successfulInit &= ShaderCross::createInstance()->init();
     successfulInit &= Time::init();
+    successfulInit &= ResourceManager::createInstance()->init();
     successfulInit &= mInputSystem.init();
     successfulInit &= mProjectManager.init();
     successfulInit &= mRecentProjectManager.init(RECENT_PROJECTS_FILE);
@@ -53,7 +54,6 @@ bool Blunder::init(const unsigned int& width, const unsigned int& height)
 
     // Setting the information of the game object buffer
     GraphicsDevice::getInstance()->getRenderer()->getGameObjectBuffer()->setGameObjectManager(mProjectManager.getGameObjectManager());
-    GraphicsDevice::getInstance()->getRenderer()->getGameObjectBuffer()->setMaterialManager(mProjectManager.getMaterialManager());
 
     // Returning false if failed to init
     if (!successfulInit)

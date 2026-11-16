@@ -6,6 +6,7 @@
 #include "../Input/KeyMap.h"
 #include "../Runtime/Project/ProjectManager.h"
 #include "../Runtime/Project/RecentProjectManager.h"
+#include "../ResourceManagement/ResourceManager.h"
 #include "../Runtime/Time.h"
 #include "../graphics/GraphicsDevice.h"
 #include "../graphics/ShaderCross.h"

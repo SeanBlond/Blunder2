@@ -20,6 +20,7 @@ int main(int argc, char* argv[])
 
     // Cleaning up Singleton Instances
     Blunder::destroyInstance();
+    ResourceManager::destroyInstance();
     EventSystem::destroyInstance();
     ShaderCross::destroyInstance();
     GraphicsDevice::destroyInstance();

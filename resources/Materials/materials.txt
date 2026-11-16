@@ -1,1 +1,3 @@
 4097 resources/Materials/testMaterial.mat
+4098 resources/Materials/second.mat
+4099 resources/Materials/third.mat

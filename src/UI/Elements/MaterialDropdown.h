@@ -1,16 +1,16 @@
 #pragma once
 #include "../UIElement.h"
 
-class MaterialManager;
 class Material;
 
 class MaterialDropdown : public UIElement
 {
 public:
-    MaterialDropdown(UIQuad quad, GameObject* object, MaterialManager* manager, Event* clickEvent = nullptr)
-        : mpIndex(index), mOptions(options), mpClickEvent(clickEvent), UIElement(quad, UI_DROPDOWN)
+    MaterialDropdown(UIQuad quad, GameObject* object, Event* clickEvent = nullptr)
+        : mpObject(object), mpClickEvent(clickEvent), UIElement(quad, UI_DROPDOWN)
     {
         generateInteractable();
+        storeMaterialName();
     }
     ~MaterialDropdown() { delete mpClickEvent; mpClickEvent = nullptr; }
 
@@ -21,10 +21,22 @@ public:
     void onRelease(MouseClickData clickData) override;
     void drawElement(GraphicsRenderer* renderer, float layerOffset) override;
 
+
 private:
-    GameObject* mpObject; // DOES NOT OWN, DO NOT DEALLOCATE
-    std::vector<uint16_t> mMaterialOptions;
-    MaterialManager* mpManager = nullptr; // DOES NOT OWN, DO NOT DEALLOCATE
+    // Private stuct for containing dropdown option info
+    struct DropdownInfo
+    {
+        uint16_t mKey;
+        std::string mName;
+    };
+
+    GameObject* mpObject = nullptr; // DOES NOT OWN, DO NOT DEALLOCATE
+    int mIndex = 0;
+    std::vector<DropdownInfo> mMaterialOptions;
+    std::string mStoredMaterialName = "";
     bool mDroppedDown = false;
     Event* mpClickEvent;
+
+    // Private Function for defining and storing the game object's material's name
+    void storeMaterialName();
 };

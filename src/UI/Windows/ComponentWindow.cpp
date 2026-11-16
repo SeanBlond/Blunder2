@@ -278,7 +278,7 @@ ComponentUIGroup* ComponentWindow::generateMaterialGroup(GameObject* gameObject,
 	yPos += materialGroup->mQuad.h + uiScale * 5;
 
 	// Adding the material dropdown
-	materialGroup->mpElements.push_back(new MaterialDropdown(UIQuad(), gameObject, ))
+	materialGroup->mpElements.push_back(new MaterialDropdown(UIQuad(), gameObject));
 
 
 	// Returning the newly created group
