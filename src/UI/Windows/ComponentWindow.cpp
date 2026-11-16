@@ -38,6 +38,11 @@ void ComponentWindow::generateComponentGroups()
 	// Determining the starting y position of the component groups
 	float yPos = 40 * uiScale + mPosition.getYOffset();
 
+	// Creating the basic group
+	ComponentUIGroup* basicGroup = generateBasicGroup(mpGameObject, uiScale, yPos);
+	if (basicGroup)
+		addComponentGroup(basicGroup);
+
 	// Creating the transform group
 	ComponentUIGroup* transformGroup = generateTransformGroup(mpGameObject, uiScale, yPos);
 	if (transformGroup)
@@ -236,6 +241,27 @@ void ComponentWindow::handleEvent(const Event& event)
 }
 
 // Component Generation function definitions
+ComponentUIGroup* ComponentWindow::generateBasicGroup(GameObject* gameObject, float uiScale, float& yPos)
+{
+	// If the game object is null, return null
+	if (!gameObject)
+		return nullptr;
+
+	// Generating component group for the basic info and increasing yPos
+	ComponentUIGroup* basicGroup = new ComponentUIGroup("Object");
+	yPos += basicGroup->mQuad.h + uiScale * 5;
+
+	// Adding text entry for name
+	basicGroup->mpElements.push_back(new LabelledTextEntry(UIQuad(), "Name", gameObject->getNameAddress()));
+	yPos += basicGroup->mpElements.back()->getQuad().h + uiScale * 5;
+
+	// Adding bool for active
+	//basicGroup->mpElements.push_back(new Float2Entry(UIQuad(), "Scale", &(gameObject->getTransform()->scale)));
+	//yPos += basicGroup->mpElements.back()->getQuad().h + uiScale * 5;
+
+	// Returning the component group
+	return basicGroup;
+}
 ComponentUIGroup* ComponentWindow::generateTransformGroup(GameObject* gameObject, float uiScale, float& yPos)
 {
 	// If the game object is null, return null

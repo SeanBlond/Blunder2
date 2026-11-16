@@ -66,6 +66,7 @@ add_executable(${PROJECT_NAME}
     "src/UI/Elements/Labelled Elements/Float4Entry.h" "src/UI/Elements/Labelled Elements/Float4Entry.cpp"
     "src/UI/Elements/Labelled Elements/ColorEntry.h" "src/UI/Elements/Labelled Elements/ColorEntry.cpp"
     "src/UI/Elements/Labelled Elements/MaterialDropdown.h" "src/UI/Elements/Labelled Elements/MaterialDropdown.cpp" 
+    "src/UI/Elements/Labelled Elements/LabelledTextEntry.h" "src/UI/Elements/Labelled Elements/LabelledTextEntry.cpp"
 
     # Runtime
     "src/Runtime/WindowManagement.h" "src/Runtime/WindowManagement.cpp" 

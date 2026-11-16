@@ -27,6 +27,7 @@ public:
     GameObject* getChildAtIndex(const int& index);
     ObjectUIData* getObjectUIData() { return &mUIData; }
     int getMaterialKey() const { return mMaterialKey; }
+    bool getObjectActive() const { return mObjectActive; }
 
     // Setters
     void setMaterialKey(const uint16_t& key) { mMaterialKey = key; }
@@ -42,8 +43,9 @@ public:
 private:
     // Transform is required, all GameObjects will have one
     smath::transform2D mTransform;
-    uint16_t mMaterialKey = 0;
     std::string mName = "";
+    uint16_t mMaterialKey = 0;
+    bool mObjectActive = true;
     ObjectUIData mUIData;
 
     GameObject* mpParent = nullptr; // DOES NOT OWN, DO NOT DEALLOCATE

@@ -35,12 +35,21 @@ void HierarchyTextEntry::onRelease(MouseClickData clickData)
 }
 void HierarchyTextEntry::drawElement(GraphicsRenderer* renderer, float layerOffset)
 {
-    // Drawing a rect around the text entry while typing
+    // Drawing a rect and typing text while typing
     if (getTyping())
+    {
         renderer->addRectangle(mQuad.getSDL_FRect(), layerOffset, Color(0.1f));
-
-    // Drawing the text
-    drawTextInput(renderer, mQuad.MiddleLeft() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.02f, Color(1.0f), TEXT_H_LEFT, TEXT_V_MIDDLE);
+        drawTextInput(renderer, mQuad.MiddleLeft() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.02f, Color(1.0f), TEXT_H_LEFT, TEXT_V_MIDDLE);
+    }
+    else
+    {
+        // Drawing the normal text otherwise
+        renderer->addText(
+            mpRefObject->getName(), 
+            mQuad.MiddleLeft() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), 
+            layerOffset + 0.02f, renderer->getTextSize(TEXT_NORMAL), Color(1.0f), TEXT_H_LEFT, TEXT_V_MIDDLE
+        );
+    }
 }
 void HierarchyTextEntry::handleInput()
 {

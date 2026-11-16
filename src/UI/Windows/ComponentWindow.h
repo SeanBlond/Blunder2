@@ -53,6 +53,7 @@ public:
     void handleEvent(const Event& event) override;
 
     // Component Generation functions
+    ComponentUIGroup* generateBasicGroup(GameObject* gameObject, float uiScale, float& yPos);
     ComponentUIGroup* generateTransformGroup(GameObject* gameObject, float uiScale, float& yPos);
     ComponentUIGroup* generateMaterialGroup(GameObject* gameObject, float uiScale, float& yPos);
 
