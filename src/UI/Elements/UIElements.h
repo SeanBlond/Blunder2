@@ -4,7 +4,6 @@
 #include "ImageToggle.h"
 #include "TextButton.h"
 #include "Dropdown.h"
-#include "MaterialDropdown.h"
 #include "ViewportScroller.h"
 #include "HierarchyTextEntry.h"
 #include "TextEntry.h"
@@ -15,3 +14,4 @@
 #include "Labelled Elements/Float4Entry.h"
 #include "Labelled Elements/IntEntry.h"
 #include "Labelled Elements/ColorEntry.h"
+#include "Labelled Elements/MaterialDropdown.h"

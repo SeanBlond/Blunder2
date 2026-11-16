@@ -1,5 +1,5 @@
 #pragma once
-#include "../UIElement.h"
+#include "../../UIElement.h"
 
 class Material;
 
@@ -31,11 +31,14 @@ private:
     };
 
     GameObject* mpObject = nullptr; // DOES NOT OWN, DO NOT DEALLOCATE
-    int mIndex = 0;
-    std::vector<DropdownInfo> mMaterialOptions;
     std::string mStoredMaterialName = "";
-    bool mDroppedDown = false;
     Event* mpClickEvent;
+
+    // Interaction Elements
+    UIQuad mInteractableQuad;
+    std::vector<DropdownInfo> mMaterialOptions;
+    int mIndex = 0;
+    bool mDroppedDown = false;
 
     // Private Function for defining and storing the game object's material's name
     void storeMaterialName();

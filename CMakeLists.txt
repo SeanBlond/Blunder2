@@ -57,7 +57,6 @@ add_executable(${PROJECT_NAME}
     "src/UI/Elements/InvisibleButton.h" "src/UI/Elements/InvisibleButton.cpp"
     "src/UI/Elements/TextEntry.h" "src/UI/Elements/TextEntry.cpp"
     "src/UI/Elements/UniformTextEntry.h" "src/UI/Elements/UniformTextEntry.cpp"
-    "src/UI/Elements/MaterialDropdown.h" "src/UI/Elements/MaterialDropdown.cpp" 
 
     # UI - Labelled Elements
     "src/UI/Elements/Labelled Elements/IntEntry.h" "src/UI/Elements/Labelled Elements/IntEntry.cpp"
@@ -66,6 +65,7 @@ add_executable(${PROJECT_NAME}
     "src/UI/Elements/Labelled Elements/Float3Entry.h" "src/UI/Elements/Labelled Elements/Float3Entry.cpp"
     "src/UI/Elements/Labelled Elements/Float4Entry.h" "src/UI/Elements/Labelled Elements/Float4Entry.cpp"
     "src/UI/Elements/Labelled Elements/ColorEntry.h" "src/UI/Elements/Labelled Elements/ColorEntry.cpp"
+    "src/UI/Elements/Labelled Elements/MaterialDropdown.h" "src/UI/Elements/Labelled Elements/MaterialDropdown.cpp" 
 
     # Runtime
     "src/Runtime/WindowManagement.h" "src/Runtime/WindowManagement.cpp" 
