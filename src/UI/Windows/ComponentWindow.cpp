@@ -42,6 +42,11 @@ void ComponentWindow::generateComponentGroups()
 	ComponentUIGroup* transformGroup = generateTransformGroup(mpGameObject, uiScale, yPos);
 	if (transformGroup)
 		addComponentGroup(transformGroup);
+
+	// Creating the material group
+	ComponentUIGroup* materialGroup = generateMaterialGroup(mpGameObject, uiScale, yPos);
+	if (materialGroup)
+		addComponentGroup(materialGroup);
 }
 void ComponentWindow::updateGameObject(GameObject* newObject)
 {
@@ -264,6 +269,18 @@ ComponentUIGroup* ComponentWindow::generateTransformGroup(GameObject* gameObject
 }
 ComponentUIGroup* ComponentWindow::generateMaterialGroup(GameObject* gameObject, float uiScale, float& yPos)
 {
-	// Does nothing for now
-	return nullptr;
+	// If the game object is null, return null
+	if (!gameObject)
+		return nullptr;
+
+	// Generating component group for the transform and increasing yPos
+	ComponentUIGroup* materialGroup = new ComponentUIGroup("Material");
+	yPos += materialGroup->mQuad.h + uiScale * 5;
+
+	// Adding the material dropdown
+	materialGroup->mpElements.push_back(new MaterialDropdown(UIQuad(), gameObject, ))
+
+
+	// Returning the newly created group
+	return materialGroup;
 }

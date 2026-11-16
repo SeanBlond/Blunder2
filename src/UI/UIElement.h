@@ -22,6 +22,7 @@ enum ElementType
 	UI_INT_ENTRY, 
 	UI_TEXT_ENTRY,
 	UI_COLOR_ENTRY,
+	UI_DROPDOWN,
 };
 
 // Base Class for a UI Element

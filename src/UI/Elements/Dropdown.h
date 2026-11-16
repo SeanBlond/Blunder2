@@ -5,7 +5,7 @@ class Dropdown : public UIElement
 {
 public:
     Dropdown(UIQuad quad, int* index, const std::vector<std::string>& options, Event* clickEvent = nullptr)
-        : mpIndex(index), mOptions(options), mpClickEvent(clickEvent), UIElement(quad, UI_BUTTON)
+        : mpIndex(index), mOptions(options), mpClickEvent(clickEvent), UIElement(quad, UI_DROPDOWN)
     {
         generateInteractable();
     }
