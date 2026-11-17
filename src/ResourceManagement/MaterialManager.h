@@ -22,7 +22,8 @@ public:
     Material* createMaterialFromFilepath(const std::string& filepath);
 
     // Materials map functions
-    void addMaterial(Material* newMat);
+    bool addMaterial(Material* newMat);
+    void removeMaterial(uint16_t matKey);
     Material* getMaterial(uint16_t matKey);
     std::unordered_map<uint16_t, Material*>* getMaterialMap() { return &mpMaterialsMap; }
 

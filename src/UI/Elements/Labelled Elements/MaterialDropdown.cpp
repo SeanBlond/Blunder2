@@ -192,19 +192,11 @@ void MaterialDropdown::storeMaterialName()
         return;
     }
 
-    // Attempting to access the material manager
-    MaterialManager* manager = ResourceManager::getInstance()->getMaterialManager();
-    if (!manager)
-    {
-        mStoredMaterialName = "NO MATERIAL MANAGER";
-        return;
-    }
-
     // Attempting to get the specific material
-    Material* material = manager->getMaterial(mpObject->getMaterialKey());
+    Material* material = ResourceManager::getInstance()->getMaterial(mpObject->getMaterialKey());
     if (!material)
     {
-        mStoredMaterialName = "DEFAULT MATERIAL";
+        mStoredMaterialName = "NO MATERIAL";
         return;
     }
 

@@ -522,7 +522,7 @@ void GameObjectBuffer::drawGameObjectToTexture(GameObject* object, SDL_GPUComman
 	// (The children are drawn first, so that if the parent has a material error, the children are still drawn)
 
 	// Checking if the gameobject's material is valid
-	Material* objectMaterial = ResourceManager::getInstance()->getMaterialManager()->getMaterial(object->getMaterialKey());
+	Material* objectMaterial = ResourceManager::getInstance()->getMaterial(object->getMaterialKey());
 	if (objectMaterial && objectMaterial->hasValidPipeline())
 	{
 		// Material is valid, binding it
@@ -532,11 +532,11 @@ void GameObjectBuffer::drawGameObjectToTexture(GameObject* object, SDL_GPUComman
 	else
 	{
 		// Material is invalid, binding the basic material maanager pipeline
-		if (!(ResourceManager::getInstance()->getMaterialManager()->getBasicPipeline()))
+		if (!(ResourceManager::getInstance()->getBasicMaterialPipeline()))
 			return; // Basic pipeline doesn't exist, return out!
 
 		// Binding the basic pipeline
-		SDL_BindGPUGraphicsPipeline(renderPass, ResourceManager::getInstance()->getMaterialManager()->getBasicPipeline());
+		SDL_BindGPUGraphicsPipeline(renderPass, ResourceManager::getInstance()->getBasicMaterialPipeline());
 	}
 
 	// Passing in the project matrix & world transformation matrix

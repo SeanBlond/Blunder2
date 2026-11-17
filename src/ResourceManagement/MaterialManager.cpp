@@ -187,8 +187,6 @@ void MaterialManager::loadMaterialsFromFile()
 			std::cout << "Materials file improperly formatted, resulting in error: " << e.what() << std::endl;
 			break;
 		}
-
-		// TODO: Check if the read key is already used! (VERY IMPORTANT)
 		
 		// Finding the material filepath
 		std::string materialFilepath;
@@ -395,11 +393,11 @@ Material* MaterialManager::createMaterialFromFilepath(const std::string& filepat
 }
 
 // Materials map function definitions
-void MaterialManager::addMaterial(Material* newMat)
+bool MaterialManager::addMaterial(Material* newMat)
 {
     // If the material is null, return out
     if (!newMat)
-        return;
+        return false;
 
     // Generating a new key for the material
 	int newKey = generateNewKey();
@@ -407,6 +405,13 @@ void MaterialManager::addMaterial(Material* newMat)
     // If the key isn't 0, add the material
     if (newKey != 0)
         mpMaterialsMap.insert({ (uint16_t)newKey, newMat });
+
+	return (newKey != 0);
+}
+void MaterialManager::removeMaterial(uint16_t matKey)
+{
+	// Attempting to erase a material at a key (that might or might not exist)
+	mpMaterialsMap.erase(matKey);
 }
 Material* MaterialManager::getMaterial(uint16_t matKey)
 {

@@ -37,7 +37,7 @@ bool ResourceManager::init()
 {
     // Initiailzaing the various managers
     bool successfulInit = true;
-    successfulInit &= mpMaterialManager.init(MATERIALS_FILEPATH);
+    successfulInit &= mMaterialManager.init(MATERIALS_FILEPATH);
 
     // Returning the outcome of the initializations
     return successfulInit;
@@ -45,4 +45,22 @@ bool ResourceManager::init()
 void ResourceManager::cleanup()
 {
     // Does nothing yet
+}
+
+// Material Manager Function definitions
+Material* ResourceManager::getMaterial(uint16_t materialID)
+{
+    return mMaterialManager.getMaterial(materialID);
+}
+SDL_GPUGraphicsPipeline* ResourceManager::getBasicMaterialPipeline()
+{
+    return mMaterialManager.getBasicPipeline();
+}
+bool ResourceManager::addMaterial(Material* material)
+{
+    return mMaterialManager.addMaterial(material);
+}
+void ResourceManager::removeMaterial(uint16_t materialID)
+{
+    mMaterialManager.removeMaterial(materialID);
 }

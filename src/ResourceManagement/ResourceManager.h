@@ -13,12 +13,19 @@ public:
 	static ResourceManager* getInstance();
 	static void destroyInstance();
 
+	// Enum for resource types
+	enum ResourceType { RESOURCE_MATERIAL, RESOURCE_BEHAVIOUR, RESOURCE_AUDIO };
+
 	// Management Functions
 	bool init();
 	void cleanup();
 
-	// Manager Getters
-	MaterialManager* getMaterialManager() { return &mpMaterialManager; }
+	// Material Manager Functions
+	Material* getMaterial(uint16_t materialID);
+	SDL_GPUGraphicsPipeline* getBasicMaterialPipeline();
+	bool addMaterial(Material* material);
+	void removeMaterial(uint16_t materialID);
+	MaterialManager* getMaterialManager() { return &mMaterialManager; }
 
 private:
 	// Private Constructor & Deconstructor
@@ -29,7 +36,7 @@ private:
 	static ResourceManager* mpInstance;
 
 	// Various Data Manager pointers
-	MaterialManager mpMaterialManager;
+	MaterialManager mMaterialManager;
 
 	// Filepath constants
 	const std::string MATERIALS_FILEPATH = "resources/Materials/materials.txt";
