@@ -16,3 +16,4 @@
 #include "Labelled Elements/ColorEntry.h"
 #include "Labelled Elements/MaterialDropdown.h"
 #include "Labelled Elements/LabelledTextEntry.h"
+#include "Labelled Elements/LabelledToggle.h"

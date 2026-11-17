@@ -1,4 +1,4 @@
-#ifndef FLOAT_ENTRY
+#ifndef INT_ENTRY
 #pragma once
 
 #include "../../UIElement.h"
@@ -48,4 +48,4 @@ private:
     int mSaveValue;
 };
 
-#endif // !FLOAT_ENTRY
+#endif // !INT_ENTRY

@@ -503,6 +503,10 @@ void GameObjectBuffer::drawGameObjectToTexture(GameObject* object, SDL_GPUComman
 	if (--depth <= 0)
 		return;
 
+	// Checking if the object is deactive
+	if (!(object->getObjectActive()))
+		return;
+
 	// Checking if the object is hidden
 	if (!(object->getObjectUIData()->mVisible))
 		return;

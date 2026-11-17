@@ -69,3 +69,11 @@ SIZE 0.2 0.2
 NAME Grid_Symbol
 ORIGIN 0.4 0.6
 SIZE 0.2 0.2
+
+NAME Checkbox_True_Symbol
+ORIGIN 0.6 0.6
+SIZE 0.2 0.2
+
+NAME Checkbox_False_Symbol
+ORIGIN 0.8 0.6
+SIZE 0.2 0.2

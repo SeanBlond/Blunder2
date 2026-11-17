@@ -28,6 +28,7 @@ public:
     ObjectUIData* getObjectUIData() { return &mUIData; }
     int getMaterialKey() const { return mMaterialKey; }
     bool getObjectActive() const { return mObjectActive; }
+    bool* getActiveAddress() { return &mObjectActive; }
 
     // Setters
     void setMaterialKey(const uint16_t& key) { mMaterialKey = key; }

@@ -52,11 +52,9 @@ struct Input
 
 float4 main(Input input) : SV_Target0
 {
-    // Defining uvs
-    float2 uv = input.TexCoord;
-    
-    // Outputting the texture multiplied by the color
-    return float4(uv, 0.0, 1.0);
+    float checker = (floor(input.TexCoord.x * 5.0) + floor(input.TexCoord.y * 5.0)) % 2.0;
+    float3 col = float3(lerp(0.6, 0.8, checker), 0.0, 1.0);
+    return float4(col, 1.0);
 }
 )";
 };

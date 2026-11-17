@@ -255,9 +255,9 @@ ComponentUIGroup* ComponentWindow::generateBasicGroup(GameObject* gameObject, fl
 	basicGroup->mpElements.push_back(new LabelledTextEntry(UIQuad(), "Name", gameObject->getNameAddress()));
 	yPos += basicGroup->mpElements.back()->getQuad().h + uiScale * 5;
 
-	// Adding bool for active
-	//basicGroup->mpElements.push_back(new Float2Entry(UIQuad(), "Scale", &(gameObject->getTransform()->scale)));
-	//yPos += basicGroup->mpElements.back()->getQuad().h + uiScale * 5;
+	// Adding toggle for active
+	basicGroup->mpElements.push_back(new LabelledToggle(UIQuad(), "Active", gameObject->getActiveAddress()));
+	yPos += basicGroup->mpElements.back()->getQuad().h + uiScale * 5;
 
 	// Returning the component group
 	return basicGroup;
