@@ -50,7 +50,7 @@ bool Blunder::init(const unsigned int& width, const unsigned int& height)
     successfulInit &= mWindowManager.init(width, height);
 
     // Temporarily setting the material for the material window
-    //mWindowManager.getMaterial()->changeMaterial(mProjectManager.getMaterialManager()->getMaterial(4097));
+    mWindowManager.getMaterial()->changeMaterial(ResourceManager::getInstance()->getMaterial(4097));
 
     // Setting the information of the game object buffer
     GraphicsDevice::getInstance()->getRenderer()->getGameObjectBuffer()->setGameObjectManager(mProjectManager.getGameObjectManager());

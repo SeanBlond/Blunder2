@@ -88,6 +88,7 @@ void ComponentWindow::updateComponentGroupPositions()
 		// If the group is dropped down, update the position of all its elements
 		if (compGroup->mDroppedDown)
 		{
+
 			for (int i = 0; i < compGroup->mpElements.size() - 1; i++)
 			{
 				// Defining the element
@@ -123,14 +124,15 @@ UIElement* ComponentWindow::getElementAtPos(smath::ivec2 position)
 	// Looping through each element in each component group to check for collisions
 	for (ComponentUIGroup* compGroup : mpComponentGroups)
 	{
-		// If the component group isn't dropped down, check dropdwon button then continue
+		// Checking the dropdown of the comp group
+		UIElement* dropdown = compGroup->mpElements.back();
+		if (dropdown->checkCollision(position))
+			return dropdown;
+
+		// If comp group is not dropped down, skip it!
 		if (!(compGroup->mDroppedDown))
-		{
-			// Checking dropdown element
-			UIElement* dropdown = compGroup->mpElements.back();
-			if (dropdown->checkCollision(position))
-				return dropdown;
-		}
+			continue;
+
 
 		for (UIElement* element : compGroup->mpElements)
 		{
