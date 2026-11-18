@@ -182,7 +182,7 @@ void MaterialDropdown::drawElement(GraphicsRenderer* renderer, float layerOffset
     }
 }
 
-// Definitioon for private function for generating material name
+// Definitioon for function for generating material name
 void MaterialDropdown::storeMaterialName()
 {
     // Checking for the game object's material name

@@ -21,6 +21,8 @@ public:
     void onRelease(MouseClickData clickData) override;
     void drawElement(GraphicsRenderer* renderer, float layerOffset) override;
 
+    // Function for defining and storing the game object's material's name
+    void storeMaterialName();
 
 private:
     // Private stuct for containing dropdown option info
@@ -39,7 +41,4 @@ private:
     std::vector<DropdownInfo> mMaterialOptions;
     int mIndex = 0;
     bool mDroppedDown = false;
-
-    // Private Function for defining and storing the game object's material's name
-    void storeMaterialName();
 };

@@ -172,6 +172,10 @@ void MaterialManager::loadMaterialsFromFile()
 		materialFile >> tempString;
 		uint16_t readValue;
 
+		// Checking if the read value is just a new line
+		if ((int)tempString[0] == 0)
+			continue; // Continue to next iteration (should be the last one)
+
 		// Reading the int value
 		try
 		{

@@ -159,6 +159,7 @@ void ComponentWindow::OpenWindow()
 {
 	// Adding event listener
 	EventSystem::getInstance()->addListener(EVENT_SOFTWARE_COMPONENT_DROPDOWN, this);
+	EventSystem::getInstance()->addListener(EVENT_SOFTWARE_REMOVE_MATERIAL, this);
 
 	// Generating component groups
 	generateComponentGroups();
@@ -238,6 +239,26 @@ void ComponentWindow::handleEvent(const Event& event)
 		// Updating component group positions
 		updateComponentGroupPositions();
 	}
+	else if (event.getType() == EVENT_SOFTWARE_REMOVE_MATERIAL)
+	{
+		// Setting the gameobjects material to be null (if the objet exists)
+		if (mpGameObject)
+		{
+			// Setting material key
+			mpGameObject->setMaterialKey(0);
+
+			// Updating the material dropdown
+			if (mpComponentGroups.size() >= 2)
+			{
+				// Getting the element
+				UIElement* tempElement = mpComponentGroups[2]->mpElements[0];
+				MaterialDropdown* dropdownElement = static_cast<MaterialDropdown*>(tempElement);
+
+				// Updating the element
+				dropdownElement->storeMaterialName();
+			}
+		}
+	}
 }
 
 // Component Generation function definitions
@@ -306,6 +327,8 @@ ComponentUIGroup* ComponentWindow::generateMaterialGroup(GameObject* gameObject,
 	// Adding the material dropdown
 	materialGroup->mpElements.push_back(new MaterialDropdown(UIQuad(), gameObject));
 
+	// Adding material removal button
+	materialGroup->mpElements.push_back(new TextButton(UIQuad(), "Remove Material", new SoftwareRuntimeEvent(EVENT_SOFTWARE_REMOVE_MATERIAL), uiScale * 20.0f));
 
 	// Returning the newly created group
 	return materialGroup;
