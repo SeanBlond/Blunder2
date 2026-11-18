@@ -13,13 +13,13 @@ public:
     ~MaterialManager() { cleanup(); }
 
     // Data management functions
-    bool init(const std::string& materialsFilepath);
+    bool init(const std::string& projectRoot);
     void cleanup();
 
     // Material loading & saving
     void loadMaterialsFromFile();
     void saveMaterialsToFile();
-    Material* createMaterialFromFilepath(const std::string& filepath);
+    Material* createMaterialFromFilename(const std::string& filename);
 
     // Materials map functions
     bool addMaterial(Material* newMat);
@@ -27,11 +27,16 @@ public:
     Material* getMaterial(uint16_t matKey);
     std::unordered_map<uint16_t, Material*>* getMaterialMap() { return &mpMaterialsMap; }
 
+    // Filepath Getters
+    std::string getMaterialFilepath(const std::string& materialFilename) const { return mProjectRootPath + MATERIALS_FILEPATH + materialFilename; }
+    std::string getShadercodeFilepath(const std::string& shadercodeFilename) const { return mProjectRootPath + SHADERS_FILEPATH + shadercodeFilename; }
+    std::string getMaterialsListFilepath() const { return mProjectRootPath + MATERIALS_FILEPATH + "materialsList.txt"; }
+
     // Misc. Getters
     SDL_GPUGraphicsPipeline* getBasicPipeline() { return mpBasicPipeline; }
 
 private:
-    std::string mMaterialsFilepath = "";
+    std::string mProjectRootPath = "";
     std::unordered_map<uint16_t, Material*> mpMaterialsMap;
     SDL_GPUGraphicsPipeline* mpBasicPipeline = nullptr;
 
@@ -58,6 +63,9 @@ float4 main(Input input) : SV_Target0
     return float4(col, 1.0);
 }
 )";
+
+    const std::string MATERIALS_FILEPATH = "Materials/";
+    const std::string SHADERS_FILEPATH = "Shaders/";
 };
 
 #endif // !MATERIAL_MANAGER

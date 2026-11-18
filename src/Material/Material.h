@@ -43,6 +43,7 @@ public:
     std::string getName() const { return mMaterialName; }
     std::string* getNameAddress() { return &mMaterialName; }
     std::string getMaterialFilepath() const { return mMaterialFilepath; }
+    std::string getMaterialFilename() { std::filesystem::path materialPath(mMaterialFilepath); return materialPath.filename().string(); }
 
 private:
     std::string mMaterialName = "";

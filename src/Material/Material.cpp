@@ -430,9 +430,12 @@ void Material::saveMaterialToFile()
 		return;
 	}
 
+	// Determining the filename of the shadercoce
+	std::filesystem::path codeFilepath(mCodeFilepath);
+
 	// Otherwise, start outputting material info
 	outputFile << "MATERIAL " << mMaterialName << std::endl;
-	outputFile << "SHADERCODE " << mCodeFilepath << std::endl;
+	outputFile << "SHADERCODE " << codeFilepath.filename().string() << std::endl;
 
 	// Looping through each uniform and outputting it
 	for (Uniform* uniform : mpUniforms)

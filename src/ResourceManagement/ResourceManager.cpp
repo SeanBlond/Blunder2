@@ -37,7 +37,7 @@ bool ResourceManager::init()
 {
     // Initiailzaing the various managers
     bool successfulInit = true;
-    successfulInit &= mMaterialManager.init(MATERIALS_FILEPATH);
+    successfulInit &= mMaterialManager.init(mProjectRoot);
 
     // Returning the outcome of the initializations
     return successfulInit;

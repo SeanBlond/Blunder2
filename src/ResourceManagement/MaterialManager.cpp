@@ -3,7 +3,7 @@
 #include "../graphics/ShaderCross.h"
 
 // Data management function definitions
-bool MaterialManager::init(const std::string& materialsFilepath)
+bool MaterialManager::init(const std::string& projectRoot)
 {
     // Creating a basic pipeline that can be used if materials fail to create proper pieplines
     mpBasicPipeline = generateBasicPipeline();
@@ -13,7 +13,7 @@ bool MaterialManager::init(const std::string& materialsFilepath)
         return false;
 
     // Storing the filepath
-    mMaterialsFilepath = materialsFilepath;
+    mProjectRootPath = projectRoot;
 
     // Loading in the files
     loadMaterialsFromFile();
@@ -155,7 +155,7 @@ SDL_GPUGraphicsPipeline* MaterialManager::generateBasicPipeline()
 void MaterialManager::loadMaterialsFromFile()
 {
 	// Attempting to load the materials filepath
-	std::ifstream materialFile(mMaterialsFilepath);
+	std::ifstream materialFile(getMaterialsListFilepath());
 
 	// Checking if the material filepath exists
 	if (!materialFile)
@@ -189,16 +189,16 @@ void MaterialManager::loadMaterialsFromFile()
 		}
 		
 		// Finding the material filepath
-		std::string materialFilepath;
-		std::getline(materialFile, materialFilepath);
-		materialFilepath = materialFilepath.substr(1);
+		std::string materialFilename;
+		std::getline(materialFile, materialFilename);
+		materialFilename = materialFilename.substr(1);
 
 		// Checking if the key already exists
 		if (mpMaterialsMap.find(readValue) != mpMaterialsMap.end())
 			continue; // Key already used, skip over this material
 
 		// Otherwise, create a new material and (should it not be null) add it to the map
-		Material* newMaterial = createMaterialFromFilepath(materialFilepath);
+		Material* newMaterial = createMaterialFromFilename(materialFilename);
 		if (!newMaterial) { continue; }
 		newMaterial->generateGraphicsPipeline();
 		mpMaterialsMap.insert({ readValue, newMaterial });
@@ -210,7 +210,7 @@ void MaterialManager::loadMaterialsFromFile()
 void MaterialManager::saveMaterialsToFile()
 {
 	// Creating a file to save the materials & keys to
-	std::ofstream outputFile(mMaterialsFilepath);
+	std::ofstream outputFile(getMaterialsListFilepath());
 
 	// Looping through each material & key and saving it to the file (as well as saving the individual materials to their files)
 	for (auto pair : mpMaterialsMap)
@@ -219,18 +219,18 @@ void MaterialManager::saveMaterialsToFile()
 		pair.second->saveMaterialToFile();
 
 		// Storing the material map data
-		outputFile << pair.first << ' ' << pair.second->getMaterialFilepath() << std::endl;
+		outputFile << pair.first << ' ' << pair.second->getMaterialFilename() << std::endl;
 	}
 }
-Material* MaterialManager::createMaterialFromFilepath(const std::string& filepath)
+Material* MaterialManager::createMaterialFromFilename(const std::string& filename)
 {
 	// Creating a filestream from the filepath
-	std::ifstream inputFile(filepath);
+	std::ifstream inputFile(getMaterialFilepath(filename));
 
 	// If file is invalid, return null
 	if (!inputFile)
 	{
-		std::cout << "Could not find filepath \"" << filepath << '\"' << std::endl;
+		std::cout << "Could not find filename \"" << filename << '\"' << std::endl;
 		return nullptr;
 	}
 
@@ -239,7 +239,7 @@ Material* MaterialManager::createMaterialFromFilepath(const std::string& filepat
 	inputFile >> tempString;
 	if (tempString != "MATERIAL")
 	{
-		std::cout << "Material found at \"" << filepath << "\" is improperly formatted" << std::endl;
+		std::cout << "Material found at \"" << filename << "\" is improperly formatted" << std::endl;
 		inputFile.close();
 		return nullptr;
 	}
@@ -249,11 +249,11 @@ Material* MaterialManager::createMaterialFromFilepath(const std::string& filepat
 	std::getline(inputFile, materialName);
 	materialName = materialName.substr(1);
 
-	// Trying to read shadercode filepath
+	// Trying to read shadercode filename
 	inputFile >> tempString;
 	if (tempString != "SHADERCODE")
 	{
-		std::cout << "Material found at \"" << filepath << "\" is improperly formatted" << std::endl;
+		std::cout << "Material found at \"" << filename << "\" is improperly formatted" << std::endl;
 		inputFile.close();
 		return nullptr;
 	}
@@ -261,10 +261,10 @@ Material* MaterialManager::createMaterialFromFilepath(const std::string& filepat
 	// Storing material name
 	std::string shadercodePath;
 	std::getline(inputFile, shadercodePath);
-	shadercodePath = shadercodePath.substr(1);
+	shadercodePath = getShadercodeFilepath(shadercodePath.substr(1));
 
 	// Creating a material with this basic information
-	Material* newMaterial = new Material(materialName, shadercodePath, filepath);
+	Material* newMaterial = new Material(materialName, shadercodePath, getMaterialFilepath(filename));
 
 	// Looping until the end of the file to add uniforms
 	while (!(inputFile.eof()))

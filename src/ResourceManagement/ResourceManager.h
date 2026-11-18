@@ -39,7 +39,7 @@ private:
 	MaterialManager mMaterialManager;
 
 	// Filepath constants
-	const std::string MATERIALS_FILEPATH = "resources/Materials/materials.txt";
+	const std::string mProjectRoot = "../TestProject/";
 };
 
 #endif // !RESOURCE_MANAGER
