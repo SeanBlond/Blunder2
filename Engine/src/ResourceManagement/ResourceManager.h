@@ -39,7 +39,7 @@ private:
 	MaterialManager mMaterialManager;
 
 	// Filepath constants
-	const std::string mProjectRoot = "../TestProject/";
+	const std::string mProjectRoot = "../Project/";
 };
 
 #endif // !RESOURCE_MANAGER

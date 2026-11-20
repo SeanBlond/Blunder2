@@ -13,19 +13,19 @@ find_package(SDL3_shadercross CONFIG REQUIRED)
 add_executable(
     BlunderEngine
     
+    # Icon
+    "Apps/resources/bl2Resources.rc"
+
     # Engine Main
     "Apps/src/EngineMain.cpp"
 )
 
-# Custom library for math functions and whatnot
+# Custom libraries for smath and engine
 add_subdirectory(SMATH)
-target_link_libraries(BlunderEngine PRIVATE SMATH)
-
-# Custom library for the Blunder Engine
 add_subdirectory(ENGINE)
 
-# Adding the various libraries to the engine (smath, sdl, etc)
-target_link_libraries(ENGINE PRIVATE SMATH)
+# Adding smath to the engine
+target_link_libraries(ENGINE PUBLIC SMATH)
 
 # Linking the Engine to the Project
 target_link_libraries(BlunderEngine PRIVATE ENGINE)
