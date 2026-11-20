@@ -37,6 +37,7 @@ public:
 
     // Setters
     void setActiveObject(GameObject* object) { this->mpActiveObject = object; }
+    void setRootObject(GameObject* object) { this->mpRootObject = object;  generateHierarchyGroups(); }
 
     // HierarchyGroup & Element related functions (some overrides)
     void removeAllHierarchyGroups();

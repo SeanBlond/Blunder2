@@ -1,6 +1,7 @@
-#ifndef SHAKE
+#ifndef BLUNDER
 #pragma once
 
+#include <string>
 #include "../UI/UI.h"
 #include "../Input/Input.h"
 #include "../Input/KeyMap.h"
@@ -30,10 +31,6 @@ public:
 	// Event Handling Function
 	void handleEvent(const Event& event) override;
 
-	// Getters
-	ProjectManager* getProjectManager() { return &mProjectManager; }
-	RecentProjectManager* getRecentProjectManager() { return &mRecentProjectManager; }
-
 private:
 	// Private Constructor & Deconstructor
 	Blunder() {}
@@ -60,4 +57,4 @@ private:
 	bool mRunning = false;
 };
 
-#endif // !SHAKE
+#endif // !BLUNDER

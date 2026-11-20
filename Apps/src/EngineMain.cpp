@@ -1,13 +1,9 @@
-#include "Runtime/Blunder.h"
+#include <Blunder/Engine.h>
 
 int main(int argc, char* argv[])
 {
-    // Creating EventSystem
-    EventSystem::createInstance();
-
     // Creating the Blunder Software Instance
-    Blunder::createInstance();
-    if (!(Blunder::getInstance()->init()))
+    if (!(Blunder::createInstance()->init()))
     {
         // Exiting program if failed initialization
         std::cout << "Failed to initialize Blunder2, exiting program" << std::endl;
@@ -18,13 +14,14 @@ int main(int argc, char* argv[])
         Blunder::getInstance()->runLoop();
     }
 
-    // Cleaning up Singleton Instances
+    // Destroying Blunder instance
     Blunder::destroyInstance();
+
+    // Destroying other singletons that worked with Blunder
     ResourceManager::destroyInstance();
     EventSystem::destroyInstance();
     ShaderCross::destroyInstance();
     GraphicsDevice::destroyInstance();
 
-    system("pause");
     return 0;
 }

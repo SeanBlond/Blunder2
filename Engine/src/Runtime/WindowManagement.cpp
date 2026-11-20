@@ -1,5 +1,4 @@
 #include "WindowManagement.h"
-#include "Blunder.h"
 
 // * -------------------------- *
 // |  Window Manager Functions  |
@@ -13,9 +12,9 @@ bool WindowManager::init(const unsigned int& width, const unsigned int& height)
 
 	// Creating the default windows
 	mpViewport = new ViewportWindow();
-	mpHierarchy = new HierarchyWindow(Blunder::getInstance()->getProjectManager()->getRootObject(), Blunder::getInstance()->getProjectManager()->getActiveObject());
+	mpHierarchy = new HierarchyWindow(nullptr, nullptr);
 	mpExplorerer = new TestWindow();
-	mpComponents = new ComponentWindow(Blunder::getInstance()->getProjectManager()->getActiveObject());
+	mpComponents = new ComponentWindow(nullptr);
 	mpMaterial = new MaterialWindow(nullptr);
 
 	// Creating locked windows from the default windows

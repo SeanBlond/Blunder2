@@ -1,6 +1,5 @@
 #include "ProjectManager.h"
 #include "../../graphics/GraphicsDevice.h"
-#include "../Blunder.h"
 
 // Management function definitions
 bool ProjectManager::init()
@@ -131,5 +130,5 @@ void SDLCALL saveFileCallback(void* userdata, const char* const* filelist, int f
     instance->saveProject();
 
     // Adding the filepath to the recent projects
-    Blunder::getInstance()->getRecentProjectManager()->addToFront(savePath);
+    //Blunder::getInstance()->getRecentProjectManager()->addToFront(savePath);
 }

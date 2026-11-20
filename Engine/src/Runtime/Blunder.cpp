@@ -35,6 +35,9 @@ void Blunder::destroyInstance()
 // Management Functions Definitions
 bool Blunder::init(const unsigned int& width, const unsigned int& height)
 {
+    // Creating the event system
+    EventSystem::createInstance();
+
     // Initializing the various managers (that need to be initialized)
     bool successfulInit = true;
     successfulInit &= GraphicsDevice::createInstance()->init(
@@ -48,6 +51,9 @@ bool Blunder::init(const unsigned int& width, const unsigned int& height)
     successfulInit &= mRecentProjectManager.init(RECENT_PROJECTS_FILE);
     successfulInit &= mUniversalKeyMap.init(UNIVERSAL_KEYMAP_FILE);
     successfulInit &= mWindowManager.init(width, height);
+
+    // Setting the root object of the hierarchy window
+    mWindowManager.getHierarchy()->setRootObject(mProjectManager.getRootObject());
 
     // Temporarily setting the material for the material window
     mWindowManager.getMaterial()->changeMaterial(ResourceManager::getInstance()->getMaterial(4097));

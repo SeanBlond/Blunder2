@@ -1,0 +1,101 @@
+add_library(
+    ENGINE STATIC
+
+    # Color
+    "src/color/color.h"
+    "src/color/color.cpp"
+
+    # Graphics
+    "src/graphics/ShaderCross.h" "src/graphics/ShaderCross.cpp"
+    "src/graphics/GraphicsDevice.h" "src/graphics/GraphicsDevice.cpp"
+    "src/graphics/GraphicsRenderer.h" "src/graphics/GraphicsRenderer.cpp"
+
+    # Graphics - Buffers
+    "src/graphics/Buffers/Vertices.h"   
+    "src/graphics/Buffers/PosColorBuffer.h" "src/graphics/Buffers/PosColorBuffer.cpp"
+    "src/graphics/Buffers/UITextureBuffer.h" "src/graphics/Buffers/UITextureBuffer.cpp"
+    "src/graphics/Buffers/TextBuffer.h" "src/graphics/Buffers/TextBuffer.cpp" 
+    "src/graphics/Buffers/GameObjectBuffer.h" "src/graphics/Buffers/GameObjectBuffer.cpp"
+    
+    # UI
+    "src/UI/UI.h"
+
+    # UI - Basics
+    "src/UI/UIElement.h"
+    "src/UI/UIPositioning.h"
+    "src/UI/UIRenderer.h"
+    "src/UI/UIWindows.h" "src/UI/UIWindows.cpp"
+    "src/UI/TextInput.h" "src/UI/TextInput.cpp"
+
+    # UI - Windows
+    "src/UI/Windows/TestWindow.h" "src/UI/Windows/TestWindow.cpp"
+    "src/UI/Windows/ComponentWindow.h" "src/UI/Windows/ComponentWindow.cpp"
+    "src/UI/Windows/ViewportWindow.h" "src/UI/Windows/ViewportWindow.cpp"
+    "src/UI/Windows/HierarchyWindow.h" "src/UI/Windows/HierarchyWindow.cpp"
+    "src/UI/Windows/MaterialWindow.h" "src/UI/Windows/MaterialWindow.cpp" 
+
+    # UI - Pop-Up Windows
+    # "src/UI/Windows/Pop-Up Windows/ColorWindow.h" "src/UI/Windows/Pop-Up Windows/ColorWindow.cpp"
+    
+    # UI - Elements
+    "src/UI/Elements/HierarchyTextEntry.h" "src/UI/Elements/HierarchyTextEntry.cpp"
+    "src/UI/Elements/ImageButton.h" "src/UI/Elements/ImageButton.cpp"
+    "src/UI/Elements/ImageToggle.h" "src/UI/Elements/ImageToggle.cpp"
+    "src/UI/Elements/TextButton.h" "src/UI/Elements/TextButton.cpp"
+    "src/UI/Elements/Dropdown.h" "src/UI/Elements/Dropdown.cpp"     
+    "src/UI/Elements/ViewportScroller.h" "src/UI/Elements/ViewportScroller.cpp"     
+    "src/UI/Elements/InvisibleButton.h" "src/UI/Elements/InvisibleButton.cpp"
+    "src/UI/Elements/TextEntry.h" "src/UI/Elements/TextEntry.cpp"
+    "src/UI/Elements/UniformTextEntry.h" "src/UI/Elements/UniformTextEntry.cpp"
+
+    # UI - Labelled Elements
+    "src/UI/Elements/Labelled Elements/IntEntry.h" "src/UI/Elements/Labelled Elements/IntEntry.cpp"
+    "src/UI/Elements/Labelled Elements/FloatEntry.h" "src/UI/Elements/Labelled Elements/FloatEntry.cpp"
+    "src/UI/Elements/Labelled Elements/Float2Entry.h" "src/UI/Elements/Labelled Elements/Float2Entry.cpp"
+    "src/UI/Elements/Labelled Elements/Float3Entry.h" "src/UI/Elements/Labelled Elements/Float3Entry.cpp"
+    "src/UI/Elements/Labelled Elements/Float4Entry.h" "src/UI/Elements/Labelled Elements/Float4Entry.cpp"
+    "src/UI/Elements/Labelled Elements/ColorEntry.h" "src/UI/Elements/Labelled Elements/ColorEntry.cpp"
+    "src/UI/Elements/Labelled Elements/MaterialDropdown.h" "src/UI/Elements/Labelled Elements/MaterialDropdown.cpp" 
+    "src/UI/Elements/Labelled Elements/LabelledTextEntry.h" "src/UI/Elements/Labelled Elements/LabelledTextEntry.cpp"
+    "src/UI/Elements/Labelled Elements/LabelledToggle.h" "src/UI/Elements/Labelled Elements/LabelledToggle.cpp"
+
+    # Runtime
+    "src/Runtime/WindowManagement.h" "src/Runtime/WindowManagement.cpp" 
+    "src/Runtime/LockedWindow.h" "src/Runtime/LockedWindow.cpp" 
+    "src/Runtime/Time.h" "src/Runtime/Time.cpp"
+
+    # Runtime - Project Stuff
+    "src/Runtime/Project/ProjectManager.h" "src/Runtime/Project/ProjectManager.cpp"
+    "src/Runtime/Project/RecentProjectManager.h" "src/Runtime/Project/RecentProjectManager.cpp"
+    
+    # Event System
+    "src/Events/Event.h" 
+    "src/Events/EventSystem.h" "src/Events/EventSystem.cpp"
+    "src/Events/EventListener.h" "src/Events/EventListener.cpp" 
+
+    # Input System
+    "src/Input/Input.h" "src/Input/Input.cpp"
+    "src/Input/KeyMap.h" "src/Input/KeyMap.cpp"
+
+    # GameObjects
+    "src/GameObject/GameObject.h" "src/GameObject/GameObject.cpp" 
+    "src/GameObject/GameObjectManager.h" "src/GameObject/GameObjectManager.cpp"
+    "src/GameObject/Camera.h" "src/GameObject/Camera.cpp" 
+    
+    # Material System
+    "src/Material/Uniforms.h" "src/Material/Uniform.cpp"
+    "src/Material/Material.h" "src/Material/Material.cpp"
+
+    # Resource Management
+    "src/ResourceManagement/ResourceManager.h" "src/ResourceManagement/ResourceManager.cpp"
+    "src/ResourceManagement/MaterialManager.h" "src/ResourceManagement/MaterialManager.cpp" 
+
+    # Blunder (Software Class)
+    "src/Runtime/Blunder.h" "src/Runtime/Blunder.cpp"
+)
+target_include_directories(ENGINE PUBLIC include)
+
+target_link_libraries(ENGINE PUBLIC SDL3::SDL3)
+target_link_libraries(ENGINE PUBLIC $<IF:$<TARGET_EXISTS:SDL3_image::SDL3_image-shared>,SDL3_image::SDL3_image-shared,SDL3_image::SDL3_image-static>)
+target_link_libraries(ENGINE PUBLIC SDL3_ttf::SDL3_ttf)
+target_link_libraries(ENGINE PUBLIC SDL3_shadercross::SDL3_shadercross-shared)
