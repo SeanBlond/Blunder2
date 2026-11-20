@@ -1,10 +1,6 @@
 add_library(
     ENGINE STATIC
 
-    # Color
-    "src/color/color.h"
-    "src/color/color.cpp"
-
     # Graphics
     "src/graphics/ShaderCross.h" "src/graphics/ShaderCross.cpp"
     "src/graphics/GraphicsDevice.h" "src/graphics/GraphicsDevice.cpp"

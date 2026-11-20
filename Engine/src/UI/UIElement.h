@@ -4,7 +4,6 @@
 #include "UIPositioning.h"
 #include "UIRenderer.h"
 #include "TextInput.h"
-#include "../color/color.h"
 #include "../Events/EventSystem.h"
 
 // Enum for different UI elements

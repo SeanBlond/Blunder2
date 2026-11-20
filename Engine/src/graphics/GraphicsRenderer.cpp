@@ -83,7 +83,7 @@ void GraphicsRenderer::addMesh(const PosColorMesh& mesh)
 {
     mpPosColorBuffer->addMesh(mesh);
 }
-void GraphicsRenderer::addLine(const smath::vec2& startPos, const smath::vec2& endPos, const float& layerOffset, const Color& color, const float& thickness)
+void GraphicsRenderer::addLine(const smath::vec2& startPos, const smath::vec2& endPos, const float& layerOffset, const smath::Color& color, const float& thickness)
 {
     // Generating the necessary vectors for the line
     smath::vec2 lineRelative = smath::normalize(endPos - startPos);
@@ -112,7 +112,7 @@ void GraphicsRenderer::addLine(const smath::vec2& startPos, const smath::vec2& e
     // Adding the mesh to the buffer
     addMesh(tempMesh);
 }
-void GraphicsRenderer::addRectangle(const SDL_FRect& rect, const float& layerOffset, const Color& color)
+void GraphicsRenderer::addRectangle(const SDL_FRect& rect, const float& layerOffset, const smath::Color& color)
 {
     // Creating the mesh
     PosColorMesh tempMesh =
@@ -137,7 +137,7 @@ void GraphicsRenderer::addRectangle(const SDL_FRect& rect, const float& layerOff
     // Adding the mesh to the buffer
     addMesh(tempMesh);
 }
-void GraphicsRenderer::addRectangle(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const Color& color)
+void GraphicsRenderer::addRectangle(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const smath::Color& color)
 {
     // Creating the mesh
     PosColorMesh tempMesh =
@@ -162,11 +162,11 @@ void GraphicsRenderer::addRectangle(const smath::vec2& position, const smath::ve
     // Adding the mesh to the buffer
     addMesh(tempMesh);
 }
-void GraphicsRenderer::addCenteredRectangle(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const Color& color)
+void GraphicsRenderer::addCenteredRectangle(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const smath::Color& color)
 {
     addRectangle(position - size * 0.5f, size, layerOffset, color);
 }
-void GraphicsRenderer::addRectangleOutline(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const Color& color, const float& thickness)
+void GraphicsRenderer::addRectangleOutline(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const smath::Color& color, const float& thickness)
 {
     // Creating the corner positions
     smath::vec2 corners[] =
@@ -211,15 +211,15 @@ void GraphicsRenderer::addRectangleOutline(const smath::vec2& position, const sm
     // Adding the mesh
     addMesh(tempMesh);
 }
-void GraphicsRenderer::addRectangleOutline(const SDL_FRect& rect, const float& layerOffset, const Color& color, const float& thickness)
+void GraphicsRenderer::addRectangleOutline(const SDL_FRect& rect, const float& layerOffset, const smath::Color& color, const float& thickness)
 {
     // Creating the corner positions
     smath::vec2 corners[] =
     {
-        smath::vec2(rect.x,          rect.y         ),
+        smath::vec2(rect.x,          rect.y),
         smath::vec2(rect.x,          rect.y + rect.h),
         smath::vec2(rect.x + rect.w, rect.y + rect.h),
-        smath::vec2(rect.x + rect.w, rect.y         )
+        smath::vec2(rect.x + rect.w, rect.y)
     };
 
     // Defining the thickness applied to the corners in each direction
@@ -256,7 +256,7 @@ void GraphicsRenderer::addRectangleOutline(const SDL_FRect& rect, const float& l
     // Adding the mesh
     addMesh(tempMesh);
 }
-void GraphicsRenderer::addCircle(const smath::vec2& center, const smath::vec2& radii, const float& layerOffset, const Color& color, const int& quality)
+void GraphicsRenderer::addCircle(const smath::vec2& center, const smath::vec2& radii, const float& layerOffset, const smath::Color& color, const int& quality)
 {
     // Clamping the quality between 3 and 128
     int actualQuality = smath::clamp(quality, 3, 128);
@@ -299,12 +299,12 @@ void GraphicsRenderer::addCircle(const smath::vec2& center, const smath::vec2& r
     // Adding the temp mesh
     addMesh(tempMesh);
 }
-void GraphicsRenderer::addCircle(const smath::vec2& center, const float& radius, const float& layerOffset, const Color& color, const int& quality)
+void GraphicsRenderer::addCircle(const smath::vec2& center, const float& radius, const float& layerOffset, const smath::Color& color, const int& quality)
 {
     // Calling the other addCircle function
     addCircle(center, smath::vec2(radius), layerOffset, color, quality);
 }
-void GraphicsRenderer::addCircleOutline(const smath::vec2& center, const smath::vec2& radii, const float& layerOffset, const Color& color, const float& thickness, const int& quality)
+void GraphicsRenderer::addCircleOutline(const smath::vec2& center, const smath::vec2& radii, const float& layerOffset, const smath::Color& color, const float& thickness, const int& quality)
 {
     // Clamping the quality between 3 and 128
     int actualQuality = smath::clamp(quality, 3, 128);
@@ -346,11 +346,11 @@ void GraphicsRenderer::addCircleOutline(const smath::vec2& center, const smath::
     // Adding the temp mesh
     addMesh(tempMesh);
 }
-void GraphicsRenderer::addCircleOutline(const smath::vec2& center, const float& radius, const float& layerOffset, const Color& color, const float& thickness, const int& quality)
+void GraphicsRenderer::addCircleOutline(const smath::vec2& center, const float& radius, const float& layerOffset, const smath::Color& color, const float& thickness, const int& quality)
 {
     addCircleOutline(center, smath::vec2(radius), layerOffset, color, thickness, quality);
 }
-void GraphicsRenderer::addStar(const smath::vec2& center, const float& outerRadius, const float& layerOffset, const Color& color)
+void GraphicsRenderer::addStar(const smath::vec2& center, const float& outerRadius, const float& layerOffset, const smath::Color& color)
 {
     // Creating the temp mesh
     PosColorMesh tempMesh;
@@ -404,7 +404,7 @@ void GraphicsRenderer::addStar(const smath::vec2& center, const float& outerRadi
     // Adding the temp mesh
     addMesh(tempMesh);
 }
-void GraphicsRenderer::addStarOutline(const smath::vec2& center, const float& outerRadius, const float& layerOffset, const Color& color, const float& thickness)
+void GraphicsRenderer::addStarOutline(const smath::vec2& center, const float& outerRadius, const float& layerOffset, const smath::Color& color, const float& thickness)
 {
     // Creating the temp mesh
     PosColorMesh tempMesh;
@@ -462,7 +462,7 @@ void GraphicsRenderer::addStarOutline(const smath::vec2& center, const float& ou
 }
 
 // Functions for adding meshes to the PosColorTex buffer
-void GraphicsRenderer::addTexQuad(const SDL_FRect& rectangle, const float& layerOffset, const std::string& textureKey, const Color& color, bool centered)
+void GraphicsRenderer::addTexQuad(const SDL_FRect& rectangle, const float& layerOffset, const std::string& textureKey, const smath::Color& color, bool centered)
 {
     // Calling the add texture quad function of the buffer
     mpUITextureBuffer->addTexQuad(
@@ -472,7 +472,7 @@ void GraphicsRenderer::addTexQuad(const SDL_FRect& rectangle, const float& layer
         color, centered
     );
 }
-void GraphicsRenderer::addTexQuad(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const std::string& textureKey, const Color& color, bool centered)
+void GraphicsRenderer::addTexQuad(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const std::string& textureKey, const smath::Color& color, bool centered)
 {
     // Calling the add texture quad function of the buffer
     mpUITextureBuffer->addTexQuad(smath::vec3(position, mCurrentLayerValue + layerOffset), size, textureKey, color, centered);

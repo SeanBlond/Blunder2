@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <SDL3/SDL_gpu.h>
 #include <smath/smath.h>
-#include "../../Color/Color.h"
 #include "Vertices.h"
 
 // Buffer Class
@@ -23,7 +22,7 @@ public:
 
 	// Buffer-modifying functions
 	void addMesh(const PosColorTexMesh& mesh);
-	void addTexQuad(const smath::vec3& position, const smath::vec2& size, const std::string& textureKey, const Color& color = Color(1.0f), bool centered = false);
+	void addTexQuad(const smath::vec3& position, const smath::vec2& size, const std::string& textureKey, const smath::Color& color = smath::Color(1.0f), bool centered = false);
 	void clearMesh();
 	void startNewViewport() { mViewIndexOffsets.push_back(0); } // Creates new value to keep track of indices in the viewport
 	void updateBuffers();

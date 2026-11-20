@@ -89,10 +89,10 @@ void IntEntry::drawElement(GraphicsRenderer* renderer, float layerOffset)
     renderer->addText(
         mLabel,
         smath::vec2(mInteractableQuad.x - renderer->getUIScale() * 4, mQuad.getCenterY()), layerOffset + 0.01f, renderer->getTextSize(TEXT_NORMAL),
-        Color(1), TEXT_H_RIGHT, TEXT_V_MIDDLE);
+        smath::Color(1), TEXT_H_RIGHT, TEXT_V_MIDDLE);
 
     // Drawing a rect around the text entry
-    renderer->addRectangle(mInteractableQuad.getSDL_FRect(), layerOffset, Color(0.25f) * effect);
+    renderer->addRectangle(mInteractableQuad.getSDL_FRect(), layerOffset, smath::Color(0.25f) * effect);
 
     // If there are clamp values, draw a slider
     if (mpClamps)
@@ -100,20 +100,20 @@ void IntEntry::drawElement(GraphicsRenderer* renderer, float layerOffset)
         renderer->addRectangle(
             mInteractableQuad.getPosition(),
             smath::vec2(calculateSliderWidth(mInteractableQuad.w), mInteractableQuad.h),
-            layerOffset + 0.01f, Color(0, 0.75f, 0) * effect);
+            layerOffset + 0.01f, smath::Color(0, 0.75f, 0) * effect);
     }
 
     // Determing what text to draw
     if (getTyping())
     {
-        drawTextInput(renderer, mInteractableQuad.Center() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.02f, Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);
+        drawTextInput(renderer, mInteractableQuad.Center() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.02f, smath::Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);
     }
     else
     {
         renderer->addText(
             std::to_string(*mpValue),
             mInteractableQuad.Center() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.02f,
-            renderer->getTextSize(TEXT_NORMAL), Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);
+            renderer->getTextSize(TEXT_NORMAL), smath::Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);
     }
 }
 void IntEntry::handleInput()

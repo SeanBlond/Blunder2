@@ -44,7 +44,7 @@ public:
     void setText(std::string text) { mInputText = mStoredText = text; }
 
     // Drawing function
-    void drawTextInput(GraphicsRenderer* renderer, smath::vec2 pos, float layerOffset, Color color = Color(1),
+    void drawTextInput(GraphicsRenderer* renderer, smath::vec2 pos, float layerOffset, const smath::Color& color = smath::Color(1),
         HorizontalTextAlign horizontalAlignment = TEXT_H_LEFT, VerticalTextAlign verticalAlignment = TEXT_V_BOTTOM);
 
     // Virtual function

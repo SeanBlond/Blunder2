@@ -25,7 +25,7 @@ void ImageToggle::onClick(MouseClickData clickData)
 void ImageToggle::drawElement(GraphicsRenderer* renderer, float layerOffset)
 {
 	// Getting the color effetc
-	Color effect = 1.0f;
+	smath::Color effect = 1.0f;
 	if (mClicked)
 		effect = 0.5f;
 	else if (mHighlighted)

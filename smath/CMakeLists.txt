@@ -14,6 +14,10 @@ add_library(
     "src/mat4.h" "src/mat4.cpp"
 
     # Math - Tansforms
-    "src/transform.h" "src/transform2D.h"
+    "src/transform.h"
+    "src/transform2D.h"
+
+    # Math - Color
+    "src/color.h" "src/color.cpp"
 )
 target_include_directories(SMATH PUBLIC include)

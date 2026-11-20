@@ -244,7 +244,7 @@ void TextMeshBuffer::addMesh(const PosColorTexMesh& mesh)
 	mViewIndexOffsets.back() += mesh.indices.size();
 }
 void TextMeshBuffer::addText(
-	const std::string& text, const smath::vec2& pos, const float& zPos, const float& size, Color color,
+	const std::string& text, const smath::vec2& pos, const float& zPos, const float& size, const smath::Color& color,
 	HorizontalTextAlign horizontalAlignment, VerticalTextAlign verticalAlignment)
 {
 	// Setting x and y values

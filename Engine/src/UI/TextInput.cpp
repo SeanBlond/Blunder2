@@ -166,7 +166,7 @@ void TextInput::endTyping(bool saveText)
 }
 
 // Drawing function definition
-void TextInput::drawTextInput(GraphicsRenderer* renderer, smath::vec2 pos, float layerOffset, Color color,
+void TextInput::drawTextInput(GraphicsRenderer* renderer, smath::vec2 pos, float layerOffset, const smath::Color& color,
     HorizontalTextAlign horizontalAlignment, VerticalTextAlign verticalAlignment)
 {
     // Rendering Cursor & Selection
@@ -175,7 +175,7 @@ void TextInput::drawTextInput(GraphicsRenderer* renderer, smath::vec2 pos, float
         // Cursor
         smath::vec2 cursorPos = renderer->getPositionInText(mInputText, getCursorPos(), pos, renderer->getTextSize(TEXT_NORMAL), horizontalAlignment, verticalAlignment);
         cursorPos -= smath::vec2(0.0f, renderer->getTextSize(TEXT_NORMAL) * (verticalAlignment == TEXT_V_BOTTOM ? 0.0f : (verticalAlignment == TEXT_V_MIDDLE ? 0.5f : 1.0f)));
-        renderer->addRectangle(cursorPos, smath::vec2(3 * renderer->getUIScale(), renderer->getTextSize(TEXT_NORMAL)), layerOffset + 0.01f, Color(0.8f));
+        renderer->addRectangle(cursorPos, smath::vec2(3 * renderer->getUIScale(), renderer->getTextSize(TEXT_NORMAL)), layerOffset + 0.01f, smath::Color(0.8f));
 
         // Selection
         if (mSelecting)
@@ -184,10 +184,10 @@ void TextInput::drawTextInput(GraphicsRenderer* renderer, smath::vec2 pos, float
             selectPos -= smath::vec2(0.0f, renderer->getTextSize(TEXT_NORMAL) * (verticalAlignment == TEXT_V_BOTTOM ? 0.0f : (verticalAlignment == TEXT_V_MIDDLE ? 0.5f : 1.0f)));
             float selectSize = abs(cursorPos.x - selectPos.x);
             smath::vec2 selectStartPos = smath::vec2(smath::min(selectPos.x, cursorPos.x), selectPos.y);
-            renderer->addRectangle(selectStartPos, smath::vec2(selectSize, renderer->getTextSize(TEXT_NORMAL)), layerOffset, Color(0.6f, 0.6f, 1.0f));
+            renderer->addRectangle(selectStartPos, smath::vec2(selectSize, renderer->getTextSize(TEXT_NORMAL)), layerOffset, smath::Color(0.6f, 0.6f, 1.0f));
         }
     }
 
     // Rendering Text
-    renderer->addText(mInputText, pos, layerOffset + 0.02f, renderer->getTextSize(TEXT_NORMAL), Color(1), horizontalAlignment, verticalAlignment);
+    renderer->addText(mInputText, pos, layerOffset + 0.02f, renderer->getTextSize(TEXT_NORMAL), smath::Color(1), horizontalAlignment, verticalAlignment);
 }

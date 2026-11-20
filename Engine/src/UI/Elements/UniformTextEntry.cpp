@@ -19,7 +19,7 @@ void UniformTextEntry::onRelease(MouseClickData clickData)
 void UniformTextEntry::drawElement(GraphicsRenderer* renderer, float layerOffset)
 {
     // Determing the background color of the text entry
-    Color backgroundColor = 0.15f;
+    smath::Color backgroundColor = 0.15f;
     if (mClicked || getTyping())
         backgroundColor = 0.075f;
     else if (mHighlighted)
@@ -32,7 +32,7 @@ void UniformTextEntry::drawElement(GraphicsRenderer* renderer, float layerOffset
     renderer->addRectangle(mQuad.getSDL_FRect(), layerOffset, backgroundColor);
 
     // Drawing the text
-    drawTextInput(renderer, mQuad.MiddleLeft() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.02f, Color(1.0f), TEXT_H_LEFT, TEXT_V_MIDDLE);
+    drawTextInput(renderer, mQuad.MiddleLeft() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.02f, smath::Color(1.0f), TEXT_H_LEFT, TEXT_V_MIDDLE);
 }
 void UniformTextEntry::handleInput()
 {

@@ -116,22 +116,22 @@ void Float3Entry::drawElement(GraphicsRenderer* renderer, float layerOffset)
     renderer->addText(
         mLabel,
         smath::vec2(mInteractableQuad.x - renderer->getUIScale() * 4, mQuad.getCenterY()), layerOffset + 0.01f, renderer->getTextSize(TEXT_NORMAL),
-        Color(1), TEXT_H_RIGHT, TEXT_V_MIDDLE);
+        smath::Color(1), TEXT_H_RIGHT, TEXT_V_MIDDLE);
 
     // Drawing the text for each axis
     for (int i = 0; i < 3; i++)
     {
-        Color rectColor = ((!getTyping() && !mClicked) || i == mAxisSelected) ? Color(0.25f) * effect : Color(0.25f);
+        smath::Color rectColor = ((!getTyping() && !mClicked) || i == mAxisSelected) ? smath::Color(0.25f) * effect : smath::Color(0.25f);
 
         // Drawing rects for each of the axis texts
         renderer->addCenteredRectangle(
-            smath::vec2(mAxisXPositions[i], mQuad.getCenterY()), 
-            smath::vec2(mInteractableQuad.w * 0.333f - renderer->getUIScale() * 4.0f, mQuad.h), 
+            smath::vec2(mAxisXPositions[i], mQuad.getCenterY()),
+            smath::vec2(mInteractableQuad.w * 0.333f - renderer->getUIScale() * 4.0f, mQuad.h),
             layerOffset, rectColor);
-        
+
         if (getTyping() && i == mAxisSelected)
         {
-            drawTextInput(renderer, smath::vec2(mAxisXPositions[i], mQuad.getCenterY() - renderer->getUIScale() * 3.0f), layerOffset + 0.02f, Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);
+            drawTextInput(renderer, smath::vec2(mAxisXPositions[i], mQuad.getCenterY() - renderer->getUIScale() * 3.0f), layerOffset + 0.02f, smath::Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);
         }
         else
         {
@@ -139,7 +139,7 @@ void Float3Entry::drawElement(GraphicsRenderer* renderer, float layerOffset)
             renderer->addText(
                 smath::round(axisValue, 3),
                 smath::vec2(mAxisXPositions[i], mQuad.getCenterY() - renderer->getUIScale() * 3.0f), layerOffset + 0.02f,
-                renderer->getTextSize(TEXT_NORMAL), Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);
+                renderer->getTextSize(TEXT_NORMAL), smath::Color(1.0f), TEXT_H_CENTER, TEXT_V_MIDDLE);
         }
     }
 }

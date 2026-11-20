@@ -38,16 +38,16 @@ void HierarchyTextEntry::drawElement(GraphicsRenderer* renderer, float layerOffs
     // Drawing a rect and typing text while typing
     if (getTyping())
     {
-        renderer->addRectangle(mQuad.getSDL_FRect(), layerOffset, Color(0.1f));
-        drawTextInput(renderer, mQuad.MiddleLeft() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.02f, Color(1.0f), TEXT_H_LEFT, TEXT_V_MIDDLE);
+        renderer->addRectangle(mQuad.getSDL_FRect(), layerOffset, smath::Color(0.1f));
+        drawTextInput(renderer, mQuad.MiddleLeft() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), layerOffset + 0.02f, smath::Color(1.0f), TEXT_H_LEFT, TEXT_V_MIDDLE);
     }
     else
     {
         // Drawing the normal text otherwise
         renderer->addText(
-            mpRefObject->getName(), 
-            mQuad.MiddleLeft() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f), 
-            layerOffset + 0.02f, renderer->getTextSize(TEXT_NORMAL), Color(1.0f), TEXT_H_LEFT, TEXT_V_MIDDLE
+            mpRefObject->getName(),
+            mQuad.MiddleLeft() - smath::vec2(0.0f, renderer->getUIScale() * 3.0f),
+            layerOffset + 0.02f, renderer->getTextSize(TEXT_NORMAL), smath::Color(1.0f), TEXT_H_LEFT, TEXT_V_MIDDLE
         );
     }
 }

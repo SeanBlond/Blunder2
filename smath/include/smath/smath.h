@@ -10,6 +10,7 @@
 #include "../../src/mat4.h"
 #include "../../src/transform.h"
 #include "../../src/transform2D.h"
+#include "../../src/color.h"
 
 #endif // !SMATH
 

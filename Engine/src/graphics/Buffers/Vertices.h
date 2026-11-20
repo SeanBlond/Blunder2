@@ -2,7 +2,6 @@
 #pragma once
 
 #include <smath/smath.h>
-#include "../../Color/Color.h"
 
 // * ------------------ *
 // |  Vertices Structs  |
@@ -12,14 +11,14 @@
 struct PosColorVert
 {
 	smath::vec3 position;
-	Color color;
+	smath::Color color;
 };
 
 // Position, Color, and TexCoord Vertex
 struct PosColorTexVert
 {
 	smath::vec3 position;
-	Color color;
+	smath::Color color;
 	smath::vec2 texCoord;
 };
 

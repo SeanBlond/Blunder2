@@ -243,7 +243,7 @@ void UITextureMeshBuffer::addMesh(const PosColorTexMesh& mesh)
 	// Adding the indices to the current view offset
 	mViewIndexOffsets.back() += mesh.indices.size();
 }
-void UITextureMeshBuffer::addTexQuad(const smath::vec3& position, const smath::vec2& size, const std::string& textureKey, const Color& color, bool centered)
+void UITextureMeshBuffer::addTexQuad(const smath::vec3& position, const smath::vec2& size, const std::string& textureKey, const smath::Color& color, bool centered)
 {
 	// Checking if the texture key is valid
 	if (!mAtlasCoords.contains(textureKey))

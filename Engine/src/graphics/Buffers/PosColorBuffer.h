@@ -5,7 +5,6 @@
 #include <vector>
 #include <SDL3/SDL_gpu.h>
 #include <smath/smath.h>
-#include "../../Color/Color.h"
 #include "Vertices.h"
 
 // Buffer Class

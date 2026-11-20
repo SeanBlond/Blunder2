@@ -11,7 +11,6 @@
 #include "Buffers/UITextureBuffer.h"
 #include "Buffers/TextBuffer.h"
 #include "Buffers/GameObjectBuffer.h"
-#include "../Color/Color.h"
 
 enum TextSize { TEXT_SMALL, TEXT_NORMAL, TEXT_LARGE };
 enum RenderLayer 
@@ -53,26 +52,26 @@ public:
 
 	// Functions for adding meshes to the PosColor mesh vector
 	void addMesh(const PosColorMesh& mesh);
-	void addLine(const smath::vec2& startPos, const smath::vec2& endPos, const float& layerOffset, const Color& color, const float& thickness);
-	void addRectangle(const SDL_FRect& rect, const float& layerOffset, const Color& color);
-	void addRectangle(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const Color& color);
-	void addCenteredRectangle(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const Color& color);
-	void addRectangleOutline(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const Color& color, const float& thickness);
-	void addRectangleOutline(const SDL_FRect& rect, const float& layerOffset, const Color& color, const float& thickness);
-	void addCircle(const smath::vec2& center, const smath::vec2& radii, const float& layerOffset, const Color& color, const int& quality = 24);
-	void addCircle(const smath::vec2& center, const float& radius, const float& layerOffset, const Color& color, const int& quality = 24);
-	void addCircleOutline(const smath::vec2& center, const smath::vec2& radii, const float& layerOffset, const Color& color, const float& thickness, const int& quality = 24);
-	void addCircleOutline(const smath::vec2& center, const float& radius, const float& layerOffset, const Color& color, const float& thickness, const int& quality = 24);
-	void addStar(const smath::vec2& center, const float& outerRadius, const float& layerOffset, const Color& color);
-	void addStarOutline(const smath::vec2& center, const float& outerRadius, const float& layerOffset, const Color& color, const float& thickness);
+	void addLine(const smath::vec2& startPos, const smath::vec2& endPos, const float& layerOffset, const smath::Color& color, const float& thickness);
+	void addRectangle(const SDL_FRect& rect, const float& layerOffset, const smath::Color& color);
+	void addRectangle(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const smath::Color& color);
+	void addCenteredRectangle(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const smath::Color& color);
+	void addRectangleOutline(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const smath::Color& color, const float& thickness);
+	void addRectangleOutline(const SDL_FRect& rect, const float& layerOffset, const smath::Color& color, const float& thickness);
+	void addCircle(const smath::vec2& center, const smath::vec2& radii, const float& layerOffset, const smath::Color& color, const int& quality = 24);
+	void addCircle(const smath::vec2& center, const float& radius, const float& layerOffset, const smath::Color& color, const int& quality = 24);
+	void addCircleOutline(const smath::vec2& center, const smath::vec2& radii, const float& layerOffset, const smath::Color& color, const float& thickness, const int& quality = 24);
+	void addCircleOutline(const smath::vec2& center, const float& radius, const float& layerOffset, const smath::Color& color, const float& thickness, const int& quality = 24);
+	void addStar(const smath::vec2& center, const float& outerRadius, const float& layerOffset, const smath::Color& color);
+	void addStarOutline(const smath::vec2& center, const float& outerRadius, const float& layerOffset, const smath::Color& color, const float& thickness);
 
 	// Functions for adding meshes to the PosColorTex buffer
-	void addTexQuad(const SDL_FRect& rectangle, const float& layerOffset, const std::string& textureKey, const Color& color = Color(1.0f), bool centered = false);
-	void addTexQuad(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const std::string& textureKey, const Color& color = Color(1.0f), bool centered = false);
+	void addTexQuad(const SDL_FRect& rectangle, const float& layerOffset, const std::string& textureKey, const smath::Color& color = smath::Color(1.0f), bool centered = false);
+	void addTexQuad(const smath::vec2& position, const smath::vec2& size, const float& layerOffset, const std::string& textureKey, const smath::Color& color = smath::Color(1.0f), bool centered = false);
 
 	// Function for adding text to the Text Buffer
 	void addText(
-		const std::string& text, const smath::vec2& pos, const float& layerOffset, const float& size, Color color = Color(1),
+		const std::string& text, const smath::vec2& pos, const float& layerOffset, const float& size, const smath::Color& color = smath::Color(1),
 		HorizontalTextAlign horizontalAlignment = TEXT_H_LEFT, VerticalTextAlign verticalAlignment = TEXT_V_BOTTOM)
 		{ mpTextBuffer->addText(text, pos, mCurrentLayerValue + layerOffset, size, color, horizontalAlignment, verticalAlignment); }
 	smath::vec2 getPositionInText(

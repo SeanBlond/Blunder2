@@ -6,7 +6,7 @@
 class ColorEntry : public UIElement
 {
 public:
-    ColorEntry(UIQuad quad, const std::string& label, Color* value, Event* clickEvent = nullptr)
+    ColorEntry(UIQuad quad, const std::string& label, smath::Color* value, Event* clickEvent = nullptr)
         : mLabel(label), mpValue(value), mpClickEvent(clickEvent), UIElement(quad, UI_COLOR_ENTRY) 
     { generateInteractable(); }
     ~ColorEntry();
@@ -17,8 +17,8 @@ public:
     void drawElement(GraphicsRenderer* renderer, float layerOffset) override;
 
 private:
-    Color* mpValue;
-    Color mSaveValue;
+    smath::Color* mpValue;
+    smath::Color mSaveValue;
     std::string mLabel;
     Event* mpClickEvent = nullptr;
 
