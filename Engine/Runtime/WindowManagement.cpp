@@ -25,7 +25,7 @@ bool WindowManager::init(const unsigned int& width, const unsigned int& height)
 	mpRootWindow->setLeftWindow(mpHierarchy, 0.25f);
 	mpRootWindow->setBottomWindow(mpExplorerer, 0.333f);
 	mpRootWindow->setRightWindow(mpComponents, 0.25f);
-	mpRootWindow->getRightWindow()->setBottomWindow(mpMaterial, 0.5f);
+	mpRootWindow->getRightWindow()->setBottomWindow(mpMaterial, 0.75f);
 
 	// Add Event Listseners
 	EventSystem::getInstance()->addListener(EVENT_MOUSE_MOVE, this);
